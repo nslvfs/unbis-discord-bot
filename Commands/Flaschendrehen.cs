@@ -15,10 +15,10 @@ namespace unbis_discord_bot.Commands
         [Command("spin")]
         [Aliases("wichsen")]
         [Description("Klassisches Flaschendrehen")]
-        public async Task Banshee(CommandContext ctx)
-        {   
+        public async Task Spin(CommandContext ctx)
+        {
 
-            var userList = await GetActiveUsers(ctx);
+            var userList = await Shared.GetActiveUsers(ctx);
 
             var rnd = Shared.GenerateRandomNumber(0, userList.Count);
             var picked = ((DiscordMember)userList[rnd]).DisplayName;
@@ -33,52 +33,16 @@ namespace unbis_discord_bot.Commands
         public async Task ActiveUser(CommandContext ctx)
         {
             var messages = await ctx.Channel.GetMessagesAsync(100);
-            var userList = await GetActiveUsers(ctx);
+            var userList = await Shared.GetActiveUsers(ctx);
 
             string result = "Aktive Nutzer: ";
-            foreach(var user in userList)
+            foreach (var user in userList)
             {
                 var name = ((DiscordMember)user).DisplayName;
                 result = result + name + ", ";
             }
             result = result.Substring(0, result.Length - 2);
             await ctx.Channel.SendMessageAsync(result).ConfigureAwait(false);
-        }
-
-
-        private async Task<List<DiscordUser>> GetActiveUsers(CommandContext ctx)
-        {
-            var messages = await ctx.Channel.GetMessagesAsync(100);
-
-            List<DiscordUser> userList = new List<DiscordUser>();
-
-            foreach (var msg in messages)
-            {
-                if (!msg.Author.IsBot)
-                {
-                    if (userList.Count > 0)
-                    {
-                        var found = false;
-                        foreach (var auth in userList)
-                        {
-                            if (auth.Id == msg.Author.Id)
-                            {
-                                found = true;
-                            }
-                        }
-                        if (!found)
-                        {
-                            userList.Add(msg.Author);
-                        }
-                    }
-                    else
-                    {
-                        userList.Add(msg.Author);
-                    }
-                }
-            }
-
-            return userList;
         }
     }
 }

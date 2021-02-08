@@ -24,7 +24,7 @@ namespace unbis_discord_bot
             return result % max + min;
         }
 
-        private async Task<List<DiscordUser>> GetActiveUsers(CommandContext ctx)
+        public static async Task<List<DiscordUser>> GetActiveUsers(CommandContext ctx)
         {
             var messages = await ctx.Channel.GetMessagesAsync(100);
 
