@@ -32,7 +32,6 @@ namespace unbis_discord_bot.Commands
         [Description("Vom Bot als aktiv erkannte User")]
         public async Task ActiveUser(CommandContext ctx)
         {
-            var messages = await ctx.Channel.GetMessagesAsync(100);
             var userList = await Shared.GetActiveUsers(ctx);
 
             string result = "Aktive Nutzer: ";
