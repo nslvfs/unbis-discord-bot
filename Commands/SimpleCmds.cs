@@ -141,27 +141,21 @@ namespace unbis_discord_bot.Commands
         [Description("Ping!")]
         public async Task PingPong(CommandContext ctx, DiscordUser target)
         {
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target.Mention + ": icmp_seq=1 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target.Mention + ": icmp_seq=2 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target.Mention + ": icmp_seq=3 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
+            await PingPongInternal(ctx, target.Mention);
         }
 
         [Command("ping")]
         [Description("Ping!")]
         public async Task PingPong(CommandContext ctx, string target)
         {
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=1 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=2 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=3 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
+            await PingPongInternal(ctx, target);
         }
 
         [Command("ping")]
         [Description("Ping!")]
         public async Task PingPong(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync("64 bytes from " + ctx.Member.Mention + ": icmp_seq=1 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
-            await ctx.Channel.SendMessageAsync("64 bytes from " + ctx.Member.Mention + ": icmp_seq=2 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
-            await ctx.Channel.SendMessageAsync("64 bytes from " + ctx.Member.Mention + ": icmp_seq=3 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
+            await PingPongInternal(ctx, ctx.Member.Mention);
         }
 
 
@@ -280,6 +274,14 @@ namespace unbis_discord_bot.Commands
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Du alte Pizza Funghi").ConfigureAwait(false);
             }
+        }
+
+        private static async Task PingPongInternal(CommandContext ctx, string target)
+        {
+
+            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=1 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=2 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=3 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
         }
     }
 }
