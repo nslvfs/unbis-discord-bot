@@ -63,7 +63,6 @@ namespace unbis_discord_bot.Commands
         [Description("Wer ist noch Wach?")]
         public async Task WerWach(CommandContext ctx)
         {
-            //var roles = ctx.Guild.Roles(x => x.ID)
             var roles = ctx.Guild.Roles;
             foreach (var role in roles)
             {
@@ -158,7 +157,6 @@ namespace unbis_discord_bot.Commands
             await PingPongInternal(ctx, ctx.Member.Mention);
         }
 
-
         [Command("haltdiefresseeinkleinerratten")]
         [Description("Jetzt ein Kippchen?")]
         public async Task HdfRatten(CommandContext ctx)
@@ -220,7 +218,6 @@ namespace unbis_discord_bot.Commands
             var temp = new Data.Stoll();
             var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
             await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.array[res]).ConfigureAwait(false);
-
         }
 
         [Command("Stoll")]
@@ -230,7 +227,6 @@ namespace unbis_discord_bot.Commands
             var temp = new Data.Stoll();
             var res = Shared.GenerateRandomNumber(0, temp.array.Length - 5);
             await ctx.Channel.SendMessageAsync("Dr. Axel Stoll, promovierter Naturwissenschaftler, sagt: " + temp.array[res]).ConfigureAwait(false);
-
         }
 
         [Command("Seeliger")]
@@ -240,7 +236,6 @@ namespace unbis_discord_bot.Commands
             var temp = new Data.Seeliger();
             var res = Shared.GenerateRandomNumber(0, temp.array.Length - 5);
             await ctx.Channel.SendMessageAsync("Julia Seeliger sagt: " + temp.array[res]).ConfigureAwait(false);
-
         }
 
         [Command("Quote")]
@@ -250,14 +245,12 @@ namespace unbis_discord_bot.Commands
             var temp = new Data.RattenQuotes();
             var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
             await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.array[res]).ConfigureAwait(false);
-
         }
 
         [Command("getRandomNumber()")]
         [Description("Generiert eine zufällige Zahl")]
         public async Task GetRandomNumber(CommandContext ctx)
         {
-
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": 9").ConfigureAwait(false);
         }
 
