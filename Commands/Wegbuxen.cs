@@ -39,7 +39,7 @@ namespace unbis_discord_bot.Commands
 
             foreach (var user in ctx.Channel.Users)
             {
-                if (user.DisplayName != "exekutivfs")
+                if (!user.IsBot)
                 {
                     userList.Add(user.DisplayName);
                 }
