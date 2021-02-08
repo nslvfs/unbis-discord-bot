@@ -27,6 +27,31 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
         }
 
+        [Command("arbeiten")]
+        [Description("Arbeiten?")]
+        public async Task Arbeiten(CommandContext ctx)
+        {
+            if(ctx.Member.IsOwner) {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
+            } else { 
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
+            }
+        }
+
+        [Command("feierabend")]
+        [Description("Feierabend?")]
+        public async Task Feierabend(CommandContext ctx)
+        {
+            if (ctx.Member.IsOwner)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
+            }
+            else
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
+            }
+        }
+
         [Command("werwach")]
         [Description("Wer ist noch Wach?")]
         public async Task WerWach(CommandContext ctx)
