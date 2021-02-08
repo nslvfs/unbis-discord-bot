@@ -46,7 +46,6 @@ namespace unbis_discord_bot.Commands
             }
 
             var minYes = userList.Count / 2;
-
             var _pollEmojiCache = new[] {
                         DiscordEmoji.FromName(client, ":white_check_mark:"),
                         DiscordEmoji.FromName(client, ":x:")
@@ -59,7 +58,6 @@ namespace unbis_discord_bot.Commands
             var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.DeleteEmojis, duration);
             var yesVotes = pollResult[1].Total;
             var noVotes = pollResult[0].Total;
-
             var pollResultText = new StringBuilder();
             pollResultText.AppendLine(target.Mention + "wegbuxen? (" + minYes + " Stimme(n) benötigt)");
             pollResultText.Append("Ergebnis: ");
@@ -100,14 +98,10 @@ namespace unbis_discord_bot.Commands
         {
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
             var roleMuted = ctx.Guild.GetRole(807921762570469386);
-
             await target.GrantRoleAsync(roleMuted);
             Thread.Sleep(1000 * 10 * 60); // 10 minuten
-            
             await target.RevokeRoleAsync(roleMuted);
-
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
         }
-
     }
 }

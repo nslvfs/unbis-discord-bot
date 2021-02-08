@@ -512,8 +512,6 @@ namespace unbis_discord_bot.Data
                 "Das ist einer Schwarzer Mann, den kann man nicht schminken", //kevin
                 "Du kannst ein Snickers in einen dunklen Raumen werfen und das braun schminken  sieht man doch auch nicht", //kevin
                 "Schwarze brauchen sich nicht schminken", //kevin
-
-
         };
     }
 }

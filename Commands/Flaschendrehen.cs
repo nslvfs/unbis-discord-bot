@@ -17,7 +17,6 @@ namespace unbis_discord_bot.Commands
         [Description("Klassisches Flaschendrehen")]
         public async Task Spin(CommandContext ctx)
         {
-
             var userList = await Shared.GetActiveUsers(ctx);
 
             var rnd = Shared.GenerateRandomNumber(0, userList.Count - 1);
@@ -32,7 +31,6 @@ namespace unbis_discord_bot.Commands
         public async Task ActiveUser(CommandContext ctx)
         {
             var userList = await Shared.GetActiveUsers(ctx);
-
             string result = "Aktive Nutzer: ";
             foreach (var user in userList)
             {

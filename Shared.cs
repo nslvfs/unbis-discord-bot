@@ -27,7 +27,6 @@ namespace unbis_discord_bot
         public static async Task<List<DiscordUser>> GetActiveUsers(CommandContext ctx)
         {
             var messages = await ctx.Channel.GetMessagesAsync(100);
-
             List<DiscordUser> userList = new List<DiscordUser>();
 
             foreach (var msg in messages)
@@ -55,7 +54,6 @@ namespace unbis_discord_bot
                     }
                 }
             }
-
             return userList;
         }
     }
