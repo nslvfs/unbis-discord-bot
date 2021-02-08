@@ -31,11 +31,18 @@ namespace unbis_discord_bot.Commands
         [Description("Arbeiten?")]
         public async Task Arbeiten(CommandContext ctx)
         {
-            if(ctx.Member.IsOwner) {
+            if (ctx.Member.IsOwner) {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
-            } else { 
+            } else {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
             }
+        }
+
+        [Command("nappen")]
+        [Description("Nappen?")]
+        public async Task Nappen(CommandContext ctx)
+        {
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
         }
 
         [Command("feierabend")]
@@ -58,9 +65,9 @@ namespace unbis_discord_bot.Commands
         {
             //var roles = ctx.Guild.Roles(x => x.ID)
             var roles = ctx.Guild.Roles;
-            foreach(var role in roles)
+            foreach (var role in roles)
             {
-                if(role.Value.Name == "@everyone")
+                if (role.Value.Name == "@everyone")
                 {
                     await ctx.Channel.SendMessageAsync("Wer ist wach @everyone ?").ConfigureAwait(false);
                 }
@@ -102,7 +109,7 @@ namespace unbis_discord_bot.Commands
         [Description("Russischer Familienspaß")]
         public async Task Roulette(CommandContext ctx)
         {
-            if(revKammer == -1)
+            if (revKammer == -1)
             {
                 var text = DSharpPlus.Formatter.Italic("lädt den Revolver");
                 await ctx.Channel.SendMessageAsync(text).ConfigureAwait(false);
@@ -110,9 +117,9 @@ namespace unbis_discord_bot.Commands
                 revShots = 0;
             }
             revShots++;
-            if(revShots != revKammer)
+            if (revShots != revKammer)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention +  ": ** klick **").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** klick **").ConfigureAwait(false);
             }
             if (revShots == revKammer)
             {
@@ -122,10 +129,21 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("nachti")]
+        [Aliases("guna", "n8")]
         [Description("Gute Nacht")]
         public async Task Nachti(CommandContext ctx)
         {
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": guna schlagu").ConfigureAwait(false);
+        }
+
+        [Command("ping")]
+        [Aliases("pong")]
+        [Description("Ping!")]
+        public async Task PingPong(CommandContext ctx)
+        {
+            await ctx.Channel.SendMessageAsync("64 bytes from " + ctx.Member.Mention + ": icmp_seq=1 ttl=120 time="+ Shared.GenerateRandomNumber(1, 10) + "."+ Shared.GenerateRandomNumber(0, 99) +" ms").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("64 bytes from " + ctx.Member.Mention + ": icmp_seq=2 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("64 bytes from " + ctx.Member.Mention + ": icmp_seq=3 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
         }
 
 
