@@ -26,6 +26,14 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
         }
 
+        [Command("fork")]
+        [Aliases("github")]
+        [Description("Jetzt ein Kippchen?")]
+        public async Task Fork(CommandContext ctx)
+        {
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": https://github.com/nslvfs/unbis-discord-bot").ConfigureAwait(false);
+        }
+
         [Command("backlog")]
         [Description("Keine Beschreibung")]
         public async Task Backlog(CommandContext ctx)
