@@ -45,7 +45,7 @@ namespace unbis_discord_bot.Commands
                 }
             }
 
-            var minYes = userList.Count;
+            var minYes = userList.Count / 2;
 
             var _pollEmojiCache = new[] {
                         DiscordEmoji.FromName(client, ":white_check_mark:"),
