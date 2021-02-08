@@ -21,7 +21,7 @@ namespace unbis_discord_bot
             // da bis jetzt noch keine Begrenzung der Zahlen vorgenommen wurde,
             // wird diese Begrenzung mit einer einfachen Modulo-Rechnung hinzu-
             // gefügt
-            return result % max + min;
+            return result % (max - min + 1) + min; //fix by opi
         }
 
         public static async Task<List<DiscordUser>> GetActiveUsers(CommandContext ctx)
