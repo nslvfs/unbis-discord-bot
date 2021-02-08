@@ -3,6 +3,8 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace unbis_discord_bot.Commands
 {
@@ -24,6 +26,22 @@ namespace unbis_discord_bot.Commands
         public async Task Rauchen(CommandContext ctx)
         {
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
+        }
+
+        [Command("werwach")]
+        [Description("Wer ist noch Wach?")]
+        public async Task WerWach(CommandContext ctx)
+        {
+            //var roles = ctx.Guild.Roles(x => x.ID)
+            var roles = ctx.Guild.Roles;
+            foreach(var role in roles)
+            {
+                if(role.Value.Name == "@everyone")
+                {
+                    await ctx.Channel.SendMessageAsync("Wer ist wach @everyone ?").ConfigureAwait(false);
+                }
+            }
+
         }
 
         [Command("fork")]
