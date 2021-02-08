@@ -27,7 +27,6 @@ namespace unbis_discord_bot.Commands
 
         }
 
-
         [Command("active")]
         [Description("Vom Bot als aktiv erkannte User")]
         public async Task ActiveUser(CommandContext ctx)

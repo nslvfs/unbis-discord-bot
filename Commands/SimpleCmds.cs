@@ -20,7 +20,6 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Die Banshee will die Ratte töten. Es ist eine gute Banshee! Hurra!!!").ConfigureAwait(false);
         }
 
-
         [Command("rauchen")]
         [Description("Jetzt ein Kippchen?")]
         public async Task Rauchen(CommandContext ctx)
@@ -95,8 +94,6 @@ namespace unbis_discord_bot.Commands
                 revKammer = -1;
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
             }
-
-
         }
 
         [Command("nachti")]

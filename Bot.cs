@@ -18,7 +18,6 @@ namespace unbis_discord_bot
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
 
-
         public async Task TaskAsync()
         {
             var json = string.Empty;
@@ -63,7 +62,6 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<SimpleCmds>();
             Commands.RegisterCommands<Flaschendrehen>();
             Commands.RegisterCommands<Wegbuxen>();
-
 
             await Client.ConnectAsync();
 
