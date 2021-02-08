@@ -46,7 +46,7 @@ namespace unbis_discord_bot.Data
             "Die Piratenpartei hat ein Problem mit ihren Spinnern, sie hat ein Problem mit der klaren Abgrenzung zu Nazis, auch wenn ihr das im Moment nicht bewusst sein mag.",
             "Ich will überhaupt nicht ein gesellschaftliches Klima, in dem sich Vergewaltigungsopfer nicht mehr trauen, sich zu äußern.",
             "Was es so bringen kann, mal ein wenig an einem Ort herumzuhängen! Ich zum Beispiel hänge gern in einem bestimmten IRC-Channel herum, wo den ganzen Tag gelabert wird.",
-            "So ist das – wenn man älter wird, macht die Jugend nicht mehr, was man selbst toll findet, sondern irgendwelche anderen Dinge, die man selbst – im schlimmsten Falle – “total hirnrissig” und “peinlich” findet.",
+            "So ist das – wenn man älter wird, macht die Jugend nicht mehr, was man selbst toll findet, sondern irgendwelche anderen Dinge, die man selbst – im schlimmsten Falle – \total hirnrissig\" und \"peinlich\" findet.",
         };
     }
 }
