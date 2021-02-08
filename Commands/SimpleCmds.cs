@@ -154,6 +154,13 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync("Halt die Fresse kleiner Ratten").ConfigureAwait(false);
         }
 
+        [Command("sack")]
+        [Description("Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack ")]
+        public async Task MeinSack(CommandContext ctx)
+        {
+            await ctx.Channel.SendMessageAsync("Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack ").ConfigureAwait(false);
+        }
+
         [Command("hdf")]
         [Description("Jemand höfflich darum bitte ruhig zu sein")]
         public async Task Hdf(CommandContext ctx, DiscordUser target)
@@ -166,6 +173,15 @@ namespace unbis_discord_bot.Commands
         public async Task Hdf(CommandContext ctx, string target)
         {
             await ctx.Channel.SendMessageAsync("Halt die Fresse " + target).ConfigureAwait(false);
+        }
+
+        [Command("Piep")]
+        [Description("Wo sind die susmäuse")]
+        public async Task Piep(CommandContext ctx)
+        {
+            await ctx.Channel.SendMessageAsync("Alle Susmäuse machen jetzt piep :mouse: ").ConfigureAwait(false);
+            var text = DSharpPlus.Formatter.Italic("piept");
+            await ctx.Channel.SendMessageAsync(text).ConfigureAwait(false);
         }
 
         [Command("jn")]
