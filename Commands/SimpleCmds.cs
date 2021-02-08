@@ -278,7 +278,6 @@ namespace unbis_discord_bot.Commands
 
         private static async Task PingPongInternal(CommandContext ctx, string target)
         {
-
             await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=1 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
             await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=2 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
             await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=3 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
