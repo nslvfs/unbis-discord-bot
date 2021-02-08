@@ -176,9 +176,12 @@ namespace unbis_discord_bot.Commands
             if(res <= 50)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
-            } else
+            } else if ( res <= 98)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
+            } else
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Keine Ahnung, halts Maul").ConfigureAwait(false);
             }
         }
 
