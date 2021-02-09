@@ -251,7 +251,7 @@ namespace unbis_discord_bot.Commands
         public async Task QuoteSeeliger(CommandContext ctx)
         {
             var temp = new Data.Seeliger();
-            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 5);
+            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
             await ctx.Channel.SendMessageAsync("Julia Seeliger sagt: " + temp.array[res]).ConfigureAwait(false);
         }
 
