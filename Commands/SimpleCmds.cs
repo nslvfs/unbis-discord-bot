@@ -65,7 +65,7 @@ namespace unbis_discord_bot.Commands
             {
                 if (role.Value.Name == "@everyone")
                 {
-                    await ctx.Channel.SendMessageAsync("Wer ist wach @everyone ?").ConfigureAwait(false);
+                    await ctx.Channel.SendMessageAsync("Wer ist wach @everyone?").ConfigureAwait(false);
                 }
             }
 
