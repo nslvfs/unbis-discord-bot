@@ -269,6 +269,13 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": 9").ConfigureAwait(false);
         }
 
+        [Command("f")]
+        [Description("Pays Respect")]
+        public async Task PayRespect(CommandContext ctx)
+        {
+            await ctx.Channel.SendMessageAsync(":pray:").ConfigureAwait(false);
+        }
+
         [Command("toony")]
         [Description("Wer ist eigentlich dieser  Toony?")]
         public async Task Toony(CommandContext ctx)
