@@ -8,8 +8,6 @@ namespace unbis_discord_bot.Commands
 {
     public class SimpleCmds : BaseCommandModule
     {
-        /*private static int revShots = 0;
-        private static int revKammer = -1;*/
         private static List<Model.PerChannelRoulette> rouletteData = new List<Model.PerChannelRoulette>();
 
         [Command("banshee")]
