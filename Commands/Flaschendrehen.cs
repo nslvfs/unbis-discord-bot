@@ -13,12 +13,10 @@ namespace unbis_discord_bot.Commands
         public async Task Spin(CommandContext ctx)
         {
             var userList = await Shared.GetActiveUsers(ctx);
-
             var rnd = Shared.GenerateRandomNumber(0, userList.Count - 1);
             var picked = ((DiscordMember)userList[rnd]).DisplayName;
 
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": der ausgewählte Zufallsuser ist: " + ((DiscordMember)userList[rnd]).Mention).ConfigureAwait(false);
-
         }
 
         [Command("active")]
