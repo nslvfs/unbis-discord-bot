@@ -1,14 +1,16 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
     public class SimpleCmds : BaseCommandModule
     {
-        private static int revShots = 0;
-        private static int revKammer = -1;
+        /*private static int revShots = 0;
+        private static int revKammer = -1;*/
+        private static List<Model.PerChannelRoulette> rouletteData = new List<Model.PerChannelRoulette>();
 
         [Command("banshee")]
         [Description("Sagt vorraus wer das Lieblingsziel der Banshee ist")]
@@ -102,26 +104,44 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("roulette")]
+        [Aliases("r")]
         [Description("Russischer Familienspaß")]
         public async Task Roulette(CommandContext ctx)
         {
-            if (revKammer == -1)
+            var found = false;
+            foreach(var item in rouletteData)
             {
-                var text = DSharpPlus.Formatter.Italic("lädt den Revolver");
-                await ctx.Channel.SendMessageAsync(text).ConfigureAwait(false);
-                revKammer = Shared.GenerateRandomNumber(1, 8);
-                revShots = 0;
+              if(item.channelId == ctx.Channel.Id)
+                {
+                    found = true;
+                    if (item.revKammer == -1)
+                    {
+                        var text = DSharpPlus.Formatter.Italic("lädt den Revolver");
+                        await ctx.Channel.SendMessageAsync(text).ConfigureAwait(false);
+                        item.revKammer = Shared.GenerateRandomNumber(1, 8);
+                        item.revShots = 0;
+                    }
+                    item.revShots++;
+                    if (item.revShots != item.revKammer)
+                    {
+                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** klick **").ConfigureAwait(false);
+                    }
+                    if (item.revShots == item.revKammer)
+                    {
+                        item.revKammer = -1;
+                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
+                    }
+                    break;
+                }
             }
-            revShots++;
-            if (revShots != revKammer)
+            if(!found)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** klick **").ConfigureAwait(false);
+                Model.PerChannelRoulette newItem = new Model.PerChannelRoulette();
+                newItem.channelId = ctx.Channel.Id;
+                rouletteData.Add(newItem);
+                await Roulette(ctx);
             }
-            if (revShots == revKammer)
-            {
-                revKammer = -1;
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
-            }
+
         }
 
         [Command("nachti")]
