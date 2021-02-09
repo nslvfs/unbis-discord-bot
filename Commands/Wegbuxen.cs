@@ -1,16 +1,12 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using System;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Enums;
 using System.Linq;
 using System.Text;
-using DSharpPlus;
 using DSharpPlus.Interactivity.Extensions;
 using System.Collections.Generic;
 

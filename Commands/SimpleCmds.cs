@@ -1,10 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using System;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace unbis_discord_bot.Commands
 {

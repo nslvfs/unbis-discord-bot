@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace unbis_discord_bot.Data
+﻿namespace unbis_discord_bot.Data
 {
     class RattenQuotes
     {

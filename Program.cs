@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace unbis_discord_bot
+﻿namespace unbis_discord_bot
 {
     class Program
     {
