@@ -60,6 +60,7 @@ namespace unbis_discord_bot.Commands
                     await member.GrantRoleAsync(roleMuted);
                     Thread.Sleep(1000 * 60 * 10); // 10 Min
                     await member.RevokeRoleAsync(roleMuted);
+                    await ctx.Channel.SendMessageAsync(member.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
                 } else
                 {
                     pollResultText.Append("Votekick gescheitert (kritische Masse nicht erreicht)");
