@@ -33,24 +33,26 @@ namespace unbis_discord_bot
             {
                 if (!msg.Author.IsBot)
                 {
-                    if (userList.Count > 0)
-                    {
-                        var found = false;
-                        foreach (var auth in userList)
+                    if(msg.Timestamp.AddMinutes(10) > DateTime.Now) { 
+                        if (userList.Count > 0)
                         {
-                            if (auth.Id == msg.Author.Id)
+                            var found = false;
+                            foreach (var auth in userList)
                             {
-                                found = true;
+                                if (auth.Id == msg.Author.Id)
+                                {
+                                    found = true;
+                                }
+                            }
+                            if (!found)
+                            {
+                                userList.Add(msg.Author);
                             }
                         }
-                        if (!found)
+                        else
                         {
                             userList.Add(msg.Author);
                         }
-                    }
-                    else
-                    {
-                        userList.Add(msg.Author);
                     }
                 }
             }

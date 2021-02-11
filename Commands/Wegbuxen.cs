@@ -30,17 +30,8 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Unzulässiges Ziel " + target.Mention).ConfigureAwait(false);
                 return;
             }
-
-            List<string> userList = new List<string>();
-
-            foreach (var user in ctx.Channel.Users)
-            {
-                if (!user.IsBot)
-                {
-                    userList.Add(user.DisplayName);
-                }
-            }
-
+            
+            var userList = await Shared.GetActiveUsers(ctx);
             var minYes = userList.Count / 2;
             var _pollEmojiCache = new[] {
                         DiscordEmoji.FromName(client, ":white_check_mark:"),
