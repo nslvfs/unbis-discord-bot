@@ -18,6 +18,11 @@ namespace unbis_discord_bot.Commands
         [Description("Startet einen Poll ob ein User auf die Stille Treppe soll. Funktioniert nur auf unbequem ihm sein Discord")]
         public async Task Gegen(CommandContext ctx, DiscordUser target)
         {
+            if(ctx.Guild.Id != 791393115097137171)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
+                return;
+            }
             TimeSpan duration = new TimeSpan(0, 0, 2, 0, 0);
 
             var roles = ctx.Guild.Roles;
@@ -32,6 +37,22 @@ namespace unbis_discord_bot.Commands
             }
             
             var userList = await Shared.GetActiveUsers(ctx);
+
+            bool validTarget = false;
+            foreach(var user in userList)
+            {
+                if(user.Id == target.Id)
+                {
+                    validTarget = true;
+                    break;
+                }
+            }
+            if(!validTarget)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Unzulässiges Ziel " + target.Mention).ConfigureAwait(false);
+                return;
+            }
+
             var minYes = userList.Count / 2;
             var _pollEmojiCache = new[] {
                         DiscordEmoji.FromName(client, ":white_check_mark:"),
@@ -84,9 +105,14 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task Mute(CommandContext ctx, DiscordMember target)
         {
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
+            if (ctx.Guild.Id != 791393115097137171)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
+                return;
+            }
             var roleMuted = ctx.Guild.GetRole(807921762570469386);
             await target.GrantRoleAsync(roleMuted);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
             Thread.Sleep(1000 * 10 * 60); // 10 minuten
             await target.RevokeRoleAsync(roleMuted);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
