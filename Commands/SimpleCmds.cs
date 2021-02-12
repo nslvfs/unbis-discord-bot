@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
@@ -257,9 +258,34 @@ namespace unbis_discord_bot.Commands
         [Description("Gibt ein zufälliges Zitat wieder.")]
         public async Task QuoteRattendiscord(CommandContext ctx)
         {
-            var temp = new Data.RattenQuotes();
-            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
-            await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.array[res]).ConfigureAwait(false);
+            var temp = new Data.RattenQuotes(Bot.configJson);
+            if(temp.quotes.Count > 0)
+            {
+                var res = Shared.GenerateRandomNumber(0, temp.quotes.Count - 1);
+                await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.quotes[res]).ConfigureAwait(false);
+            } else
+            {
+                await ctx.Channel.SendMessageAsync("Keine Quotes gefunden :c");
+            }
+
+        }
+
+        [Command("Addquote")]
+        [Description("Fügt Zitat zu !quote hinzu.")]
+        public async Task QuoteAddRattendiscord(CommandContext ctx, params string[] args)
+        {
+            string result = string.Empty;
+            foreach(var arg in args)
+            {
+                result = result + " " + arg;
+            }
+            if (File.Exists(Bot.configJson.rattenQuotePath)) { 
+                using (StreamWriter w = File.AppendText(Bot.configJson.rattenQuotePath))
+                {
+                    w.WriteLine(result.Trim());
+                }
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Quote hinzugefügt du Pisser!");
+            }
         }
 
         [Command("getRandomNumber()")]

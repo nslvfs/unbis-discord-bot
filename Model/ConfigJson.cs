@@ -8,6 +8,8 @@ namespace unbis_discord_bot
         public string Token { get; private set; }
         [JsonProperty("prefix")]
         public string Prefix { get; private set; }
+        [JsonProperty("rattenQuotePath")]
+        public string rattenQuotePath { get; private set; }
     }
 }
 

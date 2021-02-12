@@ -18,6 +18,7 @@ namespace unbis_discord_bot
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
 
+        public static ConfigJson configJson { get; set; }
         public async Task TaskAsync()
         {
             var json = string.Empty;
@@ -26,7 +27,7 @@ namespace unbis_discord_bot
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = sr.ReadToEnd();
 
-            ConfigJson configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
 
             var config = new DiscordConfiguration
             {
