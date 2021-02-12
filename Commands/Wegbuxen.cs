@@ -75,14 +75,19 @@ namespace unbis_discord_bot.Commands
                 if(yesVotes >= minYes) { 
                     pollResultText.Append("Buxung erfolgreich");
                     await ctx.RespondAsync(pollResultText.ToString());
-                    var roleMuted = ctx.Guild.GetRole(807921762570469386);
+                    //var roleMuted = ctx.Guild.GetRole(807921762570469386);
                     var userId = ctx.Message.MentionedUsers.First().Id;
                     DiscordMember member = await ctx.Guild.GetMemberAsync(userId);
-                    await member.GrantRoleAsync(roleMuted);
-                    Thread.Sleep(1000 * 60 * 10); // 10 Min
-                    await member.RevokeRoleAsync(roleMuted);
-                    await ctx.Channel.SendMessageAsync(member.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
-                } else
+                    
+                    await member.RemoveAsync("Im Namen des Volkes.");
+                    await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
+
+                    //await member.GrantRoleAsync(roleMuted);
+                    //Thread.Sleep(1000 * 60 * 10); // 10 Min
+                    //await member.RevokeRoleAsync(roleMuted);
+                    //await ctx.Channel.SendMessageAsync(member.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
+                }
+                else
                 {
                     pollResultText.Append("Votekick gescheitert (kritische Masse nicht erreicht)");
                     await ctx.RespondAsync(pollResultText.ToString());
@@ -116,6 +121,20 @@ namespace unbis_discord_bot.Commands
             Thread.Sleep(1000 * 10 * 60); // 10 minuten
             await target.RevokeRoleAsync(roleMuted);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
+        }
+
+        [Command("kick")]
+        [Description("kickt ein Mitglied")]
+        [RequireOwner]
+        public async Task kick(CommandContext ctx, DiscordMember target)
+        {
+            if (ctx.Guild.Id != 791393115097137171)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
+                return;
+            }
+            await target.RemoveAsync("Im Namen des Volkes.");
+            await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
         }
     }
 }
