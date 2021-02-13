@@ -64,6 +64,7 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<Flaschendrehen>();
             Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<GetIds>();
+            Commands.RegisterCommands<Urls>();
 
             await Client.ConnectAsync();
 
