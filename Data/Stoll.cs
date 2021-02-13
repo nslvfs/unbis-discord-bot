@@ -504,10 +504,6 @@
                 "3 mal Storgram reinen Alkohol!",
                 "Das schirmt gegen radioaktive Strahlung ab.",
                 "Irrtum! Gezielte Desinformation!",
-                "Das werd ich meiner Mama erzählen die wird dich richtig mies ficken", //kevin
-                "Das ist einer Schwarzer Mann, den kann man nicht schminken", //kevin
-                "Du kannst ein Snickers in einen dunklen Raumen werfen und das braun schminken  sieht man doch auch nicht", //kevin
-                "Schwarze brauchen sich nicht schminken", //kevin
         };
     }
 }

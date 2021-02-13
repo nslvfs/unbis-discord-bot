@@ -227,21 +227,12 @@ namespace unbis_discord_bot.Commands
             }
         }
 
-        [Command("Kevin")]
-        [Description("Gibt ein originales Kevin-Zitat wieder.")]
-        public async Task QuoteKevin(CommandContext ctx)
-        {
-            var temp = new Data.Stoll();
-            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
-            await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.array[res]).ConfigureAwait(false);
-        }
-
         [Command("Stoll")]
         [Description("Gibt ein Zitat von Dr. Axel Stoll wieder.")]
         public async Task QuoteStoll(CommandContext ctx)
         {
             var temp = new Data.Stoll();
-            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 5);
+            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
             await ctx.Channel.SendMessageAsync("Dr. Axel Stoll, promovierter Naturwissenschaftler, sagt: " + temp.array[res]).ConfigureAwait(false);
         }
 
@@ -255,14 +246,20 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("Quote")]
+        [Aliases("Kevin")]
         [Description("Gibt ein zufälliges Zitat wieder.")]
         public async Task QuoteRattendiscord(CommandContext ctx)
         {
-            var temp = new Data.RattenQuotes(Bot.configJson);
+            var temp = new Data.Quotes(Bot.configJson, ctx.Guild.Id);
             if(temp.quotes.Count > 0)
             {
                 var res = Shared.GenerateRandomNumber(0, temp.quotes.Count - 1);
-                await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.quotes[res]).ConfigureAwait(false);
+                if(ctx.Guild.Id == 442300530996543489) { 
+                    await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.quotes[res]).ConfigureAwait(false);
+                } else
+                {
+                    await ctx.Channel.SendMessageAsync("Konfuzius sagt: " + temp.quotes[res]).ConfigureAwait(false);
+                }
             } else
             {
                 await ctx.Channel.SendMessageAsync("Keine Quotes gefunden :c");
@@ -271,21 +268,25 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("Addquote")]
-        [Description("Fügt Zitat zu !quote hinzu.")]
-        public async Task QuoteAddRattendiscord(CommandContext ctx, params string[] args)
+        [Description("Fügt ein Zitat zu !quote hinzu.")]
+        public async Task QuoteAdd(CommandContext ctx, params string[] args)
         {
             string result = string.Empty;
-            foreach(var arg in args)
+            var fileName = Bot.configJson.quotePath + ctx.Guild.Id + ".txt";
+            foreach (var arg in args)
             {
                 result = result + " " + arg;
             }
-            if (File.Exists(Bot.configJson.rattenQuotePath)) { 
-                using (StreamWriter w = File.AppendText(Bot.configJson.rattenQuotePath))
-                {
-                    w.WriteLine(result.Trim());
-                }
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Quote hinzugefügt du Pisser!");
+            
+            if (!File.Exists(fileName)) {
+                File.Create(fileName).Dispose();
+            } 
+            
+            using (StreamWriter w = File.AppendText(fileName))
+            {
+                w.WriteLine(result.Trim());
             }
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Quote hinzugefügt du Pisser!");
         }
 
         [Command("getRandomNumber()")]

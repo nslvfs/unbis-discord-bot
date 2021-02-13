@@ -1,5 +1,5 @@
 {
   "token": "",
   "prefix": "!",
-  "rattenQuotePath": "/var/www/html/rattenQuotes.txt"
+  "rattenQuotePath": "/var/www/html/"
 }
