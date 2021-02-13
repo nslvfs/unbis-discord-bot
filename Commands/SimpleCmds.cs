@@ -248,7 +248,7 @@ namespace unbis_discord_bot.Commands
         [Command("Quote")]
         [Aliases("Kevin")]
         [Description("Gibt ein zufälliges Zitat wieder.")]
-        public async Task QuoteRattendiscord(CommandContext ctx)
+        public async Task Quote(CommandContext ctx)
         {
             var temp = new Data.Quotes(Bot.configJson, ctx.Guild.Id);
             if(temp.quotes.Count > 0)
