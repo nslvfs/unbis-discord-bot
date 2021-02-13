@@ -67,5 +67,13 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Keine Ahnung, halts Maul").ConfigureAwait(false);
             }
         }
+
+        [Command("pick")]
+        [Description("Wählt aus einer Liste von Elementen ein zufälliges aus")]
+        public async Task Pick(CommandContext ctx, params string[] args)
+        {
+            var i = Shared.GenerateRandomNumber(0, args.Length);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": "+ args[i]);
+        }
     }
 }

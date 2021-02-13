@@ -155,6 +155,22 @@ namespace unbis_discord_bot.Commands
             }
         }
 
+        [Command("w20")]
+        [Description("Wirft einen W20")]
+        public async Task W20(CommandContext ctx)
+        {
+            var res = Shared.GenerateRandomNumber(1, 20);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + res).ConfigureAwait(false);
+        }
+
+        [Command("dice")]
+        [Description("Wirft einen Würfel mit x Seiten")]
+        public async Task Dice(CommandContext ctx, short num)
+        {
+            var res = Shared.GenerateRandomNumber(1, num);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + res).ConfigureAwait(false);
+        }
+
         private static async Task PingPongInternal(CommandContext ctx, string target)
         {
             await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=1 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
