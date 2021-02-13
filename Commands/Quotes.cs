@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
-    [Group("Zitate")]
     public class Quotes : BaseCommandModule
     {
         [Command("Quote")]

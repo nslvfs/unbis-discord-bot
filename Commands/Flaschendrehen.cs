@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
-    [Group("Flaschendrehen")]
     public class Flaschendrehen : BaseCommandModule
     {
         [Command("spin")]

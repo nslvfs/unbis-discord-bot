@@ -10,7 +10,6 @@ using DSharpPlus.Interactivity.Extensions;
 
 namespace unbis_discord_bot.Commands
 {
-    [Group("Buxbux")]
     public class Wegbuxen : BaseCommandModule
     {
         [Command("gegen")]

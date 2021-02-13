@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
-    [Group("RandomWebseiten")]
     public class Urls : BaseCommandModule
     {
         [Command("chefkoch")]

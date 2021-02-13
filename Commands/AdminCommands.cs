@@ -6,8 +6,6 @@ using DSharpPlus.Entities;
 
 namespace unbis_discord_bot.Commands
 {
-    [Group("Admin")] // let's mark this class as a command group
-    [Description("Tools für vfs")]
     public class AdminCommands : BaseCommandModule
     {
         [Command("getId")]

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
-
-    [Group("RussischRoulette")]
     public class RussischRoulette : BaseCommandModule
     {
         private static List<Model.PerChannelRoulette> rouletteData = new List<Model.PerChannelRoulette>();
