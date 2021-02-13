@@ -121,7 +121,6 @@ namespace unbis_discord_bot
             return newUrl;
         }
 
-
         public static string GetRedirect(string url)
         {
             using (var client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip }))
