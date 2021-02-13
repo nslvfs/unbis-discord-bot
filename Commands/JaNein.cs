@@ -72,7 +72,7 @@ namespace unbis_discord_bot.Commands
         [Description("Wählt aus einer Liste von Elementen ein zufälliges aus")]
         public async Task Pick(CommandContext ctx, params string[] args)
         {
-            var i = Shared.GenerateRandomNumber(0, args.Length);
+            var i = Shared.GenerateRandomNumber(0, args.Length - 1);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": "+ args[i]);
         }
     }
