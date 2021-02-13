@@ -60,11 +60,14 @@ namespace unbis_discord_bot
             });
 
             Commands = Client.UseCommandsNext(commandsConfig);
-            Commands.RegisterCommands<SimpleCmds>();
             Commands.RegisterCommands<Flaschendrehen>();
-            Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<GetIds>();
+            Commands.RegisterCommands<JaNein>();
+            Commands.RegisterCommands<Quotes>();
+            Commands.RegisterCommands<RussischRoulette>();
+            Commands.RegisterCommands<SimpleCmds>();
             Commands.RegisterCommands<Urls>();
+            Commands.RegisterCommands<Wegbuxen>();
 
             await Client.ConnectAsync();
 

@@ -1,60 +1,17 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
     public class SimpleCmds : BaseCommandModule
     {
-        private static List<Model.PerChannelRoulette> rouletteData = new List<Model.PerChannelRoulette>();
-
         [Command("banshee")]
         [Description("Sagt vorraus wer das Lieblingsziel der Banshee ist")]
         public async Task Banshee(CommandContext ctx)
         {
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Die Banshee will die Ratte töten. Es ist eine gute Banshee! Hurra!!!").ConfigureAwait(false);
-        }
-
-        [Command("rauchen")]
-        [Description("Jetzt ein Kippchen?")]
-        public async Task Rauchen(CommandContext ctx)
-        {
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
-        }
-
-        [Command("arbeiten")]
-        [Description("Arbeiten?")]
-        public async Task Arbeiten(CommandContext ctx)
-        {
-            if (ctx.Member.IsOwner) {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
-            } else {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
-            }
-        }
-
-        [Command("nappen")]
-        [Description("Nappen?")]
-        public async Task Nappen(CommandContext ctx)
-        {
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
-        }
-
-        [Command("feierabend")]
-        [Description("Feierabend?")]
-        public async Task Feierabend(CommandContext ctx)
-        {
-            if (ctx.Member.IsOwner)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
-            }
-            else
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
-            }
         }
 
         [Command("werwach")]
@@ -100,47 +57,6 @@ namespace unbis_discord_bot.Commands
         public async Task Spiegel(CommandContext ctx)
         {
             await ctx.Channel.SendMessageAsync("NEIN DU!").ConfigureAwait(false);
-        }
-
-        [Command("roulette")]
-        [Aliases("r")]
-        [Description("Russischer Familienspaß")]
-        public async Task Roulette(CommandContext ctx)
-        {
-            var found = false;
-            foreach(var item in rouletteData)
-            {
-              if(item.channelId == ctx.Channel.Id)
-                {
-                    found = true;
-                    if (item.revKammer == -1)
-                    {
-                        var text = DSharpPlus.Formatter.Italic("lädt den Revolver");
-                        await ctx.Channel.SendMessageAsync(text).ConfigureAwait(false);
-                        item.revKammer = Shared.GenerateRandomNumber(1, 8);
-                        item.revShots = 0;
-                    }
-                    item.revShots++;
-                    if (item.revShots != item.revKammer)
-                    {
-                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** klick **").ConfigureAwait(false);
-                    }
-                    if (item.revShots == item.revKammer)
-                    {
-                        item.revKammer = -1;
-                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
-                    }
-                    break;
-                }
-            }
-            if(!found)
-            {
-                Model.PerChannelRoulette newItem = new Model.PerChannelRoulette();
-                newItem.channelId = ctx.Channel.Id;
-                rouletteData.Add(newItem);
-                await Roulette(ctx);
-            }
-
         }
 
         [Command("nachti")]
@@ -208,91 +124,6 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync("Alle Susmäuse machen jetzt piep :mouse: ").ConfigureAwait(false);
             var text = DSharpPlus.Formatter.Italic("piept");
             await ctx.Channel.SendMessageAsync(text).ConfigureAwait(false);
-        }
-
-        [Command("jn")]
-        [Description("Beantwortet eine Ja/Nein Frage")]
-        public async Task JaNein(CommandContext ctx)
-        {
-            var res = Shared.GenerateRandomNumber(1, 100);
-            if(res <= 50)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
-            } else if ( res <= 98)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
-            } else
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Keine Ahnung, halts Maul").ConfigureAwait(false);
-            }
-        }
-
-        [Command("Stoll")]
-        [Description("Gibt ein Zitat von Dr. Axel Stoll wieder.")]
-        public async Task QuoteStoll(CommandContext ctx)
-        {
-            var temp = new Data.Stoll();
-            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
-            await ctx.Channel.SendMessageAsync("Dr. Axel Stoll, promovierter Naturwissenschaftler, sagt: " + temp.array[res]).ConfigureAwait(false);
-        }
-
-        [Command("Seeliger")]
-        [Description("Gibt ein Zitat von Julia Seeliger wieder.")]
-        public async Task QuoteSeeliger(CommandContext ctx)
-        {
-            var temp = new Data.Seeliger();
-            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
-            await ctx.Channel.SendMessageAsync("Julia Seeliger sagt: " + temp.array[res]).ConfigureAwait(false);
-        }
-
-        [Command("Quote")]
-        [Aliases("Kevin")]
-        [Description("Gibt ein zufälliges Zitat wieder.")]
-        public async Task Quote(CommandContext ctx)
-        {
-            var temp = new Data.Quotes(Bot.configJson, ctx.Guild.Id);
-            if(temp.quotes.Count > 0)
-            {
-                var res = Shared.GenerateRandomNumber(0, temp.quotes.Count - 1);
-                if(ctx.Guild.Id == 442300530996543489) { 
-                    await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.quotes[res]).ConfigureAwait(false);
-                } else
-                {
-                    await ctx.Channel.SendMessageAsync("Konfuzius sagt: " + temp.quotes[res]).ConfigureAwait(false);
-                }
-            } else
-            {
-                await ctx.Channel.SendMessageAsync("Keine Quotes gefunden :c");
-            }
-
-        }
-
-        [Command("Addquote")]
-        [Description("Fügt ein Zitat zu !quote hinzu.")]
-        public async Task QuoteAdd(CommandContext ctx, params string[] args)
-        {
-            string result = string.Empty;
-            var fileName = Bot.configJson.quotePath + ctx.Guild.Id + ".txt";
-            foreach (var arg in args)
-            {
-                result = result + " " + arg;
-            }
-            if(result.Length <= 3) 
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist kein Quote");
-                return;
-            }
-            result = result + " (von " + ctx.Member.Mention +" hinzugefügt)";
-            
-            if (!File.Exists(fileName)) {
-                File.Create(fileName).Dispose();
-            } 
-            
-            using (StreamWriter w = File.AppendText(fileName))
-            {
-                w.WriteLine(result.Trim());
-            }
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Quote hinzugefügt du Pisser!");
         }
 
         [Command("getRandomNumber()")]
