@@ -1,11 +1,10 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
+    [Group("RandomWebseiten")]
     public class Urls : BaseCommandModule
     {
         [Command("chefkoch")]

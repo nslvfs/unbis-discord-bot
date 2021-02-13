@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
+    [Group("Krebs")]
     public class SimpleCmds : BaseCommandModule
     {
         [Command("banshee")]

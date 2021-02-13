@@ -4,8 +4,11 @@ using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
+    [Group("JaNeinFragen")]
+    [Description("Einfache Ja Nein Fragen an den Bot")]
     public class JaNein : BaseCommandModule
     {
+        
         [Command("rauchen")]
         [Description("Jetzt ein Kippchen?")]
         public async Task Rauchen(CommandContext ctx)

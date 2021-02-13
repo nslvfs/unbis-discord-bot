@@ -60,8 +60,8 @@ namespace unbis_discord_bot
             });
 
             Commands = Client.UseCommandsNext(commandsConfig);
+            Commands.RegisterCommands<AdminCommands>();
             Commands.RegisterCommands<Flaschendrehen>();
-            Commands.RegisterCommands<GetIds>();
             Commands.RegisterCommands<JaNein>();
             Commands.RegisterCommands<Quotes>();
             Commands.RegisterCommands<RussischRoulette>();

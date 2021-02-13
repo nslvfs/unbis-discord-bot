@@ -2,16 +2,15 @@
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using DSharpPlus.Interactivity.Enums;
 using System.Linq;
 using System.Text;
 using DSharpPlus.Interactivity.Extensions;
-using System.Collections.Generic;
 
 namespace unbis_discord_bot.Commands
 {
+    [Group("Buxbux")]
     public class Wegbuxen : BaseCommandModule
     {
         [Command("gegen")]
@@ -103,38 +102,6 @@ namespace unbis_discord_bot.Commands
                 pollResultText.Append("Votekick gescheitert");
                 await ctx.RespondAsync(pollResultText.ToString());
             }
-        }
-
-        [Command("mute")]
-        [Description("10 Minuten direktes Mute")]
-        [RequireOwner]
-        public async Task Mute(CommandContext ctx, DiscordMember target)
-        {
-            if (ctx.Guild.Id != 791393115097137171)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
-                return;
-            }
-            var roleMuted = ctx.Guild.GetRole(807921762570469386);
-            await target.GrantRoleAsync(roleMuted);
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
-            Thread.Sleep(1000 * 10 * 60); // 10 minuten
-            await target.RevokeRoleAsync(roleMuted);
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
-        }
-
-        [Command("kick")]
-        [Description("kickt ein Mitglied")]
-        [RequireOwner]
-        public async Task kick(CommandContext ctx, DiscordMember target)
-        {
-            if (ctx.Guild.Id != 791393115097137171)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
-                return;
-            }
-            await target.RemoveAsync("!kick von " +ctx.Member.DisplayName);
-            await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
         }
     }
 }

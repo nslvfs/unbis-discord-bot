@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
+    [Group("Flaschendrehen")]
     public class Flaschendrehen : BaseCommandModule
     {
         [Command("spin")]
@@ -20,21 +21,6 @@ namespace unbis_discord_bot.Commands
             Thread.Sleep(1000 * 2); // 2 Sek
             await ctx.Channel.SendMessageAsync(text).ConfigureAwait(false);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Die Flasche zeigt auf: " + ((DiscordMember)userList[rnd]).Mention).ConfigureAwait(false);
-        }
-
-        [Command("active")]
-        [Description("Wer war in den 10 Minuten im Chat aktiv?")]
-        public async Task ActiveUser(CommandContext ctx)
-        {
-            var userList = await Shared.GetActiveUsers(ctx);
-            string result = "Aktive Nutzer: ";
-            foreach (var user in userList)
-            {
-                var name = ((DiscordMember)user).DisplayName;
-                result = result + name + ", ";
-            }
-            result = result.Substring(0, result.Length - 2);
-            await ctx.Channel.SendMessageAsync(result).ConfigureAwait(false);
         }
     }
 }
