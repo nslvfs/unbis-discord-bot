@@ -277,6 +277,12 @@ namespace unbis_discord_bot.Commands
             {
                 result = result + " " + arg;
             }
+            if(result.Length <= 3) 
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist kein Quote");
+                return;
+            }
+            result = result + " (von " + ctx.Member.Mention +" hinzugefügt)";
             
             if (!File.Exists(fileName)) {
                 File.Create(fileName).Dispose();
