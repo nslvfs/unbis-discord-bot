@@ -141,7 +141,7 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("toony")]
-        [Description("Wer ist eigentlich dieser  Toony?")]
+        [Description("Wer ist eigentlich dieser Toony?")]
         public async Task Toony(CommandContext ctx)
         {
             var res = Shared.GenerateRandomNumber(1, 100);
