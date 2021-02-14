@@ -133,27 +133,8 @@ namespace unbis_discord_bot
                 Message.Timestamp = e.Message.Timestamp;
                 ArchivMessages.Add(Message);
             }
-            /*
-            if (ArchivMessages.Count >= 100)
-            {
-                Parallel.ForEach(ArchivMessages, (message) =>
-                 {
-                     if (message.Timestamp.AddMinutes(10) > DateTimeOffset.Now)
-                     {
-                         ArchivMessages.Remove(message);
-                     }
-                 });
-            } else
-            {
-                foreach(var message in ArchivMessages)
-                {
-                    if (message.Timestamp.AddMinutes(10) > DateTimeOffset.Now)
-                    {
-                        ArchivMessages.Remove(message);
-                    }
-                }
-            }*/
-            ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) > DateTimeOffset.Now);
+
+            ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
             return Task.CompletedTask;
         }
 
