@@ -33,6 +33,11 @@ namespace unbis_discord_bot
             {
                 Token = configJson.Token,
                 TokenType = TokenType.Bot,
+                Intents = DiscordIntents.GuildMessages | 
+                    DiscordIntents.GuildBans |
+                    DiscordIntents.GuildMembers |
+                    DiscordIntents.GuildWebhooks | 
+                    DiscordIntents.Guilds,
                 AutoReconnect = true,
                 MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug,
                 LogTimestampFormat = "dd MMM yyyy - hh:mm:ss tt",

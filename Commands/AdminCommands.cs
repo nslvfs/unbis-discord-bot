@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -68,8 +69,13 @@ namespace unbis_discord_bot.Commands
                 return;
             }
             var roleMuted = ctx.Guild.GetRole(807921762570469386);
-            await target.GrantRoleAsync(roleMuted);
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
+            try { 
+                await target.GrantRoleAsync(roleMuted);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
+            } catch (Exception e)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + e.Message).ConfigureAwait(false);
+            }
             Thread.Sleep(1000 * 10 * 60); // 10 minuten
             await target.RevokeRoleAsync(roleMuted);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
