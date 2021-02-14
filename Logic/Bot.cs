@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using unbis_discord_bot.Commands;
 
@@ -85,7 +86,8 @@ namespace unbis_discord_bot
             Client.GuildAvailable += Client_GuildAvailable;
             Client.MessageCreated += Client_MessageCreated;
 
-            var timer = new System.Threading.Timer(e => ClearMessageCache(Client), null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+            //var timer = new System.Threading.Timer(e => ClearMessageCache(Client), null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+            _ = Task.Factory.StartNew(() => ClearMessageCache());
 
             await Client.ConnectAsync();
 
@@ -139,11 +141,16 @@ namespace unbis_discord_bot
             return Task.CompletedTask;
         }
 
-        private void ClearMessageCache(DiscordClient sender)
+        private static void ClearMessageCache()
         {
-            sender.Logger.LogInformation(BotEventId, "Backlogcache wird aufgeräumt. Stand: " + ArchivMessages.Count);
-            ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
-            sender.Logger.LogInformation(BotEventId, "Backlogcache aufgeräumt. Stand: " + ArchivMessages.Count);
+            var sender = Client;
+            while (true) { 
+                sender.Logger.LogInformation(new EventId(42, "exekutivfs"), "Backlogcache wird aufgeräumt. Stand: " + ArchivMessages.Count);
+                ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
+                sender.Logger.LogInformation(new EventId(42, "exekutivfs"), "Backlogcache aufgeräumt. Stand: " + ArchivMessages.Count);
+                Thread.Sleep(1000 * 60 * 5);
+            }
+            
         }
 
         private Task Client_ClientError(DiscordClient sender, ClientErrorEventArgs e)
