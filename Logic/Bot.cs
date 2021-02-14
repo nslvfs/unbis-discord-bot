@@ -85,6 +85,12 @@ namespace unbis_discord_bot
             Client.GuildAvailable += Client_GuildAvailable;
             Client.MessageCreated += Client_MessageCreated;
 
+            var timer = new System.Threading.Timer(
+                e => ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now),
+                null,
+                TimeSpan.Zero,
+                TimeSpan.FromMinutes(5));
+
             await Client.ConnectAsync();
 
             await Task.Delay(-1);

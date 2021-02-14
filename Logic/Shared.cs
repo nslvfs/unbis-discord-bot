@@ -27,7 +27,6 @@ namespace unbis_discord_bot
 
         public static List<DiscordUser> GetActiveUsers(CommandContext ctx)
         {
-            Bot.ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
             List<DiscordUser> userList = new List<DiscordUser>();
 
             foreach (var msg in Bot.ArchivMessages)
