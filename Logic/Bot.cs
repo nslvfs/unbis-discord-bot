@@ -142,6 +142,15 @@ namespace unbis_discord_bot
                          ArchivMessages.Remove(message);
                      }
                  });
+            } else
+            {
+                foreach(var message in ArchivMessages)
+                {
+                    if (message.Timestamp.AddMinutes(10) > DateTimeOffset.Now)
+                    {
+                        ArchivMessages.Remove(message);
+                    }
+                }
             }
             return Task.CompletedTask;
         }
