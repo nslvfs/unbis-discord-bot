@@ -133,8 +133,6 @@ namespace unbis_discord_bot
                 Message.Timestamp = e.Message.Timestamp;
                 ArchivMessages.Add(Message);
             }
-
-            // ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
             return Task.CompletedTask;
         }
 

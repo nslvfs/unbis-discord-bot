@@ -22,10 +22,9 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
+            
             TimeSpan duration = new TimeSpan(0, 0, 2, 0, 0);
-
             var client = ctx.Client;
-
             var interactivity = client.GetInteractivity();
 
             if (target.Id == 807641560006000670 || target.Id == 134719067016658945)
@@ -35,8 +34,8 @@ namespace unbis_discord_bot.Commands
             }
             
             var userList = Shared.GetActiveUsers(ctx);
-
             bool validTarget = false;
+
             foreach(var user in userList)
             {
                 if(user.Id == target.Id)
@@ -45,6 +44,7 @@ namespace unbis_discord_bot.Commands
                     break;
                 }
             }
+
             if(!validTarget)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Unzulässiges Ziel " + target.Mention).ConfigureAwait(false);
