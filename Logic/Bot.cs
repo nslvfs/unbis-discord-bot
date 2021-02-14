@@ -134,7 +134,7 @@ namespace unbis_discord_bot
                 ArchivMessages.Add(Message);
             }
 
-            ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
+            // ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
             return Task.CompletedTask;
         }
 

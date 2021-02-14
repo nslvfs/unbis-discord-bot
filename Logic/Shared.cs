@@ -27,13 +27,12 @@ namespace unbis_discord_bot
 
         public static List<DiscordUser> GetActiveUsers(CommandContext ctx)
         {
-            var messages = Bot.ArchivMessages;
-            var channelID = ctx.Channel.Id;
+            Bot.ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
             List<DiscordUser> userList = new List<DiscordUser>();
 
-            foreach (var msg in messages)
+            foreach (var msg in Bot.ArchivMessages)
             {
-                if(msg.ChannelId == channelID) { 
+                if(msg.ChannelId == ctx.Channel.Id) { 
                     if (userList.Count > 0)
                     {
                         var found = false;
