@@ -38,10 +38,10 @@ namespace unbis_discord_bot
             {
                 Token = configJson.Token,
                 TokenType = TokenType.Bot,
-                Intents = DiscordIntents.GuildMessages | 
+                Intents = DiscordIntents.GuildMessages |
                     DiscordIntents.GuildBans |
                     DiscordIntents.GuildMembers |
-                    DiscordIntents.GuildWebhooks | 
+                    DiscordIntents.GuildWebhooks |
                     DiscordIntents.Guilds,
                 AutoReconnect = true,
                 MinimumLogLevel = LogLevel.Information,
@@ -85,11 +85,7 @@ namespace unbis_discord_bot
             Client.GuildAvailable += Client_GuildAvailable;
             Client.MessageCreated += Client_MessageCreated;
 
-            var timer = new System.Threading.Timer(
-                e => ClearMessageCache(Client),
-                null,
-                TimeSpan.Zero,
-                TimeSpan.FromMinutes(5));
+            var timer = new System.Threading.Timer(e => ClearMessageCache(Client), null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
 
             await Client.ConnectAsync();
 
@@ -133,7 +129,8 @@ namespace unbis_discord_bot
         private Task Client_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
         {
             var Message = new Model.Message();
-            if (!e.Author.IsBot) { 
+            if (!e.Author.IsBot)
+            {
                 Message.Author = e.Message.Author;
                 Message.ChannelId = e.Message.Channel.Id;
                 Message.Timestamp = e.Message.Timestamp;
