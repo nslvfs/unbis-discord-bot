@@ -25,7 +25,7 @@ namespace unbis_discord_bot
             return result % (max - min + 1) + min; //fix by opi
         }
 
-        public static List<DiscordUser> GetActiveUsersAsync(CommandContext ctx)
+        public static List<DiscordUser> GetActiveUsers(CommandContext ctx)
         {
             var messages = Bot.ArchivMessages;
             var channelID = ctx.Channel.Id;

@@ -34,7 +34,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
             
-            var userList = Shared.GetActiveUsersAsync(ctx);
+            var userList = Shared.GetActiveUsers(ctx);
 
             bool validTarget = false;
             foreach(var user in userList)

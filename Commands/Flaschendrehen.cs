@@ -13,7 +13,7 @@ namespace unbis_discord_bot.Commands
         [Description("Klassisches Flaschendrehen")]
         public async Task Spin(CommandContext ctx)
         {
-            var userList = Shared.GetActiveUsersAsync(ctx);
+            var userList = Shared.GetActiveUsers(ctx);
             var rnd = Shared.GenerateRandomNumber(0, userList.Count - 1);
             var picked = ((DiscordMember)userList[rnd]).DisplayName;
             var text = DSharpPlus.Formatter.Italic("dreht die Flasche huiiii");
