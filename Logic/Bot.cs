@@ -86,7 +86,7 @@ namespace unbis_discord_bot
             Client.MessageCreated += Client_MessageCreated;
 
             var timer = new System.Threading.Timer(
-                e => ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now),
+                e => ClearMessageCache(Client),
                 null,
                 TimeSpan.Zero,
                 TimeSpan.FromMinutes(5));
@@ -140,6 +140,13 @@ namespace unbis_discord_bot
                 ArchivMessages.Add(Message);
             }
             return Task.CompletedTask;
+        }
+
+        private void ClearMessageCache(DiscordClient sender)
+        {
+            sender.Logger.LogInformation(BotEventId, "Backlogcache wird aufgeräumt. Stand: " + ArchivMessages.Count);
+            ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
+            sender.Logger.LogInformation(BotEventId, "Backlogcache aufgeräumt. Stand: " + ArchivMessages.Count);
         }
 
         private Task Client_ClientError(DiscordClient sender, ClientErrorEventArgs e)
