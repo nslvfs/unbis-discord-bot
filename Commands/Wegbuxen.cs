@@ -61,12 +61,12 @@ namespace unbis_discord_bot.Commands
             pollStartText.Append(target.Mention + "wegbuxen? (" + minYes + " Stimme(n) benötigt)");
             var pollStartMessage = await ctx.RespondAsync(pollStartText.ToString());
 
-            var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.KeepEmojis, duration);
+            var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.DeleteEmojis, duration);
             var yesVotes = pollResult[0].Total;
             var noVotes = pollResult[1].Total;
             var pollResultText = new StringBuilder();
             pollResultText.AppendLine(target.Mention + "wegbuxen? (" + minYes + " Stimme(n) benötigt)");
-            pollResultText.Append("Ergebnis: ");
+            pollResultText.Append("Ergebnis: Dafür:" + yesVotes + " Dagegen:" + noVotes);
             pollResultText.Append("**");
             if (yesVotes > noVotes)
             {
