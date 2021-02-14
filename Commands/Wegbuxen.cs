@@ -66,7 +66,7 @@ namespace unbis_discord_bot.Commands
             var noVotes = pollResult[1].Total;
             var pollResultText = new StringBuilder();
             pollResultText.AppendLine(target.Mention + "wegbuxen? (" + minYes + " Stimme(n) benötigt)");
-            pollResultText.Append("Ergebnis: Dafür:" + yesVotes + " Dagegen:" + noVotes);
+            pollResultText.Append("Ergebnis: Dafür:" + yesVotes + " Dagegen:" + noVotes + "\n");
             pollResultText.Append("**");
             if (yesVotes > noVotes)
             {
