@@ -34,27 +34,25 @@ namespace unbis_discord_bot
             foreach (var msg in messages)
             {
                 if(msg.ChannelId == channelID) { 
-                    if(msg.Timestamp.AddMinutes(10) > DateTime.Now) { 
-                        if (userList.Count > 0)
+                    if (userList.Count > 0)
+                    {
+                        var found = false;
+                        foreach (var auth in userList)
                         {
-                            var found = false;
-                            foreach (var auth in userList)
+                            if (auth.Id == msg.Author.Id)
                             {
-                                if (auth.Id == msg.Author.Id)
-                                {
-                                    found = true;
-                                }
-                            }
-                            if (!found)
-                            {
-                                userList.Add(msg.Author);
+                                found = true;
                             }
                         }
-                        else
+                        if (!found)
                         {
                             userList.Add(msg.Author);
                         }
                     }
+                    else
+                    {
+                        userList.Add(msg.Author);
+                    }                    
                 }
             }
             return userList;
