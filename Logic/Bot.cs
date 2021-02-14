@@ -43,7 +43,8 @@ namespace unbis_discord_bot
                     DiscordIntents.GuildBans |
                     DiscordIntents.GuildMembers |
                     DiscordIntents.GuildWebhooks |
-                    DiscordIntents.Guilds,
+                    DiscordIntents.Guilds |
+                    DiscordIntents.GuildMessageReactions,
                 AutoReconnect = true,
                 MinimumLogLevel = LogLevel.Information,
                 LogTimestampFormat = "dd MMM yyyy - hh:mm:ss tt",
