@@ -65,7 +65,7 @@ namespace unbis_discord_bot.Commands
 
             var yesVotes = 0;
             var noVotes = 0;
-            if (pollResult[0].Emoji == ":white_check_mark:")
+            if (pollResult[0].Emoji == "✅")
             {
                 yesVotes = pollResult[0].Total;
                 noVotes = pollResult[1].Total;
