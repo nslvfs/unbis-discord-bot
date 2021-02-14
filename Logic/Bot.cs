@@ -20,6 +20,7 @@ namespace unbis_discord_bot
         public static DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
+
         public readonly EventId BotEventId = new EventId(42, "exekutivfs");
 
         public static ConfigJson configJson { get; set; }
@@ -43,7 +44,7 @@ namespace unbis_discord_bot
                     DiscordIntents.GuildWebhooks | 
                     DiscordIntents.Guilds,
                 AutoReconnect = true,
-                MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug,
+                MinimumLogLevel = LogLevel.Information,
                 LogTimestampFormat = "dd MMM yyyy - hh:mm:ss tt",
             };
 
