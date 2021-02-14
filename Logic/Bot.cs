@@ -8,8 +8,10 @@ using DSharpPlus.Interactivity.Extensions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using unbis_discord_bot.Commands;
 
@@ -20,14 +22,13 @@ namespace unbis_discord_bot
         public static DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
-
-        public readonly EventId BotEventId = new EventId(42, "exekutivfs");
-
         public static ConfigJson configJson { get; set; }
+        public static List<Model.Message> ArchivMessages { get; set; }
+        public readonly EventId BotEventId = new EventId(42, "exekutivfs");
         public async Task TaskAsync()
         {
             var json = string.Empty;
-
+            ArchivMessages = new List<Model.Message>();
             using (var fs = File.OpenRead("config.json"))
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = sr.ReadToEnd();
@@ -83,6 +84,7 @@ namespace unbis_discord_bot
 
             Client.ClientErrored += Client_ClientError;
             Client.GuildAvailable += Client_GuildAvailable;
+            Client.MessageCreated += Client_MessageCreated;
 
             await Client.ConnectAsync();
 
@@ -121,6 +123,29 @@ namespace unbis_discord_bot
                 };
                 await e.Context.RespondAsync("", embed: embed);
             }
+        }
+
+        private Task Client_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
+        {
+            //Console.WriteLine("Timestamp: " + e.Message.Timestamp.ToLocalTime() + " | Autor: " + e.Message.Author.Username + " | Nachricht: " + e.Message.Content);
+            var Message = new Model.Message();
+            if (!e.Author.IsBot) { 
+                Message.Author = e.Message.Author;
+                Message.ChannelId = e.Message.Channel.Id;
+                Message.Timestamp = e.Message.Timestamp;
+                ArchivMessages.Add(Message);
+            }
+            if (ArchivMessages.Count >= 100)
+            {
+                Parallel.ForEach(ArchivMessages, (message) =>
+                 {
+                     if (message.Timestamp.AddMinutes(10) > DateTimeOffset.Now)
+                     {
+                         ArchivMessages.Remove(message);
+                     }
+                 });
+            }
+            return Task.CompletedTask;
         }
 
         private Task Client_ClientError(DiscordClient sender, ClientErrorEventArgs e)
