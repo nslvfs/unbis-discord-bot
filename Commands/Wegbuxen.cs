@@ -17,12 +17,12 @@ namespace unbis_discord_bot.Commands
         [Description("Startet einen Poll ob ein User auf die Stille Treppe soll. Funktioniert nur auf unbequem ihm sein Discord")]
         public async Task Gegen(CommandContext ctx, DiscordUser target)
         {
-            if(ctx.Guild.Id != 791393115097137171)
+            if (ctx.Guild.Id != 791393115097137171)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            
+
             TimeSpan duration = new TimeSpan(0, 0, 2, 0, 0);
             var client = ctx.Client;
             var interactivity = client.GetInteractivity();
@@ -32,20 +32,20 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Unzulässiges Ziel " + target.Mention).ConfigureAwait(false);
                 return;
             }
-            
+
             var userList = Shared.GetActiveUsers(ctx);
             bool validTarget = false;
 
-            foreach(var user in userList)
+            foreach (var user in userList)
             {
-                if(user.Id == target.Id)
+                if (user.Id == target.Id)
                 {
                     validTarget = true;
                     break;
                 }
             }
 
-            if(!validTarget)
+            if (!validTarget)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Unzulässiges Ziel " + target.Mention).ConfigureAwait(false);
                 return;
@@ -65,10 +65,12 @@ namespace unbis_discord_bot.Commands
 
             var yesVotes = 0;
             var noVotes = 0;
-            if(pollResult[0].Emoji == ":white_check_mark:") {
+            if (pollResult[0].Emoji == ":white_check_mark:")
+            {
                 yesVotes = pollResult[0].Total;
                 noVotes = pollResult[1].Total;
-            } else
+            }
+            else
             {
                 yesVotes = pollResult[1].Total;
                 noVotes = pollResult[0].Total;
@@ -79,7 +81,8 @@ namespace unbis_discord_bot.Commands
             pollResultText.Append("**");
             if (yesVotes > noVotes)
             {
-                if(yesVotes >= minYes) { 
+                if (yesVotes >= minYes)
+                {
                     pollResultText.Append("Buxung erfolgreich");
                     await ctx.RespondAsync(pollResultText.ToString());
                     var roleMuted = ctx.Guild.GetRole(807921762570469386);
