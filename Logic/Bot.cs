@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using unbis_discord_bot.Commands;
 
@@ -127,7 +126,6 @@ namespace unbis_discord_bot
 
         private Task Client_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
         {
-            //Console.WriteLine("Timestamp: " + e.Message.Timestamp.ToLocalTime() + " | Autor: " + e.Message.Author.Username + " | Nachricht: " + e.Message.Content);
             var Message = new Model.Message();
             if (!e.Author.IsBot) { 
                 Message.Author = e.Message.Author;

@@ -24,7 +24,6 @@ namespace unbis_discord_bot.Commands
             }
             TimeSpan duration = new TimeSpan(0, 0, 2, 0, 0);
 
-            var roles = ctx.Guild.Roles;
             var client = ctx.Client;
 
             var interactivity = client.GetInteractivity();
