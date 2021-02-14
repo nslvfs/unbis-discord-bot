@@ -87,7 +87,7 @@ namespace unbis_discord_bot
             Client.MessageCreated += Client_MessageCreated;
 
             //var timer = new System.Threading.Timer(e => ClearMessageCache(Client), null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
-            _ = Task.Factory.StartNew(() => ClearMessageCache());
+            _ messageCache = Task.Factory.StartNew(() => ClearMessageCache());
 
             await Client.ConnectAsync();
 
