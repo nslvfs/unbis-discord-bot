@@ -25,32 +25,35 @@ namespace unbis_discord_bot
             return result % (max - min + 1) + min; //fix by opi
         }
 
-        public static List<DiscordUser> GetActiveUsers(CommandContext ctx)
+        public static List<DiscordUser> GetActiveUsersAsync(CommandContext ctx)
         {
             var messages = Bot.ArchivMessages;
+            var channelID = ctx.Channel.Id;
             List<DiscordUser> userList = new List<DiscordUser>();
 
             foreach (var msg in messages)
             {
-                if(msg.Timestamp.AddMinutes(10) > DateTime.Now) { 
-                    if (userList.Count > 0)
-                    {
-                        var found = false;
-                        foreach (var auth in userList)
+                if(msg.ChannelId == channelID) { 
+                    if(msg.Timestamp.AddMinutes(10) > DateTime.Now) { 
+                        if (userList.Count > 0)
                         {
-                            if (auth.Id == msg.Author.Id)
+                            var found = false;
+                            foreach (var auth in userList)
                             {
-                                found = true;
+                                if (auth.Id == msg.Author.Id)
+                                {
+                                    found = true;
+                                }
+                            }
+                            if (!found)
+                            {
+                                userList.Add(msg.Author);
                             }
                         }
-                        if (!found)
+                        else
                         {
                             userList.Add(msg.Author);
                         }
-                    }
-                    else
-                    {
-                        userList.Add(msg.Author);
                     }
                 }
             }

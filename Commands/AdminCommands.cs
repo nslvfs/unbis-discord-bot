@@ -47,7 +47,7 @@ namespace unbis_discord_bot.Commands
         [Description("Wer war in den 10 Minuten im Chat aktiv?")]
         public async Task ActiveUser(CommandContext ctx)
         {
-            var userList = Shared.GetActiveUsers(ctx);
+            var userList = Shared.GetActiveUsersAsync(ctx);
             string result = "Aktive Nutzer: ";
             foreach (var user in userList)
             {
