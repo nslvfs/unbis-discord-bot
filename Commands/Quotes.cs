@@ -78,5 +78,21 @@ namespace unbis_discord_bot.Commands
             var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
             await ctx.Channel.SendMessageAsync("Julia Seeliger sagt: " + temp.array[res]).ConfigureAwait(false);
         }
+
+        [Command("Bash")]
+        [Description("Gibt ein zufälliges Zitat von http://bash.org zurück")]
+        public async Task Bash(CommandContext ctx)
+        {
+            var res = Logic.Bash.GetBash();
+            await ctx.Channel.SendMessageAsync(res).ConfigureAwait(false);
+        }
+
+        [Command("GBash")]
+        [Description("Gibt ein zufälliges Zitat von http://german-bash.org zurück")]
+        public async Task GBash(CommandContext ctx)
+        {
+            var res = Logic.Bash.GetGermanBash();
+            await ctx.Channel.SendMessageAsync(res).ConfigureAwait(false);
+        }
     }
 }
