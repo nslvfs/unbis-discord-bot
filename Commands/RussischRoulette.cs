@@ -37,7 +37,7 @@ namespace unbis_discord_bot.Commands
                     {
                         item.revKammer = -1;
                         await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
-                        if (ctx.Guild.Id != 791393115097137171) { 
+                        if (ctx.Guild.Id == 791393115097137171) { 
                             var roleMuted = ctx.Guild.GetRole(807921762570469386);
                             await ctx.Member.GrantRoleAsync(roleMuted);
                             Thread.Sleep(1000 * 60 * 10); // 10 Min
