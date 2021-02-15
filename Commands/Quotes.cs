@@ -84,7 +84,7 @@ namespace unbis_discord_bot.Commands
         public async Task Bash(CommandContext ctx)
         {
             var res = Logic.Bash.GetBash();
-            await ctx.Channel.SendMessageAsync(res).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("\n" + res).ConfigureAwait(false);
         }
 
         [Command("GBash")]
@@ -92,7 +92,7 @@ namespace unbis_discord_bot.Commands
         public async Task GBash(CommandContext ctx)
         {
             var res = Logic.Bash.GetGermanBash();
-            await ctx.Channel.SendMessageAsync(res).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("\n" + res).ConfigureAwait(false);
         }
     }
 }
