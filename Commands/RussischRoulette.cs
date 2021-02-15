@@ -36,12 +36,14 @@ namespace unbis_discord_bot.Commands
                     if (item.revShots == item.revKammer)
                     {
                         item.revKammer = -1;
-                        var roleMuted = ctx.Guild.GetRole(807921762570469386);
                         await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
-                        await ctx.Member.GrantRoleAsync(roleMuted);
-                        Thread.Sleep(1000 * 60 * 10); // 10 Min
-                        await ctx.Member.RevokeRoleAsync(roleMuted);
-                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
+                        if (ctx.Guild.Id != 791393115097137171) { 
+                            var roleMuted = ctx.Guild.GetRole(807921762570469386);
+                            await ctx.Member.GrantRoleAsync(roleMuted);
+                            Thread.Sleep(1000 * 60 * 10); // 10 Min
+                            await ctx.Member.RevokeRoleAsync(roleMuted);
+                            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
+                        }
                     }
                     break;
                 }
