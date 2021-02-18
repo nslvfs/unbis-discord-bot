@@ -71,6 +71,7 @@ namespace unbis_discord_bot.Commands
             var roleMuted = ctx.Guild.GetRole(807921762570469386);
             try { 
                 await target.GrantRoleAsync(roleMuted);
+                Bot.RemoveUserfromMessageArchiv(target.Id);
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
             } catch (Exception e)
             {

@@ -134,6 +134,7 @@ namespace unbis_discord_bot
             if (!e.Author.IsBot)
             {
                 Message.Author = e.Message.Author;
+                Message.AuthorId = e.Message.Author.Id;
                 Message.ChannelId = e.Message.Channel.Id;
                 Message.Timestamp = e.Message.Timestamp;
                 ArchivMessages.Add(Message);
@@ -145,12 +146,17 @@ namespace unbis_discord_bot
         {
             var sender = Client;
             while (true) { 
-                sender.Logger.LogInformation(new EventId(42, "exekutivfs"), "Backlogcache wird aufgeräumt. Stand: " + ArchivMessages.Count);
+                //sender.Logger.LogInformation(new EventId(42, "exekutivfs"), "Backlogcache wird aufgeräumt. Stand: " + ArchivMessages.Count);
                 ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
-                sender.Logger.LogInformation(new EventId(42, "exekutivfs"), "Backlogcache aufgeräumt. Stand: " + ArchivMessages.Count);
+                //sender.Logger.LogInformation(new EventId(42, "exekutivfs"), "Backlogcache aufgeräumt. Stand: " + ArchivMessages.Count);
                 Thread.Sleep(1000 * 60 * 5);
             }
             
+        }
+
+        public static void RemoveUserfromMessageArchiv(ulong userId)
+        {
+            ArchivMessages.RemoveAll(item => item.AuthorId == userId);
         }
 
         private Task Client_ClientError(DiscordClient sender, ClientErrorEventArgs e)

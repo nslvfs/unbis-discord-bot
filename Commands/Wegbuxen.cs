@@ -91,6 +91,7 @@ namespace unbis_discord_bot.Commands
                     //await member.RemoveAsync("Im Namen des Volkes.");                  
                     await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
                     await member.GrantRoleAsync(roleMuted);
+                    Bot.RemoveUserfromMessageArchiv(ctx.Member.Id);
                     Thread.Sleep(1000 * 60 * 10); // 10 Min
                     await member.RevokeRoleAsync(roleMuted);
                     await ctx.Channel.SendMessageAsync(member.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);

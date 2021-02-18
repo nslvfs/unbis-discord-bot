@@ -40,6 +40,7 @@ namespace unbis_discord_bot.Commands
                         if (ctx.Guild.Id == 791393115097137171) { 
                             var roleMuted = ctx.Guild.GetRole(807921762570469386);
                             await ctx.Member.GrantRoleAsync(roleMuted);
+                            Bot.RemoveUserfromMessageArchiv(ctx.Member.Id);
                             Thread.Sleep(1000 * 60 * 10); // 10 Min
                             await ctx.Member.RevokeRoleAsync(roleMuted);
                             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
