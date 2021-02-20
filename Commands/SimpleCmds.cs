@@ -100,7 +100,20 @@ namespace unbis_discord_bot.Commands
         [Description("Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack ")]
         public async Task MeinSack(CommandContext ctx)
         {
-            await ctx.Channel.SendMessageAsync("Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack ").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack").ConfigureAwait(false);
+        }
+
+        [Command("mucke")]
+        [Aliases("music","musik")]
+        [Description(".mucke Proxy")]
+        public async Task Mucke(CommandContext ctx, params string[] args)
+        {
+            string result = string.Empty;
+            foreach (var text in args)
+            {
+                result = result + " " + text;
+            }
+            await ctx.Channel.SendMessageAsync(".mucke " + result).ConfigureAwait(false);
         }
 
         [Command("hdf")]

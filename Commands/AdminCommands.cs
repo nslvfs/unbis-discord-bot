@@ -95,5 +95,20 @@ namespace unbis_discord_bot.Commands
             await target.RemoveAsync("!kick von " + ctx.Member.DisplayName);
             await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
         }
+
+        [Command("s10")]
+        [Description("Sagt etwas 10x")]
+        [RequireOwner]
+        public async Task SayTenTimes(CommandContext ctx, params string[] args)
+        {
+            string result = string.Empty;
+            foreach(var text in args)
+            {
+                result = result + " " + text;
+            }
+            for(var i = 0; i<=9;i++) { 
+                await ctx.Channel.SendMessageAsync(result).ConfigureAwait(false);
+            }
+        }
     }
 }
