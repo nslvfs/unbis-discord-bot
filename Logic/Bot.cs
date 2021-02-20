@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using unbis_discord_bot.Commands;
@@ -144,6 +145,10 @@ namespace unbis_discord_bot
                     await e.Message.DeleteAsync();
                     await e.Message.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Message.Author.Mention).ConfigureAwait(false);
                 }
+                /*
+                if(e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945)
+                    await e.Message.DeleteAsync();
+                */
             }
         }
 
@@ -173,10 +178,16 @@ namespace unbis_discord_bot
 
         private static bool checkBadWords(string Message)
         {
-            string[] badWords = new string[] { "cat", "katz", "k a t z", "kater", "karzer", "kätze", "cutze" };
+
+            string[] badWords = new string[] { "cat", "katz", "k a t z", "kater", "karzer", "kätze", "cutze", "kâtze",
+                "kátze", "kàtze" , "kardse", "curtze", "quadsen", "𝕶𝖆𝖙", "𝔎𝔞𝔱", "k atze", "k_a_tze", "k4tz3", "kads", 
+                "k4t", "k\na\nt\nz", "miau", "mauz", "miez", "gatze", ":cat2:", ":cat:", ":black_cat:", ":heart_eyes_cat:",
+                "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze", 
+                "Katže", "Kazze", "Kätz", "mieds", "kattze"};
             foreach (var item in badWords)
             {
-                if (Message.ToLower().Contains(item))
+                var msg = Regex.Replace(Message.ToLower(), @"([^\w]|_)", "");
+                if (msg.Contains(item))
                     return true;
             }
             return false;
