@@ -139,10 +139,12 @@ namespace unbis_discord_bot
                 Message.Timestamp = e.Message.Timestamp;
                 ArchivMessages.Add(Message);
             }
-            if (e.Guild.Id == 791393115097137171)
-                if(e.Message.Content.ToLower().Contains("katze"))
-                    if(checkBadWords(e.Message.Content))
-                        await e.Message.DeleteAsync();
+            if (e.Guild.Id == 791393115097137171) { 
+                if(checkBadWords(e.Message.Content)) { 
+                    await e.Message.DeleteAsync();
+                    await e.Message.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Message.Author.Mention).ConfigureAwait(false);
+                }
+            }
         }
 
         private static void ClearMessageCache()
@@ -171,7 +173,7 @@ namespace unbis_discord_bot
 
         private static bool checkBadWords(string Message)
         {
-            string[] badWords = new string[] { "katze", "cat", "katz", "k a t z e", "k a t z", "katzen", "k a t z e n", "k.a.t.z.e" };
+            string[] badWords = new string[] { "cat", "katz", "k a t z", "kater", "karzer", "kätze", "cutze" };
             foreach (var item in badWords)
             {
                 if (Message.ToLower().Contains(item))
