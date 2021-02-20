@@ -128,7 +128,7 @@ namespace unbis_discord_bot
             }
         }
 
-        private Task Client_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
+        private async Task Client_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
         {
             var Message = new Model.Message();
             if (!e.Author.IsBot)
@@ -139,7 +139,10 @@ namespace unbis_discord_bot
                 Message.Timestamp = e.Message.Timestamp;
                 ArchivMessages.Add(Message);
             }
-            return Task.CompletedTask;
+            if (e.Guild.Id == 791393115097137171)
+                if(e.Message.Content.ToLower().Contains("katze"))
+                    if(checkBadWords(e.Message.Content))
+                        await e.Message.DeleteAsync();
         }
 
         private static void ClearMessageCache()
@@ -163,6 +166,18 @@ namespace unbis_discord_bot
         {
             sender.Logger.LogError(e.Exception, "Exception aufgetreten");
             return Task.CompletedTask;
+        }
+
+
+        private static bool checkBadWords(string Message)
+        {
+            string[] badWords = new string[] { "katze", "cat", "katz", "k a t z e", "k a t z", "katzen", "k a t z e n", "k.a.t.z.e" };
+            foreach (var item in badWords)
+            {
+                if (Message.ToLower().Contains(item))
+                    return true;
+            }
+            return false;
         }
     }
 }
