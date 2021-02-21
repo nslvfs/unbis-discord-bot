@@ -24,6 +24,7 @@ namespace unbis_discord_bot.Commands
                 if(ctx.Channel.Id == 812403060416446474) //kiosk
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nicht hier").ConfigureAwait(false);
+                    _semaphoregate.Release();
                     return;
                 }
                 var found = false;
