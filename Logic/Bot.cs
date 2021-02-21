@@ -87,6 +87,7 @@ namespace unbis_discord_bot
             Client.ClientErrored += Client_ClientError;
             Client.GuildAvailable += Client_GuildAvailable;
             Client.MessageCreated += Client_MessageCreated;
+            Client.MessageUpdated += Client_MessageUpdated;
 
             var _messageCache = Task.Factory.StartNew(() => ClearMessageCache());
 
@@ -131,19 +132,30 @@ namespace unbis_discord_bot
 
         private async Task Client_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
         {
+            await Client_MessageHandling(sender, e.Message, e.Guild);
+        }
+        private async Task Client_MessageUpdated(DiscordClient sender, MessageUpdateEventArgs e)
+        {
+            await Client_MessageHandling(sender, e.Message, e.Guild);
+        }
+
+        private async Task Client_MessageHandling(DiscordClient sender, DiscordMessage e, DiscordGuild g)
+        {
             var Message = new Model.Message();
             if (!e.Author.IsBot)
             {
-                Message.Author = e.Message.Author;
-                Message.AuthorId = e.Message.Author.Id;
-                Message.ChannelId = e.Message.Channel.Id;
-                Message.Timestamp = e.Message.Timestamp;
+                Message.Author = e.Author;
+                Message.AuthorId = e.Author.Id;
+                Message.ChannelId = e.Channel.Id;
+                Message.Timestamp = e.Timestamp;
                 ArchivMessages.Add(Message);
             }
-            if (e.Guild.Id == 791393115097137171) { 
-                if(checkBadWords(e.Message.Content)) { 
-                    await e.Message.DeleteAsync();
-                    await e.Message.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Message.Author.Mention).ConfigureAwait(false);
+            if (g.Id == 791393115097137171)
+            {
+                if (checkBadWords(e.Content))
+                {
+                    await e.DeleteAsync();
+                    await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
                 }
                 /*
                 if(e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945)
