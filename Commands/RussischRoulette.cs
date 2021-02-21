@@ -21,6 +21,11 @@ namespace unbis_discord_bot.Commands
             try {
                 int index = 0;
                 await _semaphoregate.WaitAsync();
+                if(ctx.Channel.Id == 812403060416446474) //kiosk
+                {
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nicht hier").ConfigureAwait(false);
+                    return;
+                }
                 var found = false;
                 foreach (var item in rouletteData)
                 {
