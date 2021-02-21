@@ -13,13 +13,28 @@ namespace unbis_discord_bot.Commands
 {
     public class Wegbuxen : BaseCommandModule
     {
+        SemaphoreSlim _semaphoregate = new SemaphoreSlim(1, 1);
+
         [Command("gegen")]
         [Description("Startet einen Poll ob ein User auf die Stille Treppe soll. Funktioniert nur auf unbequem ihm sein Discord")]
         public async Task Gegen(CommandContext ctx, DiscordUser target)
         {
+            var running = false;
+            if(_semaphoregate.CurrentCount > 1) {
+                running = true;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Es läuft bereits eine Abstimmung!").ConfigureAwait(false);
+            }
+            await _semaphoregate.WaitAsync();
+
+            if(running)
+            {
+                _semaphoregate.Release();
+                return;
+            }
             if (ctx.Guild.Id != 791393115097137171)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
+                _semaphoregate.Release();
                 return;
             }
 
@@ -30,6 +45,7 @@ namespace unbis_discord_bot.Commands
             if (target.Id == 807641560006000670 || target.Id == 134719067016658945)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Unzulässiges Ziel " + target.Mention).ConfigureAwait(false);
+                _semaphoregate.Release();
                 return;
             }
 
@@ -48,6 +64,7 @@ namespace unbis_discord_bot.Commands
             if (!validTarget)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Unzulässiges Ziel " + target.Mention).ConfigureAwait(false);
+                _semaphoregate.Release();
                 return;
             }
 
@@ -58,7 +75,7 @@ namespace unbis_discord_bot.Commands
                     };
 
             var pollStartText = new StringBuilder();
-            pollStartText.Append(target.Mention + "wegbuxen? (" + minYes + " Stimme(n) benötigt)");
+            pollStartText.Append(target.Mention + " wegbuxen? (" + minYes + " Stimme(n) benötigt)");
             var pollStartMessage = await ctx.RespondAsync(pollStartText.ToString());
 
             var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.DeleteEmojis, duration);
@@ -112,6 +129,7 @@ namespace unbis_discord_bot.Commands
                 pollResultText.Append("Votekick gescheitert");
                 await ctx.RespondAsync(pollResultText.ToString());
             }
+            _semaphoregate.Release();
         }
     }
 }
