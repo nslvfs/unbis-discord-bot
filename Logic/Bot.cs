@@ -187,7 +187,6 @@ namespace unbis_discord_bot
             return Task.CompletedTask;
         }
 
-
         private static bool checkBadWords(string Message)
         {
 
