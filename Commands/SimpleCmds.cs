@@ -52,13 +52,6 @@ namespace unbis_discord_bot.Commands
             }
         }
 
-        [Command("spiegel")]
-        [Description("NEIN DU!")]
-        public async Task Spiegel(CommandContext ctx)
-        {
-            await ctx.Channel.SendMessageAsync("NEIN DU!").ConfigureAwait(false);
-        }
-
         [Command("nachti")]
         [Aliases("guna", "n8")]
         [Description("Gute Nacht")]
@@ -182,6 +175,20 @@ namespace unbis_discord_bot.Commands
         {
             var res = Shared.GenerateRandomNumber(1, num);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + res).ConfigureAwait(false);
+        }
+
+
+        [Command("durstometer")]
+        [Description("Durstigkeit in Prozent eines Users")]
+        public async Task Dice(CommandContext ctx, DiscordUser target)
+        {
+            int res = 100;
+            if(target.Id != 351514728734130177)
+            {
+                res = Shared.GenerateRandomNumber(1, 100);
+            }
+            
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": "+ target.Mention + " ist " + res + "% durstig").ConfigureAwait(false);
         }
 
         private static async Task PingPongInternal(CommandContext ctx, string target)
