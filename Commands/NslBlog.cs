@@ -1,10 +1,8 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
@@ -32,7 +30,6 @@ namespace unbis_discord_bot.Commands
             result = sanitizer.Sanitize(result);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + result).ConfigureAwait(false);
         }
-
 
         [Command("bpost")]
         [Description("Einen Artikel posten")]
