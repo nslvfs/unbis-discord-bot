@@ -68,7 +68,6 @@ namespace unbis_discord_bot.Commands
                 rouletteData[index].revShots++;
                 if (rouletteData[index].revShots != rouletteData[index].revKammer)
                 {
-
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** klick **").ConfigureAwait(false);
                 }
                 if (rouletteData[index].revShots == rouletteData[index].revKammer)

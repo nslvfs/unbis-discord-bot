@@ -177,7 +177,6 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + res).ConfigureAwait(false);
         }
 
-
         [Command("durstometer")]
         [Description("Durstigkeit in Prozent eines Users")]
         public async Task Dice(CommandContext ctx, DiscordUser target)
@@ -187,7 +186,6 @@ namespace unbis_discord_bot.Commands
             {
                 res = Shared.GenerateRandomNumber(1, 100);
             }
-            
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": "+ target.Mention + " ist " + res + "% durstig").ConfigureAwait(false);
         }
 

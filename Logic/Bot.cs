@@ -82,6 +82,7 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<Urls>();
             Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<RssFeeds>();
+            Commands.RegisterCommands<NslBlog>();
             Commands.CommandExecuted += Commands_CommandExecuted;
             Commands.CommandErrored += Commands_CommandErrored;
 
@@ -169,9 +170,7 @@ namespace unbis_discord_bot
         {
             var sender = Client;
             while (true) { 
-                //sender.Logger.LogInformation(new EventId(42, "exekutivfs"), "Backlogcache wird aufgeräumt. Stand: " + ArchivMessages.Count);
                 ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
-                //sender.Logger.LogInformation(new EventId(42, "exekutivfs"), "Backlogcache aufgeräumt. Stand: " + ArchivMessages.Count);
                 Thread.Sleep(1000 * 60 * 5);
             }
             
