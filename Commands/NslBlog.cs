@@ -75,6 +75,10 @@ namespace unbis_discord_bot.Commands
                         await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist ein Blog und kein Twitter, bisschen mehr kannst wohl schreiben!").ConfigureAwait(false);
                         return;
                     }
+                    if ((username.Contains("vfs") || username.Contains("unbi") || username.Contains("unbequem")) && ctx.Member.Id != 134719067016658945)
+                    {
+                        username = "arschloch";
+                    }
                     string outTxt = "<span id='" + lineCount + "'><small><a href='#" + lineCount + "'>#</a> <b>" + dtNow + "</b> von " + username + "</small></span>\n<p>" + result + "</p>\n<hr />\n";
                     File.WriteAllText(contentFile, outTxt  + currentContent);
                     if(File.Exists(rssFile))
@@ -102,8 +106,6 @@ namespace unbis_discord_bot.Commands
 
                         string newFile = fileHeader + newData + "\n" + fileBody;
                         File.WriteAllText(rssFile, newFile);
-
-
                     } else
                     {
                         await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": RSS-File nicht gefunden.").ConfigureAwait(false);
@@ -113,7 +115,6 @@ namespace unbis_discord_bot.Commands
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Content-File nicht gefunden.").ConfigureAwait(false);
                 }
-                // +
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": https://blog.neuschwabenland.net/#" + lineCount).ConfigureAwait(false);
             }
             catch (Exception e)
