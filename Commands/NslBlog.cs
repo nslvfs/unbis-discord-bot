@@ -3,6 +3,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -66,15 +67,21 @@ namespace unbis_discord_bot.Commands
                     sanitizer.AllowDataAttributes = false;
                     result = sanitizer.Sanitize(result);
                     var username = sanitizer.Sanitize(ctx.Member.DisplayName);
-
+                    result = StripHTML(result);
                     result.Replace("\n", "<br>");
+                    result = result.Trim();
+                    if(result.Length < 10)
+                    {
+                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist ein Blog und kein Twitter, bisschen mehr kannst wohl schreiben!").ConfigureAwait(false);
+                        return;
+                    }
                     string outTxt = "<span id='" + lineCount + "'><small><a href='#" + lineCount + "'>#</a> <b>" + dtNow + "</b> von " + username + "</small></span>\n<p>" + result + "</p>\n<hr />\n";
                     File.WriteAllText(contentFile, outTxt  + currentContent);
                     if(File.Exists(rssFile))
                     {
                         var _rssData = new Data.RssData();
                         string newData = "<item>\n";
-                        newData = newData + "<title>" + username + ": " + result + " </title>\n";
+                        newData = newData + "<title>" + username + ": " + result + "</title>\n";
                         newData = newData + "<link>https://blog.neuschwabenland.net/#" + lineCount + "</link>\n";
                         newData = newData + "<guid>https://blog.neuschwabenland.net/#" + lineCount + "</guid>\n";
                         newData = newData + "</item>\n";
@@ -113,6 +120,11 @@ namespace unbis_discord_bot.Commands
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + e.Message).ConfigureAwait(false);
             }
+        }
+
+        public static string StripHTML(string input)
+        {
+            return Regex.Replace(input, "<.*?>", String.Empty);
         }
     }
 }
