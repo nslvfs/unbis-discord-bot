@@ -1,10 +1,14 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
+using Microsoft.SyndicationFeed;
+using Microsoft.SyndicationFeed.Rss;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using System.Xml;
 
 namespace unbis_discord_bot
 {
@@ -70,6 +74,24 @@ namespace unbis_discord_bot
                 return response.RequestMessage.RequestUri.ToString();
             }
 
+        }
+
+        public static async Task<List<ISyndicationItem>> GetNewsFeed(string feedUri)
+        {
+            var rssNewsItems = new List<ISyndicationItem>();
+            using (var xmlReader = XmlReader.Create(feedUri, new XmlReaderSettings() { Async = true }))
+            {
+                var feedReader = new RssFeedReader(xmlReader);
+                while (await feedReader.Read())
+                {
+                    if (feedReader.ElementType == SyndicationElementType.Item)
+                    {
+                        ISyndicationItem item = await feedReader.ReadItem();
+                        rssNewsItems.Add(item);
+                    }
+                }
+            }
+            return rssNewsItems;
         }
     }
 }

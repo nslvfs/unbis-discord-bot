@@ -81,6 +81,7 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<SimpleCmds>();
             Commands.RegisterCommands<Urls>();
             Commands.RegisterCommands<Wegbuxen>();
+            Commands.RegisterCommands<RssFeeds>();
             Commands.CommandExecuted += Commands_CommandExecuted;
             Commands.CommandErrored += Commands_CommandErrored;
 
