@@ -41,15 +41,21 @@ namespace unbis_discord_bot.Commands
         [Description("Keine Beschreibung")]
         public async Task Backlog(CommandContext ctx)
         {
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Backlog ist Krebs").ConfigureAwait(false);
+        }
+
+        [Command("belastung")]
+        [Description("Wie belastend ist es gerade")]
+        public async Task Belastung(CommandContext ctx)
+        {
+            
+           if(ctx.Member.Id == 134719067016658945)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Es ist alles sehr belastend").ConfigureAwait(false);
+                return;
+            }
             var res = Shared.GenerateRandomNumber(1, 100);
-            if (res <= 50)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Backlog ist Krebs").ConfigureAwait(false);
-            }
-            else
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Scroll halt hoch du Pansen").ConfigureAwait(false);
-            }
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + res + "%").ConfigureAwait(false);
         }
 
         [Command("nachti")]
