@@ -35,6 +35,10 @@ namespace unbis_discord_bot.Commands
         [Description("Einen Artikel posten")]
         public async Task BPost(CommandContext ctx, params string[] args)
         {
+            if (ctx.Guild.Id != 791393115097137171) {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
+                return;
+            }
             string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
             var contentFile = Bot.configJson.blogContent;
             int rssLineCount = 0;
