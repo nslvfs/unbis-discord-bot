@@ -11,17 +11,18 @@ namespace unbis_discord_bot.Commands
     {
         private static List<Model.PerChannelRoulette> rouletteData = new List<Model.PerChannelRoulette>();
 
-        SemaphoreSlim _semaphoregate = new SemaphoreSlim(1,1);
+        SemaphoreSlim _semaphoregate = new SemaphoreSlim(1, 1);
 
         [Command("roulette")]
         [Aliases("r")]
         [Description("Russischer Familienspaß")]
         public async Task Roulette(CommandContext ctx)
         {
-            try {
+            try
+            {
                 int index = 0;
                 await _semaphoregate.WaitAsync();
-                if(ctx.Channel.Id == 812403060416446474) //kiosk
+                if (ctx.Channel.Id == 812403060416446474) //kiosk
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nicht hier").ConfigureAwait(false);
                     _semaphoregate.Release();
@@ -52,10 +53,9 @@ namespace unbis_discord_bot.Commands
                 Console.WriteLine(e.Message);
             }
         }
-        private static async Task RouletteLogic(CommandContext ctx, int index)
+
+        private async Task RouletteLogic(CommandContext ctx, int index)
         {
-
-
             if (rouletteData[index].channelId == ctx.Channel.Id)
             {
                 if (rouletteData[index].revKammer == -1)
@@ -75,6 +75,7 @@ namespace unbis_discord_bot.Commands
                 {
                     rouletteData[index].revKammer = -1;
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
+                    _semaphoregate.Release();
                     if (ctx.Guild.Id == 791393115097137171)
                     {
                         var roleMuted = ctx.Guild.GetRole(807921762570469386);
@@ -86,7 +87,7 @@ namespace unbis_discord_bot.Commands
                     }
                 }
             }
-            
+
 
         }
     }
