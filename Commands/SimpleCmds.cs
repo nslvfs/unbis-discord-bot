@@ -48,8 +48,8 @@ namespace unbis_discord_bot.Commands
         [Description("Wie belastend ist es gerade")]
         public async Task Belastung(CommandContext ctx)
         {
-            
-           if(ctx.Member.Id == 134719067016658945)
+
+            if (ctx.Member.Id == 134719067016658945)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Es ist alles sehr belastend").ConfigureAwait(false);
                 return;
@@ -59,7 +59,7 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("nachti")]
-        [Aliases("guna", "n8")]
+        [Aliases("guna", "n8", "gn8")]
         [Description("Gute Nacht")]
         public async Task Nachti(CommandContext ctx)
         {
@@ -103,7 +103,7 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("mucke")]
-        [Aliases("music","musik")]
+        [Aliases("music", "musik")]
         [Description(".mucke Proxy")]
         public async Task Mucke(CommandContext ctx, params string[] args)
         {
@@ -188,11 +188,11 @@ namespace unbis_discord_bot.Commands
         public async Task Dice(CommandContext ctx, DiscordUser target)
         {
             int res = 100;
-            if(target.Id != 351514728734130177)
+            if (target.Id != 351514728734130177)
             {
                 res = Shared.GenerateRandomNumber(1, 100);
             }
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": "+ target.Mention + " ist " + res + "% durstig").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " ist " + res + "% durstig").ConfigureAwait(false);
         }
 
         private static async Task PingPongInternal(CommandContext ctx, string target)

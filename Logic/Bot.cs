@@ -73,6 +73,9 @@ namespace unbis_discord_bot
             });
 
             Commands = Client.UseCommandsNext(commandsConfig);
+            Commands.CommandExecuted += Commands_CommandExecuted;
+            Commands.CommandErrored += Commands_CommandErrored;
+            // Commands.SetHelpFormatter<Logic.HelpFormatter>();
             Commands.RegisterCommands<AdminCommands>();
             Commands.RegisterCommands<Flaschendrehen>();
             Commands.RegisterCommands<JaNein>();
@@ -83,8 +86,6 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<RssFeeds>();
             Commands.RegisterCommands<NslBlog>();
-            Commands.CommandExecuted += Commands_CommandExecuted;
-            Commands.CommandErrored += Commands_CommandErrored;
 
             Client.ClientErrored += Client_ClientError;
             Client.GuildAvailable += Client_GuildAvailable;
@@ -164,16 +165,34 @@ namespace unbis_discord_bot
                     await e.Message.DeleteAsync();
                 */
             }
+
+            var msgArr = e.Content.Split();
+            if (msgArr.Length >= 3)
+            {
+                if (msgArr[0] == "was" && msgArr[msgArr.Length - 1] == "sagt")
+                {
+                    string target = string.Empty;
+                    for (int i = 1; i <= msgArr.Length - 2; i++)
+                    {
+                        target = target + " " + msgArr[i];
+                    }
+
+                    target = target.Trim();
+                    await e.Channel.SendMessageAsync("das was " + target + " sagt").ConfigureAwait(false);
+                }
+            }
+
         }
 
         private static void ClearMessageCache()
         {
             var sender = Client;
-            while (true) { 
+            while (true)
+            {
                 ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
                 Thread.Sleep(1000 * 60 * 5);
             }
-            
+
         }
 
         public static void RemoveUserfromMessageArchiv(ulong userId)
@@ -191,9 +210,9 @@ namespace unbis_discord_bot
         {
 
             string[] badWords = new string[] { "cat", "katz", "k a t z", "kater", "karzer", "kätze", "cutze", "kâtze",
-                "kátze", "kàtze" , "kardse", "curtze", "quadsen", "𝕶𝖆𝖙", "𝔎𝔞𝔱", "k atze", "k_a_tze", "k4tz3", "kads", 
+                "kátze", "kàtze" , "kardse", "curtze", "quadsen", "𝕶𝖆𝖙", "𝔎𝔞𝔱", "k atze", "k_a_tze", "k4tz3", "kads",
                 "k4t", "k\na\nt\nz", "miau", "mauz", "miez", "gatze", ":cat2:", ":cat:", ":black_cat:", ":heart_eyes_cat:",
-                "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze", 
+                "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze",
                 "katže", "kazze", "kätz", "mieds", "kattze", "mîez", "mîezekåtze", "kitten", "kity", "kitties",
                 ":regional_indicator_k: :regional_indicator_a: :regional_indicator_t: :regional_indicator_z: :regional_indicator_e:",
                 "kudze", "kaatzee", "kazeh"};

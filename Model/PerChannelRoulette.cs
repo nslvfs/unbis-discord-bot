@@ -2,7 +2,7 @@
 {
     public class PerChannelRoulette
     {
-        public ulong  channelId { get; set; }
+        public ulong channelId { get; set; }
         public int revShots { get; set; }
         public int revKammer { get; set; }
         public PerChannelRoulette()

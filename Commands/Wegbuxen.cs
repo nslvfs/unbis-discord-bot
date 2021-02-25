@@ -20,13 +20,14 @@ namespace unbis_discord_bot.Commands
         public async Task Gegen(CommandContext ctx, DiscordUser target)
         {
             var running = false;
-            if(_semaphoregate.CurrentCount > 1) {
+            if (_semaphoregate.CurrentCount > 1)
+            {
                 running = true;
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Es läuft bereits eine Abstimmung!").ConfigureAwait(false);
             }
             await _semaphoregate.WaitAsync();
 
-            if(running)
+            if (running)
             {
                 _semaphoregate.Release();
                 return;

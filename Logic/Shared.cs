@@ -35,7 +35,8 @@ namespace unbis_discord_bot
 
             foreach (var msg in Bot.ArchivMessages)
             {
-                if(msg.ChannelId == ctx.Channel.Id) { 
+                if (msg.ChannelId == ctx.Channel.Id)
+                {
                     if (userList.Count > 0)
                     {
                         var found = false;
@@ -54,7 +55,7 @@ namespace unbis_discord_bot
                     else
                     {
                         userList.Add(msg.Author);
-                    }                    
+                    }
                 }
             }
             return userList;

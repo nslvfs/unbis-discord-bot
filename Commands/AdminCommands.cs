@@ -36,7 +36,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Member.Id == 807641560006000670 || ctx.Member.Id == 134719067016658945)
             {
-                foreach(var role in ctx.Member.Roles)
+                foreach (var role in ctx.Member.Roles)
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Role: " + role.Name + " Id: " + role.Id).ConfigureAwait(false);
                 }
@@ -69,11 +69,13 @@ namespace unbis_discord_bot.Commands
                 return;
             }
             var roleMuted = ctx.Guild.GetRole(807921762570469386);
-            try { 
+            try
+            {
                 await target.GrantRoleAsync(roleMuted);
                 Bot.RemoveUserfromMessageArchiv(target.Id);
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + e.Message).ConfigureAwait(false);
             }
@@ -102,11 +104,12 @@ namespace unbis_discord_bot.Commands
         public async Task SayTenTimes(CommandContext ctx, params string[] args)
         {
             string result = string.Empty;
-            foreach(var text in args)
+            foreach (var text in args)
             {
                 result = result + " " + text;
             }
-            for(var i = 0; i<=9;i++) { 
+            for (var i = 0; i <= 9; i++)
+            {
                 await ctx.Channel.SendMessageAsync(result).ConfigureAwait(false);
             }
         }
