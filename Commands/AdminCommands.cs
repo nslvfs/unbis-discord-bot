@@ -127,6 +127,20 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
         }
 
+        [Command("CryptoMode")]
+        [Description("Verschlüßelung herrscht")]
+        [RequireOwner]
+        public async Task CryptoMode(CommandContext ctx)
+        {
+            if (ctx.Guild.Id != 791393115097137171)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
+                return;
+            }
+            Bot.cryptoMode = !Bot.cryptoMode;
+            await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+        }
+
         [Command("s10")]
         [Description("Sagt etwas 10x")]
         [RequireOwner]

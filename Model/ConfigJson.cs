@@ -18,6 +18,9 @@ namespace unbis_discord_bot
 
         [JsonProperty("blogRss")]
         public string blogRss { get; private set; }
+
+        [JsonProperty("cryptoPwd")]
+        public string cryptoPwd { get; private set; }
     }
 }
 

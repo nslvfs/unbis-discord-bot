@@ -22,6 +22,7 @@ namespace unbis_discord_bot
     {
         public static bool silentMode { get; set; }
         public static bool randomMode { get; set; }
+        public static bool cryptoMode { get; set; }
         public static DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
@@ -165,6 +166,7 @@ namespace unbis_discord_bot
 
         private async Task Client_MessageHandling(DiscordClient sender, DiscordMessage e, DiscordGuild g)
         {
+            bool deleted = false;
             var Message = new Model.Message();
             if (!e.Author.IsBot)
             {
@@ -193,7 +195,25 @@ namespace unbis_discord_bot
                 if (checkBadWords(e.Content))
                 {
                     await e.DeleteAsync();
+                    deleted = true;
                     await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
+                }
+                if(cryptoMode && !deleted && !e.Author.IsBot)
+                {
+                    try
+                    {
+                        string message = e.Content;
+                        string author = ((DiscordMember)e.Author).DisplayName;
+                        string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+                        Console.WriteLine("Cleartext: " + dtNow + "| " + author + ": " + message);
+                        string encryptedstring = Logic.Encryption.Encrypt(message, configJson.cryptoPwd);
+                        await e.Channel.SendMessageAsync(author + ": " + encryptedstring).ConfigureAwait(false);
+                        await e.DeleteAsync();
+                    } catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                 }
             }
 
