@@ -22,7 +22,7 @@ namespace unbis_discord_bot.Commands
                 }
                 else
                 {
-                    await ctx.Channel.SendMessageAsync("Konfuzius sagt: " + temp.quotes[res]).ConfigureAwait(false);
+                    await ctx.Channel.SendMessageAsync(temp.quotes[res]).ConfigureAwait(false);
                 }
             }
             else
