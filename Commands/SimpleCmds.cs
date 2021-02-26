@@ -66,6 +66,13 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": guna schlagu").ConfigureAwait(false);
         }
 
+        [Command("gumo")]
+        [Description("Guten Morgen")]
+        public async Task Gumo(CommandContext ctx)
+        {
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Guten Morgen ❤ Erstma 🚬").ConfigureAwait(false);
+        }
+
         [Command("ping")]
         [Aliases("pong")]
         [Description("Ping!")]
