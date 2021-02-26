@@ -1,4 +1,5 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
@@ -98,6 +99,20 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
         }
 
+        [Command("Stille")]
+        [Description("Stille herrscht")]
+        [RequireOwner]
+        public async Task Stille(CommandContext ctx)
+        {
+            if (ctx.Guild.Id != 791393115097137171)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
+                return;
+            }
+            Bot.silentMode = !Bot.silentMode;
+            await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+        }
+
         [Command("s10")]
         [Description("Sagt etwas 10x")]
         [RequireOwner]
@@ -113,5 +128,36 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(result).ConfigureAwait(false);
             }
         }
+
+        [Command("sudo"), Description("sudo"), Hidden, RequireOwner]
+        public async Task Sudo(CommandContext ctx, [Description("Ziel")] DiscordMember member, [RemainingText, Description("Befehl")] string command)
+        {
+            await ctx.TriggerTypingAsync();
+            var cmds = ctx.CommandsNext;
+            var cmd = cmds.FindCommand(command, out var customArgs);
+            var fakeContext = cmds.CreateFakeContext(member, ctx.Channel, command, ctx.Prefix, cmd, customArgs);
+            await cmds.ExecuteCommandAsync(fakeContext);
+        }
+
+        [Command("nick"), Description("Nicknamen von dritten ändern"), RequirePermissions(Permissions.ManageNicknames)]
+        public async Task ChangeNickname(CommandContext ctx, [Description("Ziel")] DiscordMember member, [RemainingText, Description("Neuer Nick")] string new_nickname)
+        {
+            try
+            {
+                await member.ModifyAsync(x =>
+                {
+                    x.Nickname = new_nickname;
+                    x.AuditLogReason = $"Changed by {ctx.User.Username} ({ctx.User.Id}).";
+                });
+                var emoji = DiscordEmoji.FromName(ctx.Client, "o7");
+                await ctx.RespondAsync(emoji);
+            }
+            catch (Exception)
+            {
+                var emoji = DiscordEmoji.FromName(ctx.Client, ":c");
+                await ctx.RespondAsync(emoji);
+            }
+        }
     }
 }
+

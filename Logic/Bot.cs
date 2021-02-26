@@ -20,6 +20,7 @@ namespace unbis_discord_bot
 {
     public class Bot
     {
+        public static bool silentMode { get; set; }
         public static DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
@@ -119,6 +120,7 @@ namespace unbis_discord_bot
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
         {
             sender.Logger.LogInformation(BotEventId, "Client läuft");
+            silentMode = false;
             return Task.CompletedTask;
         }
 
@@ -177,10 +179,11 @@ namespace unbis_discord_bot
                     await e.DeleteAsync();
                     await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
                 }
-                /*
-                if(e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945)
-                    await e.Message.DeleteAsync();
-                */
+
+                if(e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode) { 
+                    await e.DeleteAsync();
+                }
+
             }
 
             var msgArr = e.Content.Split();
