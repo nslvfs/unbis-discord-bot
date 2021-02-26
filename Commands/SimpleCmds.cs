@@ -54,7 +54,7 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Es ist alles sehr belastend").ConfigureAwait(false);
                 return;
             }
-            var res = Shared.GenerateRandomNumber(1, 100);
+            var res = Shared.GenerateRandomNumber(80, 100);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + res + "%").ConfigureAwait(false);
         }
 
