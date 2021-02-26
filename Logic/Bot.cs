@@ -44,6 +44,7 @@ namespace unbis_discord_bot
                     DiscordIntents.GuildBans |
                     DiscordIntents.GuildMembers |
                     DiscordIntents.GuildWebhooks |
+                    DiscordIntents.GuildPresences |
                     DiscordIntents.Guilds |
                     DiscordIntents.GuildMessageReactions,
                 AutoReconnect = true,
@@ -72,6 +73,13 @@ namespace unbis_discord_bot
                 Timeout = TimeSpan.FromMinutes(2)
             });
 
+            Client.ClientErrored += Client_ClientError;
+            Client.GuildAvailable += Client_GuildAvailable;
+            Client.MessageCreated += Client_MessageCreated;
+            Client.MessageUpdated += Client_MessageUpdated;
+            Client.MessageReactionAdded += Client_ReactionAdded;
+            Client.GuildMemberUpdated += Client_GuildMemberUpdated;
+
             Commands = Client.UseCommandsNext(commandsConfig);
             Commands.CommandExecuted += Commands_CommandExecuted;
             Commands.CommandErrored += Commands_CommandErrored;
@@ -87,16 +95,25 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<RssFeeds>();
             Commands.RegisterCommands<NslBlog>();
 
-            Client.ClientErrored += Client_ClientError;
-            Client.GuildAvailable += Client_GuildAvailable;
-            Client.MessageCreated += Client_MessageCreated;
-            Client.MessageUpdated += Client_MessageUpdated;
-
             var _messageCache = Task.Factory.StartNew(() => ClearMessageCache());
 
             await Client.ConnectAsync();
 
             await Task.Delay(-1);
+        }
+
+        private Task Client_ReactionAdded(DiscordClient sender, MessageReactionAddEventArgs e)
+        {
+            var Message = new Model.Message();
+            if (!e.User.IsBot)
+            {
+                Message.Author = e.User;
+                Message.AuthorId = e.User.Id;
+                Message.ChannelId = e.Channel.Id;
+                Message.Timestamp = e.Emoji.CreationTimestamp;
+                ArchivMessages.Add(Message);
+            }
+            return Task.CompletedTask;
         }
 
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
@@ -182,6 +199,28 @@ namespace unbis_discord_bot
                 }
             }
 
+        }
+
+        private async Task Client_GuildMemberUpdated(DiscordClient sender, GuildMemberUpdateEventArgs e)
+        {
+            if (e.Guild.Id == 791393115097137171)
+            {
+                if (checkBadWords(e.NicknameAfter))
+                {
+                    try
+                    {
+                        await e.Member.ModifyAsync(x =>
+                        {
+                            x.Nickname = "hurensohn";
+                            x.AuditLogReason = "Automatisch + Vorher:" + e.NicknameBefore + "Nachher: " + e.NicknameAfter;
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
         }
 
         private static void ClearMessageCache()
