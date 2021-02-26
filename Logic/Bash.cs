@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
-using System.IO;
 
 namespace unbis_discord_bot.Logic
 {
