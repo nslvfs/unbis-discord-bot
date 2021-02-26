@@ -177,13 +177,13 @@ namespace unbis_discord_bot.Commands
                     x.Nickname = new_nickname;
                     x.AuditLogReason = $"Changed by {ctx.User.Username} ({ctx.User.Id}).";
                 });
-                var emoji = DiscordEmoji.FromName(ctx.Client, "o7");
-                await ctx.RespondAsync(emoji);
+                await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var emoji = DiscordEmoji.FromName(ctx.Client, ":c");
-                await ctx.RespondAsync(emoji);
+                System.Console.WriteLine(ex.Message);
+                await ctx.Channel.SendMessageAsync(":C").ConfigureAwait(false);
             }
         }
     }
