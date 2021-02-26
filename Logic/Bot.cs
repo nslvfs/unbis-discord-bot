@@ -21,6 +21,7 @@ namespace unbis_discord_bot
     public class Bot
     {
         public static bool silentMode { get; set; }
+        public static bool randomMode { get; set; }
         public static DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
@@ -121,6 +122,7 @@ namespace unbis_discord_bot
         {
             sender.Logger.LogInformation(BotEventId, "Client läuft");
             silentMode = false;
+            randomMode = false;
             return Task.CompletedTask;
         }
 
@@ -174,16 +176,25 @@ namespace unbis_discord_bot
             }
             if (g.Id == 791393115097137171)
             {
+                if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode)
+                {
+                    await e.DeleteAsync();
+                }
+                if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && randomMode && !e.Author.IsBot)
+                {
+                    string rnd = Shared.GenerateRandomNumber(1000, 9999).ToString();
+
+                    await ((DiscordMember)e.Author).ModifyAsync(x =>
+                    {
+                        x.Nickname = rnd;
+                        x.AuditLogReason = $"Changed by Random.Mode).";
+                    });
+                }
                 if (checkBadWords(e.Content))
                 {
                     await e.DeleteAsync();
                     await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
                 }
-
-                if(e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode) { 
-                    await e.DeleteAsync();
-                }
-
             }
 
             var msgArr = e.Content.Split();
