@@ -205,10 +205,11 @@ namespace unbis_discord_bot
                         string message = e.Content;
                         string author = ((DiscordMember)e.Author).DisplayName;
                         string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+                        await e.DeleteAsync();
                         Console.WriteLine("Cleartext: " + dtNow + "| " + author + ": " + message);
                         string encryptedstring = Logic.Encryption.Encrypt(message, configJson.cryptoPwd);
                         await e.Channel.SendMessageAsync(author + ": " + encryptedstring).ConfigureAwait(false);
-                        await e.DeleteAsync();
+                        
                     } catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
