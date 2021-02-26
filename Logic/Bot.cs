@@ -257,6 +257,8 @@ namespace unbis_discord_bot
                 "kudze", "kaatzee", "kazeh", "|<atz"};
             foreach (var item in badWords)
             {
+                if (Message.ToLower().Contains(item))
+                    return true;
                 var msg = Regex.Replace(Message.ToLower(), @"([^\w]|_)", "");
                 if (msg.Contains(item))
                     return true;
