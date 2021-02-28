@@ -67,7 +67,6 @@ namespace unbis_discord_bot.Commands
 
                 if (photo.Width < ResizeWidth && photo.Height < ResizeHeight)
                 {
-                    // keep the image the same size since it is already smaller than our max width/height
                     scaleFactor = 1.0;
                 }
                 else
@@ -102,7 +101,6 @@ namespace unbis_discord_bot.Commands
                             EncoderParameters encoderParameters;
                             using (encoderParameters = new EncoderParameters(1))
                             {
-                                // use jpeg info[1] and set quality to 90
                                 encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, 100L);
                                 bmp.Save("temp.jpg", info[1], encoderParameters);
                             }
