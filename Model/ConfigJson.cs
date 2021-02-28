@@ -21,6 +21,9 @@ namespace unbis_discord_bot
 
         [JsonProperty("cryptoPwd")]
         public string cryptoPwd { get; private set; }
+
+        [JsonProperty("xSichterPath")]
+        public string xSichterPath { get; private set; }
     }
 }
 

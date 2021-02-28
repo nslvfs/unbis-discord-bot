@@ -57,9 +57,13 @@ namespace unbis_discord_bot.Commands
             for (int i = 0; i <= anz - 1; i++)
             {
                 var item = temp[i];
-                if (item.Title.Length > 2048)
+                string content = item.Title + "\n\n" + item.Description;
+
+
+
+                if (content.Length > 2048)
                 {
-                    item.Title.Substring(0, 2048);
+                    content.Substring(0, 2048);
                 }
                 System.Uri imgLink = null;
                 foreach (var link in item.Links)
@@ -72,9 +76,9 @@ namespace unbis_discord_bot.Commands
                 }
                 var embed = new DiscordEmbedBuilder
                 {
-                    Title = item.Title + " " + item.Id,
+                    Title = item.Id,
                     ImageUrl = imgLink.ToString(),
-                    Description = item.Description,
+                    Description = content,
                     Color = new DiscordColor(0xFF0000)
                 };
                 await ctx.Channel.SendMessageAsync(embed).ConfigureAwait(false);

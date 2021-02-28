@@ -97,6 +97,7 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<RssFeeds>();
             Commands.RegisterCommands<NslBlog>();
+            Commands.RegisterCommands<XSichter>();
 
             var _messageCache = Task.Factory.StartNew(() => ClearMessageCache());
 
