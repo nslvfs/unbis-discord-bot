@@ -18,7 +18,10 @@ namespace unbis_discord_bot.Commands
         {
             var files = Directory.GetFiles(Bot.configJson.xSichterPath, "*.*", SearchOption.AllDirectories);
             var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
-
+            if (maxMemeWidth > 1000)
+            {
+                maxMemeWidth = 1000;
+            }
             Image photo = new Bitmap(files[rndIndex]);
             var divisor = photo.Width / 1000;
             var newHeight = photo.Height / divisor;
@@ -42,7 +45,10 @@ namespace unbis_discord_bot.Commands
         {
             var files = Directory.GetFiles(Bot.configJson.xSichterPath, "*.*", SearchOption.AllDirectories);
             var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
-
+            if (maxMemeWidth > 1000)
+            {
+                maxMemeWidth = 1000;
+            }
             Image photo = new Bitmap(files[rndIndex]);
             var divisor = photo.Width / 1000;
             var newHeight = photo.Height / divisor;
