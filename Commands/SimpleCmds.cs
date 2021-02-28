@@ -211,7 +211,7 @@ namespace unbis_discord_bot.Commands
             {
                 res = Shared.GenerateRandomNumber(1, 30);
             }
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " ist " + res + "% Normi").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " ist " + res + "% Normie").ConfigureAwait(false);
         }
 
         private static async Task PingPongInternal(CommandContext ctx, string target)
