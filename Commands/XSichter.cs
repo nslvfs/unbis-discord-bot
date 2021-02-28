@@ -14,8 +14,9 @@ namespace unbis_discord_bot.Commands
         [Command("xsichter")]
         [Aliases("xs")]
         [Description("Random xSicht")]
-        public async Task RndXSichter(CommandContext ctx, int maxMemeWidth = 500)
+        public async Task RndXSichter(CommandContext ctx)
         {
+            int maxMemeWidth = 500;
             var files = Directory.GetFiles(Bot.configJson.xSichterPath, "*.*", SearchOption.AllDirectories);
             var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
             if (maxMemeWidth > 1000)
@@ -41,8 +42,9 @@ namespace unbis_discord_bot.Commands
         [Command("dxsichter")]
         [Aliases("dxs")]
         [Description("Random distorted xSicht")]
-        public async Task RndDXSichter(CommandContext ctx, int maxMemeWidth = 500)
+        public async Task RndDXSichter(CommandContext ctx)
         {
+            int maxMemeWidth = 500;
             var files = Directory.GetFiles(Bot.configJson.xSichterPath, "*.*", SearchOption.AllDirectories);
             var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
             if (maxMemeWidth > 1000)
