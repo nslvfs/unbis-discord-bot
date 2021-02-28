@@ -290,9 +290,11 @@ namespace unbis_discord_bot
                 "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze",
                 "katže", "kazze", "kätz", "mieds", "kattze", "mîez", "mîezekåtze", "kitten", "kity", "kitties",
                 ":regional_indicator_k: :regional_indicator_a: :regional_indicator_t: :regional_indicator_z: :regional_indicator_e:",
-                "kudze", "kaatzee", "kazeh", "|<atz", "🐈"};
+                "kudze", "kaatzee", "kazeh", "|<atz", "🐈", "gartzen", "gardsen", "cutsen", "kaaatzeeeen", "ќáꮀźëň" };
             foreach (var item in badWords)
             {
+                if (Message.Contains(item))
+                    return true;
                 if (Message.ToLower().Contains(item))
                     return true;
                 var msg = Regex.Replace(Message.ToLower(), @"([^\w]|_)", "");
