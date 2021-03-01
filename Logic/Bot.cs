@@ -218,6 +218,29 @@ namespace unbis_discord_bot
 
                 }
             }
+            if (e.Content.StartsWith(".kiss") || e.Content.StartsWith(".kizz"))
+            {
+                var userIds = e.MentionedUsers;
+                foreach(var userID in userIds)
+                {
+                    if(userID.Id == 134719067016658945)
+                    {
+                        await e.Channel.SendMessageAsync(e.Author.Mention + " 10 Minuten gemuted wegen hasssprech").ConfigureAwait(false);
+
+                        if (g.Id == 791393115097137171)
+                        {
+                            _ = Mute(e, g);
+                            /*
+                            var roleMuted = g.GetRole(807921762570469386);
+                            await ((DiscordMember)e.Author).GrantRoleAsync(roleMuted);
+                            Bot.RemoveUserfromMessageArchiv(e.Author.Id);
+                            Thread.Sleep(1000 * 60 * 10); // 10 Min
+                            await ((DiscordMember)e.Author).RevokeRoleAsync(roleMuted);
+                            await e.Channel.SendMessageAsync(e.Author.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);*/
+                        }
+                    }
+                }
+            }
 
             var msgArr = e.Content.Split();
             if (msgArr.Length >= 3)
@@ -290,7 +313,7 @@ namespace unbis_discord_bot
                 "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze",
                 "katže", "kazze", "kätz", "mieds", "kattze", "mîez", "mîezekåtze", "kitten", "kity", "kitties",
                 ":regional_indicator_k: :regional_indicator_a: :regional_indicator_t: :regional_indicator_z: :regional_indicator_e:",
-                "kudze", "kaatzee", "kazeh", "|<atz", "🐈", "gartzen", "gardsen", "cutsen", "kaaatzeeeen", "ќáꮀźëň", "schnoppo" };
+                "kudze", "kaatzee", "kazeh", "|<atz", "🐈", "gartzen", "gardsen", "cutsen", "kaaatzeeeen", "ќáꮀźëň", "schnoppo", "cätzchen" };
             foreach (var item in badWords)
             {
                 if (Message.Contains(item))
@@ -302,6 +325,16 @@ namespace unbis_discord_bot
                     return true;
             }
             return false;
+        }
+
+        private async Task Mute(DiscordMessage e, DiscordGuild g)
+        {
+            var roleMuted = g.GetRole(807921762570469386);
+            await ((DiscordMember)e.Author).GrantRoleAsync(roleMuted);
+            Bot.RemoveUserfromMessageArchiv(e.Author.Id);
+            Thread.Sleep(1000 * 60 * 10); // 10 Min
+            await ((DiscordMember)e.Author).RevokeRoleAsync(roleMuted);
+            await e.Channel.SendMessageAsync(e.Author.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
         }
     }
 }
