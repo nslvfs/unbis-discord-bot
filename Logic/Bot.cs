@@ -93,6 +93,7 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<Quotes>();
             Commands.RegisterCommands<RussischRoulette>();
             Commands.RegisterCommands<SimpleCmds>();
+            Commands.RegisterCommands<Gurgle>();
             Commands.RegisterCommands<Urls>();
             Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<RssFeeds>();
@@ -311,7 +312,7 @@ namespace unbis_discord_bot
                 "kátze", "kàtze" , "kardse", "curtze", "quadsen", "𝕶𝖆𝖙", "𝔎𝔞𝔱", "k atze", "k_a_tze", "k4tz3", "kads",
                 "k4t", "k\na\nt\nz", "miau", "mauz", "miez", "gatze", ":cat2:", ":cat:", ":black_cat:", ":heart_eyes_cat:",
                 "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze",
-                "katže", "kazze", "kätz", "mieds", "kattze", "mîez", "mîezekåtze", "kitten", "kity", "kitties",
+                "katže", "kazze", "kätz", "mieds", "kattze", "mîez", "mîezekåtze", "kitten", "kity", "kitties", "gatto",
                 ":regional_indicator_k: :regional_indicator_a: :regional_indicator_t: :regional_indicator_z: :regional_indicator_e:",
                 "kudze", "kaatzee", "kazeh", "|<atz", "🐈", "gartzen", "gardsen", "cutsen", "kaaatzeeeen", "ќáꮀźëň", "schnoppo", "cät" };
             foreach (var item in badWords)

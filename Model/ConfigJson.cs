@@ -24,6 +24,9 @@ namespace unbis_discord_bot
 
         [JsonProperty("xSichterPath")]
         public string xSichterPath { get; private set; }
+
+        [JsonProperty("gurgleApi")]
+        public string gurgleApi { get; private set; }
     }
 }
 
