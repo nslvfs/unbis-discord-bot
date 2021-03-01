@@ -21,7 +21,8 @@ namespace unbis_discord_bot.Commands
 
             using (StreamWriter w = File.AppendText(fileName))
             {
-                foreach(var newline in args) { 
+                foreach (var newline in args)
+                {
                     w.WriteLine(newline.Trim());
                 }
             }
