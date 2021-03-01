@@ -62,7 +62,12 @@ namespace unbis_discord_bot.Commands
             foreach (var resultItem in response.Items)
             {
                 i++;
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Link);
+                if (!resultItem.Link.ToString().StartsWith("x-raw-image")) { 
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Link);
+                } else
+                {
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Image.ThumbnailLink);
+                }
                 if (i == 3) break;
             }
 
