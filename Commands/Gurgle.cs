@@ -40,7 +40,7 @@ namespace unbis_discord_bot.Commands
         [Description("google bild halt du depp")]
         public async Task GoogleBild(CommandContext ctx, [RemainingText] string qry)
         {
-            var request = new WebSearchRequest
+            var request = new GoogleApi.Entities.Search.Image.Request.ImageSearchRequest
             {
                 Key = Bot.configJson.gurgleApi,
                 Query = qry,
