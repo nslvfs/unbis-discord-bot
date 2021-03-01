@@ -10,7 +10,7 @@ namespace unbis_discord_bot.Commands
         [Command("addbadwort")]
         [Aliases("abw")]
         [RequireOwner]
-        public async Task QuoteAdd(CommandContext ctx, params string[] args)
+        public async Task AddBadWord(CommandContext ctx, params string[] args)
         {
             var fileName = Bot.configJson.badwords; ;
 
