@@ -21,8 +21,7 @@ namespace unbis_discord_bot.Commands
             {
                 Key = Bot.configJson.gurgleApi,
                 Query = qry,
-                SearchEngineId = "6af40d513c97bb21f"
-
+                SearchEngineId = Bot.configJson.gurgleSeachEngineId
             };
             var response = await GoogleSearch.WebSearch.QueryAsync(request);
             
@@ -34,6 +33,29 @@ namespace unbis_discord_bot.Commands
                 if (i == 3) break;
             }
             
+        }
+
+        [Command("gbild")]
+        [Aliases("gb")]
+        [Description("google bild halt du depp")]
+        public async Task GoogleBild(CommandContext ctx, [RemainingText] string qry)
+        {
+            var request = new WebSearchRequest
+            {
+                Key = Bot.configJson.gurgleApi,
+                Query = qry,
+                SearchEngineId = Bot.configJson.gurgleSeachEngineId
+            };
+            var response = await GoogleSearch.WebSearch.QueryAsync(request);
+
+            int i = 0;
+            foreach (var resultItem in response.Items)
+            {
+                i++;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Link);
+                if (i == 3) break;
+            }
+
         }
     }
 }

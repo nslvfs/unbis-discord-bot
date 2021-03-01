@@ -6,5 +6,7 @@
   "blogRss": "/var/www/html/rss.txt",
   "cryptoPwd": "changemeplsokay",
   "xSichterPath": "/var/www/xSichter/pics/",
-  "gurgleApi":  ""
+  "gurgleApi": "",
+  "gurgleSeachEngineId": ""
+
 }

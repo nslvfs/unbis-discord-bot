@@ -27,6 +27,10 @@ namespace unbis_discord_bot
 
         [JsonProperty("gurgleApi")]
         public string gurgleApi { get; private set; }
+
+        [JsonProperty("gurgleSeachEngineId")]
+        public string gurgleSeachEngineId { get; private set; }
+        
     }
 }
 
