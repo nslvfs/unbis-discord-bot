@@ -17,6 +17,11 @@ namespace unbis_discord_bot.Commands
         [Description("google halt du depp")]
         public async Task Google(CommandContext ctx, [RemainingText] string qry)
         {
+            if(!Bot.googlemode && !ctx.Member.IsOwner)
+            {
+                await ctx.Channel.SendMessageAsync("nope").ConfigureAwait(false);
+                return;
+            }
             var request = new WebSearchRequest
             {
                 Key = Bot.configJson.gurgleApi,
@@ -40,6 +45,11 @@ namespace unbis_discord_bot.Commands
         [Description("google bild halt du depp")]
         public async Task GoogleBild(CommandContext ctx, [RemainingText] string qry)
         {
+            if (!Bot.googlemode && !ctx.Member.IsOwner)
+            {
+                await ctx.Channel.SendMessageAsync("nope").ConfigureAwait(false);
+                return;
+            }
             var request = new GoogleApi.Entities.Search.Image.Request.ImageSearchRequest
             {
                 Key = Bot.configJson.gurgleApi,

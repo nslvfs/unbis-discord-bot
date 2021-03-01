@@ -20,6 +20,7 @@ namespace unbis_discord_bot
 {
     public class Bot
     {
+        public static bool googlemode { get; set; }
         public static bool silentMode { get; set; }
         public static bool randomMode { get; set; }
         public static bool cryptoMode { get; set; }
@@ -311,10 +312,11 @@ namespace unbis_discord_bot
             string[] badWords = new string[] { "cat", "katz", "k a t z", "kater", "karzer", "kätze", "cutze", "kâtze",
                 "kátze", "kàtze" , "kardse", "curtze", "quadsen", "𝕶𝖆𝖙", "𝔎𝔞𝔱", "k atze", "k_a_tze", "k4tz3", "kads",
                 "k4t", "k\na\nt\nz", "miau", "mauz", "miez", "gatze", ":cat2:", ":cat:", ":black_cat:", ":heart_eyes_cat:",
-                "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze",
+                "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze", "scottish fold",
                 "katže", "kazze", "kätz", "mieds", "kattze", "mîez", "mîezekåtze", "kitten", "kity", "kitties", "gatto", "meow",
                 ":regional_indicator_k: :regional_indicator_a: :regional_indicator_t: :regional_indicator_z: :regional_indicator_e:",
-                "kudze", "kaatzee", "kazeh", "|<atz", "🐈", "gartzen", "gardsen", "cutsen", "kaaatzeeeen", "ќáꮀźëň", "schnoppo", "cät", "Кот" };
+                "kudze", "kaatzee", "kazeh", "|<atz", "🐈", "gartzen", "gardsen", "cutsen", "kaaatzeeeen", "ќáꮀźëň", "schnoppo", "cät", "Кот",
+                "nekomimi", "maine coon"};
             foreach (var item in badWords)
             {
                 if (Message.Contains(item))

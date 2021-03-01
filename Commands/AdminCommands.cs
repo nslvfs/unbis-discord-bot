@@ -141,6 +141,16 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
         }
 
+        [Command("gmode")]
+        [Aliases("gm")]
+        [RequireOwner]
+        [Description("google an aus")]
+        public async Task GoogleMode(CommandContext ctx, [RemainingText] string qry)
+        {
+            Bot.googlemode = !Bot.googlemode;
+            await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+        }
+
         [Command("s10")]
         [Description("Sagt etwas 10x")]
         [RequireOwner]
