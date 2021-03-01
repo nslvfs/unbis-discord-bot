@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GoogleApi;
-using GoogleApi.Entities.Search.Common;
-using DSharpPlus.CommandsNext;
-using GoogleApi.Entities.Search.Web.Request;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using GoogleApi;
+using GoogleApi.Entities.Search.Web.Request;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
@@ -17,7 +13,7 @@ namespace unbis_discord_bot.Commands
         [Description("google halt du depp")]
         public async Task Google(CommandContext ctx, [RemainingText] string qry)
         {
-            if(!Bot.googlemode && !ctx.Member.IsOwner)
+            if (!Bot.googlemode && !ctx.Member.IsOwner)
             {
                 await ctx.Channel.SendMessageAsync("nope").ConfigureAwait(false);
                 return;
@@ -29,7 +25,7 @@ namespace unbis_discord_bot.Commands
                 SearchEngineId = Bot.configJson.gurgleSeachEngineId
             };
             var response = await GoogleSearch.WebSearch.QueryAsync(request);
-            
+
             int i = 0;
             foreach (var resultItem in response.Items)
             {
@@ -37,7 +33,7 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.FormattedUrl);
                 if (i == 3) break;
             }
-            
+
         }
 
         [Command("gbild")]
@@ -62,9 +58,11 @@ namespace unbis_discord_bot.Commands
             foreach (var resultItem in response.Items)
             {
                 i++;
-                if (!resultItem.Link.ToString().StartsWith("x-raw-image")) { 
+                if (!resultItem.Link.ToString().StartsWith("x-raw-image"))
+                {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Link);
-                } else
+                }
+                else
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Image.ThumbnailLink);
                 }
