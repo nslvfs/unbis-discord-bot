@@ -89,16 +89,17 @@ namespace unbis_discord_bot
             Commands.CommandErrored += Commands_CommandErrored;
             // Commands.SetHelpFormatter<Logic.HelpFormatter>();
             Commands.RegisterCommands<AdminCommands>();
+            Commands.RegisterCommands<BadWords>();
             Commands.RegisterCommands<Flaschendrehen>();
-            Commands.RegisterCommands<JaNein>();
-            Commands.RegisterCommands<Quotes>();
-            Commands.RegisterCommands<RussischRoulette>();
-            Commands.RegisterCommands<SimpleCmds>();
             Commands.RegisterCommands<Gurgle>();
+            Commands.RegisterCommands<JaNein>();
+            Commands.RegisterCommands<NslBlog>();
+            Commands.RegisterCommands<Quotes>();
+            Commands.RegisterCommands<RssFeeds>();
+            Commands.RegisterCommands<RussischRoulette>();
+            Commands.RegisterCommands<SimpleCmds>();           
             Commands.RegisterCommands<Urls>();
             Commands.RegisterCommands<Wegbuxen>();
-            Commands.RegisterCommands<RssFeeds>();
-            Commands.RegisterCommands<NslBlog>();
             Commands.RegisterCommands<XSichter>();
 
             var _messageCache = Task.Factory.StartNew(() => ClearMessageCache());
@@ -308,22 +309,26 @@ namespace unbis_discord_bot
 
         private static bool checkBadWords(string Message)
         {
-
-            string[] badWords = new string[] { "cat", "katz", "k a t z", "kater", "karzer", "kätze", "cutze", "kâtze",
-                "kátze", "kàtze" , "kardse", "curtze", "quadsen", "𝕶𝖆𝖙", "𝔎𝔞𝔱", "k atze", "k_a_tze", "k4tz3", "kads",
-                "k4t", "k\na\nt\nz", "miau", "mauz", "miez", "gatze", ":cat2:", ":cat:", ":black_cat:", ":heart_eyes_cat:",
-                "🇰🇦", "🇿🇪", "𝖟𝖊", "|<atze", "|</-\\tze", "qadse", "quadse", "koschka", "kxaxtxzxe", "|<atze", "k4tze", "scottish fold",
-                "katže", "kazze", "kätz", "mieds", "kattze", "mîez", "mîezekåtze", "kitten", "kity", "kitties", "gatto", "meow",
-                ":regional_indicator_k: :regional_indicator_a: :regional_indicator_t: :regional_indicator_z: :regional_indicator_e:",
-                "kudze", "kaatzee", "kazeh", "|<atz", "🐈", "gartzen", "gardsen", "cutsen", "kaaatzeeeen", "ќáꮀźëň", "schnoppo", "cät", "Кот",
-                "nekomimi", "maine coon"};
+            var fileName = configJson.badwords;
+            var badWords = new List<string>();
+            if (File.Exists(fileName))
+            {
+                foreach (var line in File.ReadLines(fileName))
+                {
+                    badWords.Add(line);
+                }
+            }
+            else
+            {
+                File.Create(fileName).Dispose();
+            }
             foreach (var item in badWords)
             {
                 if (Message.Contains(item))
                     return true;
-                if (Message.ToLower().Contains(item))
+                if (Message.ToLower().Contains(item.ToLower()))
                     return true;
-                var msg = Regex.Replace(Message.ToLower(), @"([^\w]|_)", "");
+                var msg = Regex.Replace(Message, @"([^\w]|_)", "");
                 if (msg.Contains(item))
                     return true;
             }

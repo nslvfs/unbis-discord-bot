@@ -7,5 +7,6 @@
   "cryptoPwd": "changemeplsokay",
   "xSichterPath": "/var/www/xSichter/pics/",
   "gurgleApi": "",
-  "gurgleSeachEngineId": ""
+  "gurgleSeachEngineId": "",
+  "badwords": "badwords.txt"
 }

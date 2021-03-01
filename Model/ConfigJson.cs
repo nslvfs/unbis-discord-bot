@@ -30,7 +30,10 @@ namespace unbis_discord_bot
 
         [JsonProperty("gurgleSeachEngineId")]
         public string gurgleSeachEngineId { get; private set; }
-        
+
+        [JsonProperty("badwords")]
+        public string badwords { get; private set; }
+
     }
 }
 
