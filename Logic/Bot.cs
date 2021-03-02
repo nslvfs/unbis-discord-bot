@@ -184,6 +184,7 @@ namespace unbis_discord_bot
             {
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode)
                 {
+                    _ = Mute(e, g, 3);
                     await e.DeleteAsync();
                 }
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && randomMode && !e.Author.IsBot)
@@ -228,18 +229,9 @@ namespace unbis_discord_bot
                 {
                     if(userID.Id == 134719067016658945)
                     {
-                        await e.Channel.SendMessageAsync(e.Author.Mention + " 10 Minuten gemuted wegen hasssprech").ConfigureAwait(false);
-
                         if (g.Id == 791393115097137171)
                         {
                             _ = Mute(e, g);
-                            /*
-                            var roleMuted = g.GetRole(807921762570469386);
-                            await ((DiscordMember)e.Author).GrantRoleAsync(roleMuted);
-                            Bot.RemoveUserfromMessageArchiv(e.Author.Id);
-                            Thread.Sleep(1000 * 60 * 10); // 10 Min
-                            await ((DiscordMember)e.Author).RevokeRoleAsync(roleMuted);
-                            await e.Channel.SendMessageAsync(e.Author.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);*/
                         }
                     }
                 }
@@ -335,12 +327,13 @@ namespace unbis_discord_bot
             return false;
         }
 
-        private async Task Mute(DiscordMessage e, DiscordGuild g)
+        public static async Task Mute(DiscordMessage e, DiscordGuild g, int durationMin = 10)
         {
             var roleMuted = g.GetRole(807921762570469386);
             await ((DiscordMember)e.Author).GrantRoleAsync(roleMuted);
             Bot.RemoveUserfromMessageArchiv(e.Author.Id);
-            Thread.Sleep(1000 * 60 * 10); // 10 Min
+            await e.Channel.SendMessageAsync(e.Author.Mention + " jetzt für " + durationMin + " Minuten gemuted").ConfigureAwait(false);
+            Thread.Sleep(1000 * 60 * durationMin);
             await ((DiscordMember)e.Author).RevokeRoleAsync(roleMuted);
             await e.Channel.SendMessageAsync(e.Author.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
         }

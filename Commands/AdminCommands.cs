@@ -69,20 +69,7 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            var roleMuted = ctx.Guild.GetRole(807921762570469386);
-            try
-            {
-                await target.GrantRoleAsync(roleMuted);
-                Bot.RemoveUserfromMessageArchiv(target.Id);
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt gemuted").ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + e.Message).ConfigureAwait(false);
-            }
-            Thread.Sleep(1000 * 10 * 60); // 10 minuten
-            await target.RevokeRoleAsync(roleMuted);
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
+            _ = Bot.Mute(ctx.Message, ctx.Guild);
         }
 
         [Command("kick")]
