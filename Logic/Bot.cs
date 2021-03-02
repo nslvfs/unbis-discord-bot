@@ -182,7 +182,7 @@ namespace unbis_discord_bot
             }
             if (g.Id == 791393115097137171)
             {
-                if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode)
+                if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode && e.Channel.Id != 812403060416446474)
                 {
                     _ = Mute(e, g, 3);
                     await e.DeleteAsync();
