@@ -39,6 +39,7 @@ namespace unbis_discord_bot
                 json = sr.ReadToEnd();
 
             configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            googlemode = true;
 
             var config = new DiscordConfiguration
             {
