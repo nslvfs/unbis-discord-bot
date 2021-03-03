@@ -203,6 +203,7 @@ namespace unbis_discord_bot
                     await e.DeleteAsync();
                     deleted = true;
                     await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
+                    _ = Mute(e, g, 7);
                 }
                 if(cryptoMode && !deleted && !e.Author.IsBot)
                 {
