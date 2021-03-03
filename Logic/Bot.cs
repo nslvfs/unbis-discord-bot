@@ -21,6 +21,7 @@ namespace unbis_discord_bot
     public class Bot
     {
         public static bool googlemode { get; set; }
+        public static bool doCheckBadWords { get; set; }
         public static bool silentMode { get; set; }
         public static bool randomMode { get; set; }
         public static bool cryptoMode { get; set; }
@@ -39,7 +40,9 @@ namespace unbis_discord_bot
                 json = sr.ReadToEnd();
 
             configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+
             googlemode = true;
+            doCheckBadWords = true;
 
             var config = new DiscordConfiguration
             {
@@ -305,6 +308,10 @@ namespace unbis_discord_bot
 
         public static bool checkBadWords(string Message)
         {
+            if(!doCheckBadWords)
+            {
+                return false;
+            }
             var fileName = configJson.badwords;
             var badWords = new List<string>();
             if (File.Exists(fileName))

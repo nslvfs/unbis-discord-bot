@@ -3,6 +3,9 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -138,6 +141,16 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
         }
 
+        [Command("bwmode")]
+        [Aliases("bwm")]
+        [RequireOwner]
+        [Description("Badword-Filter an aus")]
+        public async Task Badwordmode(CommandContext ctx, [RemainingText] string qry)
+        {
+            Bot.doCheckBadWords = !Bot.doCheckBadWords;
+            await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+        }
+
         [Command("s10")]
         [Description("Sagt etwas 10x")]
         [RequireOwner]
@@ -182,6 +195,46 @@ namespace unbis_discord_bot.Commands
                 System.Console.WriteLine(ex.Message);
                 await ctx.Channel.SendMessageAsync(":C").ConfigureAwait(false);
             }
+        }
+
+        [Command("validate")]
+        [Aliases("vd")]
+        [RequireOwner]
+        [Description("validiert")]
+        public async Task ValidateBadwords(CommandContext ctx, [RemainingText] string qry)
+        {
+            Bot.doCheckBadWords = false;
+            var fileName = Bot.configJson.badwords;
+            var badWords = new List<string>();
+            if (File.Exists(fileName))
+            {
+                foreach (var line in File.ReadLines(fileName))
+                {
+                    badWords.Add(line);
+                }
+            }
+            else
+            {
+                File.Create(fileName).Dispose();
+            }
+            foreach (var item in badWords)
+            {
+                if (ctx.Message.Content.Contains(item))
+                {
+                    await ctx.Channel.SendMessageAsync(item).ConfigureAwait(false);
+                    return;
+                }
+                if (ctx.Message.Content.ToLower().Contains(item.ToLower())) { 
+                    await ctx.Channel.SendMessageAsync(item).ConfigureAwait(false);
+                    return;
+                }
+                var msg = Regex.Replace(ctx.Message.Content, @"([^\w]|_)", "");
+                if (msg.Contains(item)) {
+                    await ctx.Channel.SendMessageAsync(item).ConfigureAwait(false);
+                    return;
+                }
+            }
+            await ctx.Channel.SendMessageAsync("Alles Ok!").ConfigureAwait(false);
         }
     }
 }
