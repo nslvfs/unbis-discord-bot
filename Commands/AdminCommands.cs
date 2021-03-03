@@ -69,7 +69,7 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            _ = Bot.Mute(ctx.Message, ctx.Guild);
+            _ = Bot.Mute(ctx.Channel, target, ctx.Guild);
         }
 
         [Command("kick")]

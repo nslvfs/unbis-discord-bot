@@ -18,26 +18,31 @@ namespace unbis_discord_bot.Commands
 
         [Command("sani")]
         [Description("sanitzer test")]
-        public async Task Sani(CommandContext ctx, params string[] args)
+        public async Task Sani(CommandContext ctx, [RemainingText] string qry)
         {
-            string result = string.Empty;
-            foreach (var text in args)
+            if (Bot.checkBadWords(qry))
             {
-                result = result + " " + text;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                return;
             }
             var sanitizer = new Ganss.XSS.HtmlSanitizer();
             sanitizer.AllowDataAttributes = false;
-            result = sanitizer.Sanitize(result);
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + result).ConfigureAwait(false);
+            qry = sanitizer.Sanitize(qry);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + qry).ConfigureAwait(false);
         }
 
         [Command("bpost")]
         [Description("Einen Artikel posten")]
-        public async Task BPost(CommandContext ctx, params string[] args)
+        public async Task BPost(CommandContext ctx, [RemainingText] string qry)
         {
             if (ctx.Guild.Id != 791393115097137171)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
+                return;
+            }
+            if (Bot.checkBadWords(qry))
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
                 return;
             }
             string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
@@ -45,11 +50,7 @@ namespace unbis_discord_bot.Commands
             int rssLineCount = 0;
             int lineCount = 0;
             var rssFile = Bot.configJson.blogRss;
-            string result = string.Empty;
-            foreach (var text in args)
-            {
-                result = result + " " + text;
-            }
+
             try
             {
                 if (File.Exists(contentFile))
@@ -67,12 +68,12 @@ namespace unbis_discord_bot.Commands
 
                     var sanitizer = new Ganss.XSS.HtmlSanitizer();
                     sanitizer.AllowDataAttributes = false;
-                    result = sanitizer.Sanitize(result);
+                    qry = sanitizer.Sanitize(qry);
                     var username = sanitizer.Sanitize(ctx.Member.DisplayName);
-                    result = StripHTML(result);
-                    result.Replace("\n", "<br>");
-                    result = result.Trim();
-                    if (result.Length < 10)
+                    qry = StripHTML(qry);
+                    qry.Replace("\n", "<br>");
+                    qry = qry.Trim();
+                    if (qry.Length < 10)
                     {
                         await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist ein Blog und kein Twitter, bisschen mehr kannst wohl schreiben!").ConfigureAwait(false);
                         return;
@@ -81,13 +82,13 @@ namespace unbis_discord_bot.Commands
                     {
                         username = "arschloch";
                     }
-                    string outTxt = "<span id='" + lineCount + "'><small><a href='#" + lineCount + "'>#</a> <b>" + dtNow + "</b> von " + username + "</small></span>\n<p>" + result + "</p>\n<hr />\n";
+                    string outTxt = "<span id='" + lineCount + "'><small><a href='#" + lineCount + "'>#</a> <b>" + dtNow + "</b> von " + username + "</small></span>\n<p>" + qry + "</p>\n<hr />\n";
                     File.WriteAllText(contentFile, outTxt + currentContent);
                     if (File.Exists(rssFile))
                     {
                         var _rssData = new Data.RssData();
                         string newData = "<item>\n";
-                        newData = newData + "<title>" + username + ": " + result + "</title>\n";
+                        newData = newData + "<title>" + username + ": " + qry + "</title>\n";
                         newData = newData + "<link>https://blog.neuschwabenland.net/#" + lineCount + "</link>\n";
                         newData = newData + "<guid>https://blog.neuschwabenland.net/#" + lineCount + "</guid>\n";
                         newData = newData + "</item>\n";

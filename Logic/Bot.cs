@@ -98,7 +98,7 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<Quotes>();
             Commands.RegisterCommands<RssFeeds>();
             Commands.RegisterCommands<RussischRoulette>();
-            Commands.RegisterCommands<SimpleCmds>();           
+            Commands.RegisterCommands<SimpleCmds>();
             Commands.RegisterCommands<Urls>();
             Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<XSichter>();
@@ -171,7 +171,6 @@ namespace unbis_discord_bot
 
         private async Task Client_MessageHandling(DiscordClient sender, DiscordMessage e, DiscordGuild g)
         {
-            bool deleted = false;
             var Message = new Model.Message();
             if (!e.Author.IsBot)
             {
@@ -186,7 +185,7 @@ namespace unbis_discord_bot
             {
                 await e.DeleteAsync();
                 await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
-                _ = Mute(e, g, 1);
+                _ = Mute(e.Channel, (DiscordMember)e.Author, g, 1);
                 return;
             }
 
@@ -194,7 +193,7 @@ namespace unbis_discord_bot
             {
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode && e.Channel.Id != 812403060416446474)
                 {
-                    _ = Mute(e, g, 3);
+                    _ = Mute(e.Channel, (DiscordMember)e.Author, g, 3);
                     await e.DeleteAsync();
                 }
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && randomMode && !e.Author.IsBot)
@@ -207,7 +206,7 @@ namespace unbis_discord_bot
                         x.AuditLogReason = $"Changed by Random.Mode).";
                     });
                 }
-                if(cryptoMode && !e.Author.IsBot)
+                if (cryptoMode && !e.Author.IsBot)
                 {
                     try
                     {
@@ -218,8 +217,9 @@ namespace unbis_discord_bot
                         Console.WriteLine("Cleartext: " + dtNow + "| " + author + ": " + message);
                         string encryptedstring = Logic.Encryption.Encrypt(message, configJson.cryptoPwd);
                         await e.Channel.SendMessageAsync(author + ": " + encryptedstring).ConfigureAwait(false);
-                        
-                    } catch (Exception ex)
+
+                    }
+                    catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -229,13 +229,13 @@ namespace unbis_discord_bot
             if (e.Content.StartsWith(".kiss") || e.Content.StartsWith(".kizz"))
             {
                 var userIds = e.MentionedUsers;
-                foreach(var userID in userIds)
+                foreach (var userID in userIds)
                 {
-                    if(userID.Id == 134719067016658945)
+                    if (userID.Id == 134719067016658945)
                     {
                         if (g.Id == 791393115097137171)
                         {
-                            _ = Mute(e, g);
+                            _ = Mute(e.Channel, (DiscordMember)e.Author, g);
                         }
                     }
                 }
@@ -331,19 +331,19 @@ namespace unbis_discord_bot
             return false;
         }
 
-        public static async Task Mute(DiscordMessage e, DiscordGuild g, int durationMin = 10)
+        public static async Task Mute(DiscordChannel channel, DiscordMember target, DiscordGuild g, int durationMin = 10)
         {
-            if(e.Author.Id == 807641560006000670)
+            if (target.Id == 807641560006000670)
             {
                 return;
             }
             var roleMuted = g.GetRole(807921762570469386);
-            await ((DiscordMember)e.Author).GrantRoleAsync(roleMuted);
-            Bot.RemoveUserfromMessageArchiv(e.Author.Id);
-            await e.Channel.SendMessageAsync(e.Author.Mention + " jetzt für " + durationMin + " Minuten gemuted").ConfigureAwait(false);
+            await target.GrantRoleAsync(roleMuted);
+            Bot.RemoveUserfromMessageArchiv(target.Id);
+            await channel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minuten gemuted").ConfigureAwait(false);
             Thread.Sleep(1000 * 60 * durationMin);
-            await ((DiscordMember)e.Author).RevokeRoleAsync(roleMuted);
-            await e.Channel.SendMessageAsync(e.Author.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
+            await target.RevokeRoleAsync(roleMuted);
+            await channel.SendMessageAsync(target.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
         }
     }
 }
