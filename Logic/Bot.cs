@@ -181,6 +181,15 @@ namespace unbis_discord_bot
                 Message.Timestamp = e.Timestamp;
                 ArchivMessages.Add(Message);
             }
+
+            if (checkBadWords(e.Content))
+            {
+                await e.DeleteAsync();
+                await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
+                _ = Mute(e, g, 1);
+                return;
+            }
+
             if (g.Id == 791393115097137171)
             {
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode && e.Channel.Id != 812403060416446474)
@@ -198,14 +207,7 @@ namespace unbis_discord_bot
                         x.AuditLogReason = $"Changed by Random.Mode).";
                     });
                 }
-                if (checkBadWords(e.Content))
-                {
-                    await e.DeleteAsync();
-                    deleted = true;
-                    await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
-                    _ = Mute(e, g, 1);
-                }
-                if(cryptoMode && !deleted && !e.Author.IsBot)
+                if(cryptoMode && !e.Author.IsBot)
                 {
                     try
                     {
@@ -301,7 +303,7 @@ namespace unbis_discord_bot
             return Task.CompletedTask;
         }
 
-        private static bool checkBadWords(string Message)
+        public static bool checkBadWords(string Message)
         {
             var fileName = configJson.badwords;
             var badWords = new List<string>();
@@ -331,6 +333,10 @@ namespace unbis_discord_bot
 
         public static async Task Mute(DiscordMessage e, DiscordGuild g, int durationMin = 10)
         {
+            if(e.Author.Id == 807641560006000670)
+            {
+                return;
+            }
             var roleMuted = g.GetRole(807921762570469386);
             await ((DiscordMember)e.Author).GrantRoleAsync(roleMuted);
             Bot.RemoveUserfromMessageArchiv(e.Author.Id);

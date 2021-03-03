@@ -13,9 +13,15 @@ namespace unbis_discord_bot.Commands
         [Description("google halt du depp")]
         public async Task Google(CommandContext ctx, [RemainingText] string qry)
         {
+            if (Bot.checkBadWords(qry))
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                return;
+            }
+
             if (!Bot.googlemode && !ctx.Member.IsOwner)
             {
-                await ctx.Channel.SendMessageAsync("nope").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
                 return;
             }
             var request = new WebSearchRequest
@@ -30,7 +36,12 @@ namespace unbis_discord_bot.Commands
             foreach (var resultItem in response.Items)
             {
                 i++;
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.FormattedUrl);
+                if(!Bot.checkBadWords(resultItem.FormattedUrl)) { 
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.FormattedUrl).ConfigureAwait(false); ;
+                } else
+                {
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                }
                 if (i == 3) break;
             }
 
@@ -41,9 +52,15 @@ namespace unbis_discord_bot.Commands
         [Description("google bild halt du depp")]
         public async Task GoogleBild(CommandContext ctx, [RemainingText] string qry)
         {
+
+            if (Bot.checkBadWords(qry))
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                return;
+            }
             if (!Bot.googlemode && !ctx.Member.IsOwner)
             {
-                await ctx.Channel.SendMessageAsync("nope").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
                 return;
             }
             var request = new GoogleApi.Entities.Search.Image.Request.ImageSearchRequest
@@ -60,11 +77,24 @@ namespace unbis_discord_bot.Commands
                 i++;
                 if (!resultItem.Link.ToString().StartsWith("x-raw-image"))
                 {
-                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Link);
+                    if (!Bot.checkBadWords(resultItem.Link))
+                    {
+                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Link).ConfigureAwait(false); ;
+                    } else
+                    {
+                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                    }
                 }
                 else
                 {
-                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Image.ThumbnailLink);
+                    if (!Bot.checkBadWords(resultItem.Image.ThumbnailLink))
+                    {
+                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Image.ThumbnailLink).ConfigureAwait(false); ;
+                    }
+                    else
+                    {
+                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                    }
                 }
                 if (i == 3) break;
             }

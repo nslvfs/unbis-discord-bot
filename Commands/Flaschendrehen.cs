@@ -15,7 +15,6 @@ namespace unbis_discord_bot.Commands
         {
             var userList = Shared.GetActiveUsers(ctx);
             var rnd = Shared.GenerateRandomNumber(0, userList.Count - 1);
-            var picked = ((DiscordMember)userList[rnd]).DisplayName;
             var text = DSharpPlus.Formatter.Italic("dreht die Flasche huiiii");
             Thread.Sleep(1000 * 2); // 2 Sek
             await ctx.Channel.SendMessageAsync(text).ConfigureAwait(false);

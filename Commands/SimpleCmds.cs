@@ -73,67 +73,11 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Guten Morgen ❤ Erstma 🚬").ConfigureAwait(false);
         }
 
-        [Command("ping")]
-        [Aliases("pong")]
-        [Description("Ping!")]
-        public async Task PingPong(CommandContext ctx, DiscordUser target)
-        {
-            await PingPongInternal(ctx, target.Mention);
-        }
-
-        [Command("ping")]
-        [Description("Ping!")]
-        public async Task PingPong(CommandContext ctx, string target)
-        {
-            await PingPongInternal(ctx, target);
-        }
-
-        [Command("ping")]
-        [Description("Ping!")]
-        public async Task PingPong(CommandContext ctx)
-        {
-            await PingPongInternal(ctx, ctx.Member.Mention);
-        }
-
-        [Command("haltdiefresseeinkleinerratten")]
-        [Description("Jetzt ein Kippchen?")]
-        public async Task HdfRatten(CommandContext ctx)
-        {
-            await ctx.Channel.SendMessageAsync("Halt die Fresse kleiner Ratten").ConfigureAwait(false);
-        }
-
         [Command("sack")]
         [Description("Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack ")]
         public async Task MeinSack(CommandContext ctx)
         {
             await ctx.Channel.SendMessageAsync("Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack Mein Sack").ConfigureAwait(false);
-        }
-
-        [Command("mucke")]
-        [Aliases("music", "musik")]
-        [Description(".mucke Proxy")]
-        public async Task Mucke(CommandContext ctx, params string[] args)
-        {
-            string result = string.Empty;
-            foreach (var text in args)
-            {
-                result = result + " " + text;
-            }
-            await ctx.Channel.SendMessageAsync(".mucke " + result).ConfigureAwait(false);
-        }
-
-        [Command("hdf")]
-        [Description("Jemand höfflich darum bitte ruhig zu sein")]
-        public async Task Hdf(CommandContext ctx, DiscordUser target)
-        {
-            await ctx.Channel.SendMessageAsync("Halt die Fresse " + target.Mention).ConfigureAwait(false);
-        }
-
-        [Command("hdf")]
-        [Description("Jemand höfflich darum bitte ruhig zu sein")]
-        public async Task Hdf(CommandContext ctx, string target)
-        {
-            await ctx.Channel.SendMessageAsync("Halt die Fresse " + target).ConfigureAwait(false);
         }
 
         [Command("Piep")]
@@ -157,21 +101,6 @@ namespace unbis_discord_bot.Commands
         public async Task PayRespect(CommandContext ctx)
         {
             await ctx.Channel.SendMessageAsync(":pray:").ConfigureAwait(false);
-        }
-
-        [Command("toony")]
-        [Description("Wer ist eigentlich dieser Toony?")]
-        public async Task Toony(CommandContext ctx)
-        {
-            var res = Shared.GenerateRandomNumber(1, 100);
-            if (res > 10)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Toony ist ein Hurensohn").ConfigureAwait(false);
-            }
-            else
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Du alte Pizza Funghi").ConfigureAwait(false);
-            }
         }
 
         [Command("w20")]
@@ -229,6 +158,11 @@ namespace unbis_discord_bot.Commands
         [Description("verschlüßel einen text")]
         public async Task EncodeMesage(CommandContext ctx, [RemainingText] string qry)
         {
+            if (Bot.checkBadWords(qry))
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                return;
+            }
             string encryptedstring = Logic.Encryption.Encrypt(qry, Bot.configJson.cryptoPwd);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " " + encryptedstring).ConfigureAwait(false);
         }
@@ -239,15 +173,13 @@ namespace unbis_discord_bot.Commands
         [Description("verschlüßel einen text")]
         public async Task DecodeMesage(CommandContext ctx, [RemainingText] string qry)
         {
-            string encryptedstring = Logic.Encryption.Decrypt(qry, Bot.configJson.cryptoPwd);
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " " + encryptedstring).ConfigureAwait(false);
-        }
-
-        private static async Task PingPongInternal(CommandContext ctx, string target)
-        {
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=1 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=2 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
-            await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=3 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
+            string decryptedstring = Logic.Encryption.Decrypt(qry, Bot.configJson.cryptoPwd);
+            if (Bot.checkBadWords(decryptedstring))
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                return;
+            }
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " " + decryptedstring).ConfigureAwait(false);
         }
     }
 }

@@ -161,7 +161,7 @@ namespace unbis_discord_bot.Commands
             var cmds = ctx.CommandsNext;
             var cmd = cmds.FindCommand(command, out var customArgs);
             var fakeContext = cmds.CreateFakeContext(member, ctx.Channel, command, ctx.Prefix, cmd, customArgs);
-            await cmds.ExecuteCommandAsync(fakeContext);
+            await cmds.ExecuteCommandAsync(fakeContext).ConfigureAwait(false);
         }
 
         [Command("nick"), Description("Nicknamen von dritten ändern"), RequirePermissions(Permissions.ManageNicknames)]

@@ -26,7 +26,7 @@ namespace unbis_discord_bot.Commands
                     w.WriteLine(newline.Trim());
                 }
             }
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": o7");
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": o7").ConfigureAwait(false);
         }
     }
 }

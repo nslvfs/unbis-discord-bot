@@ -27,27 +27,28 @@ namespace unbis_discord_bot.Commands
             }
             else
             {
-                await ctx.Channel.SendMessageAsync("Keine Quotes gefunden :c");
+                await ctx.Channel.SendMessageAsync("Keine Quotes gefunden :c").ConfigureAwait(false);
             }
 
         }
 
         [Command("Addquote")]
         [Description("Fügt ein Zitat zu !quote hinzu.")]
-        public async Task QuoteAdd(CommandContext ctx, params string[] args)
+        public async Task QuoteAdd(CommandContext ctx, [RemainingText] string qry)
         {
-            string result = string.Empty;
-            var fileName = Bot.configJson.quotePath + ctx.Guild.Id + ".txt";
-            foreach (var arg in args)
+            if (Bot.checkBadWords(qry))
             {
-                result = result + " " + arg;
-            }
-            if (result.Length <= 3)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist kein Quote");
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
                 return;
             }
-            result = result + " (von " + ctx.Member.Mention + " hinzugefügt)";
+
+            var fileName = Bot.configJson.quotePath + ctx.Guild.Id + ".txt";
+            if (qry.Length <= 3)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist kein Quote").ConfigureAwait(false);
+                return;
+            }
+            qry = qry + " (von " + ctx.Member.Mention + " hinzugefügt)";
 
             if (!File.Exists(fileName))
             {
@@ -56,9 +57,9 @@ namespace unbis_discord_bot.Commands
 
             using (StreamWriter w = File.AppendText(fileName))
             {
-                w.WriteLine(result.Trim());
+                w.WriteLine(qry.Trim());
             }
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Quote hinzugefügt du Pisser!");
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Quote hinzugefügt du Pisser!").ConfigureAwait(false);
         }
 
         [Command("Stoll")]
