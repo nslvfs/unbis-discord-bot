@@ -214,6 +214,35 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " ist " + res + "% Normie").ConfigureAwait(false);
         }
 
+        [Command("cryptotweet")]
+        [Aliases("ct")]
+        [RequireOwner]
+        [Description("verschlüßelten tweet rausrotzen")]
+        public async Task EncodeTweet(CommandContext ctx, [RemainingText] string qry)
+        {
+            string encryptedstring = Logic.Encryption.Encrypt(qry, Bot.configJson.cryptoPwd);
+            await ctx.Channel.SendMessageAsync(".tweet " + encryptedstring).ConfigureAwait(false);
+        }
+
+        [Command("encode")]
+        [Aliases("enc")]
+        [Description("verschlüßel einen text")]
+        public async Task EncodeMesage(CommandContext ctx, [RemainingText] string qry)
+        {
+            string encryptedstring = Logic.Encryption.Encrypt(qry, Bot.configJson.cryptoPwd);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " " + encryptedstring).ConfigureAwait(false);
+        }
+
+        [Command("decode")]
+        [Aliases("dec")]
+        [RequireOwner]
+        [Description("verschlüßel einen text")]
+        public async Task DecodeMesage(CommandContext ctx, [RemainingText] string qry)
+        {
+            string encryptedstring = Logic.Encryption.Decrypt(qry, Bot.configJson.cryptoPwd);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " " + encryptedstring).ConfigureAwait(false);
+        }
+
         private static async Task PingPongInternal(CommandContext ctx, string target)
         {
             await ctx.Channel.SendMessageAsync("64 bytes from " + target + ": icmp_seq=1 ttl=120 time=" + Shared.GenerateRandomNumber(1, 10) + "." + Shared.GenerateRandomNumber(0, 99) + " ms").ConfigureAwait(false);
