@@ -308,7 +308,7 @@ namespace unbis_discord_bot
 
         public static bool checkBadWords(string Message)
         {
-            if(!doCheckBadWords)
+            if (!doCheckBadWords)
             {
                 return false;
             }
@@ -328,12 +328,21 @@ namespace unbis_discord_bot
             foreach (var item in badWords)
             {
                 if (Message.Contains(item))
+                {
+                    Console.WriteLine(item);
                     return true;
+                }
                 if (Message.ToLower().Contains(item.ToLower()))
+                {
+                    Console.WriteLine(item);
                     return true;
+                }
                 var msg = Regex.Replace(Message, @"([^\w]|_)", "");
                 if (msg.Contains(item))
+                {
+                    Console.WriteLine(item);
                     return true;
+                }
             }
             return false;
         }
