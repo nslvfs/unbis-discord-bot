@@ -1,8 +1,14 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using GoogleApi;
-using GoogleApi.Entities.Search.Web.Request;
+using NScrape;
+using WebRequest = System.Net.WebRequest;
+using System;
 using System.Threading.Tasks;
+using System.IO;
+using System.Net;
+using System.Text;
+using GScraper;
+using System.Collections.Generic;
 
 namespace unbis_discord_bot.Commands
 {
@@ -15,35 +21,63 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.checkBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
-            if(ctx.Channel.Id != 816990123568660510)
+            if (ctx.Channel.Id != 816990123568660510)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
-            var request = new WebSearchRequest
-            {
-                Key = Bot.configJson.gurgleApi,
-                Query = qry,
-                SearchEngineId = Bot.configJson.gurgleSeachEngineId
-            };
-            var response = await GoogleSearch.WebSearch.QueryAsync(request);
+            StringBuilder bufferForHtml = new StringBuilder();
+            byte[] encodedBytes = new byte[8192];
+            var urlForSearch = "https://google.com/search?q=" + qry.Trim();
+            var request = (HttpWebRequest)WebRequest.Create(urlForSearch);
+            var response = (HttpWebResponse)request.GetResponse();
 
-            int i = 0;
-            foreach (var resultItem in response.Items)
+            using (Stream responseFromGoogle = response.GetResponseStream())
             {
-                i++;
-                if(!Bot.checkBadWords(resultItem.FormattedUrl)) { 
-                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.FormattedUrl).ConfigureAwait(false); ;
-                } else
+                var enc = response.GetEncoding();
+
+                int count = 0;
+                do
                 {
-                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                    count = responseFromGoogle.Read(encodedBytes, 0, encodedBytes.Length);
+                    if (count != 0)
+                    {
+                        var tempString = enc.GetString(encodedBytes, 0, count);
+                        bufferForHtml.Append(tempString);
+                    }
                 }
-                if (i == 3) break;
-            }
 
+                while (count > 0);
+            }
+            string sbb = bufferForHtml.ToString();
+
+            var processedHtml = new HtmlAgilityPack.HtmlDocument
+            {
+                OptionOutputAsXml = true
+            };
+            processedHtml.LoadHtml(sbb);
+            var doc = processedHtml.DocumentNode;
+            int i = 0;
+            foreach (var link in doc.SelectNodes("//a[@href]"))
+            {
+                
+                string hrefValue = link.GetAttributeValue("href", string.Empty);
+                if (!hrefValue.ToUpper().Contains("GOOGLE") && hrefValue.Contains("/url?q=") && hrefValue.ToUpper().Contains("HTTP"))
+                {
+                    int index = hrefValue.IndexOf("&");
+                    if (index > 0)
+                    {
+                        i++;
+                        hrefValue = hrefValue.Substring(0, index);
+                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + hrefValue.Replace("/url?q=", string.Empty)).ConfigureAwait(false);
+                        if (i == 3) break;
+                    }
+                }
+                
+            }
         }
 
         [Command("gbild")]
@@ -51,51 +85,34 @@ namespace unbis_discord_bot.Commands
         [Description("google bild halt du depp")]
         public async Task GoogleBild(CommandContext ctx, [RemainingText] string qry)
         {
-
             if (Bot.checkBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             if (ctx.Channel.Id != 816990123568660510)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
-            var request = new GoogleApi.Entities.Search.Image.Request.ImageSearchRequest
+            int limit = 3;
+            var scraper = new GoogleScraper();
+            var images = await scraper.GetImagesAsync(qry, limit).ConfigureAwait(false);
+            foreach (var image in images)
             {
-                Key = Bot.configJson.gurgleApi,
-                Query = qry,
-                SearchEngineId = Bot.configJson.gurgleSeachEngineId
-            };
-            var response = await GoogleSearch.WebSearch.QueryAsync(request);
-
-            int i = 0;
-            foreach (var resultItem in response.Items)
-            {
-                i++;
-                if (!resultItem.Link.ToString().StartsWith("x-raw-image"))
+                string result = "";
+                if (!image.Link.StartsWith("x-raw-image")) {
+                    result = image.Link;
+                } else
                 {
-                    if (!Bot.checkBadWords(resultItem.Link))
-                    {
-                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Link).ConfigureAwait(false); ;
-                    } else
-                    {
-                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
-                    }
+                    result = image.ThumbnailLink;
                 }
-                else
+                if(!Bot.checkBadWords(result)) { 
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + image.Link).ConfigureAwait(false);
+                } else
                 {
-                    if (!Bot.checkBadWords(resultItem.Image.ThumbnailLink))
-                    {
-                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ":\n" + resultItem.Image.ThumbnailLink).ConfigureAwait(false); ;
-                    }
-                    else
-                    {
-                        await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
-                    }
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 }
-                if (i == 3) break;
             }
 
         }

@@ -160,7 +160,7 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.checkBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             string encryptedstring = Logic.Encryption.Encrypt(qry, Bot.configJson.cryptoPwd);
@@ -176,7 +176,7 @@ namespace unbis_discord_bot.Commands
             string decryptedstring = Logic.Encryption.Decrypt(qry, Bot.configJson.cryptoPwd);
             if (Bot.checkBadWords(decryptedstring))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " " + decryptedstring).ConfigureAwait(false);

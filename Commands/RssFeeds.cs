@@ -14,7 +14,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != 816990123568660510)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             string title = string.Empty;
@@ -51,7 +51,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != 816990123568660510)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             if (anz > 3)
@@ -102,7 +102,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != 816990123568660510)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             if (anz > 3)

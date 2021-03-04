@@ -42,7 +42,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != 816990123568660510)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             int maxMemeWidth = 500;

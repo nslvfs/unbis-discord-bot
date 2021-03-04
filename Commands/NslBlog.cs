@@ -22,7 +22,7 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.checkBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             var sanitizer = new Ganss.XSS.HtmlSanitizer();
@@ -42,7 +42,7 @@ namespace unbis_discord_bot.Commands
             }
             if (Bot.checkBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");

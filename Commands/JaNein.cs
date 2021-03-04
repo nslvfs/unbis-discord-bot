@@ -75,7 +75,7 @@ namespace unbis_discord_bot.Commands
             foreach(var arg in args)
             if (Bot.checkBadWords(arg))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
             var i = Shared.GenerateRandomNumber(0, args.Length - 1);

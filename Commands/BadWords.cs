@@ -12,7 +12,7 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task AddBadWord(CommandContext ctx, params string[] args)
         {
-            var fileName = Bot.configJson.badwords; ;
+            var fileName = Bot.configJson.badwords;
 
             if (!File.Exists(fileName))
             {
