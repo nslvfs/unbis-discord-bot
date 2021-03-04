@@ -20,7 +20,6 @@ namespace unbis_discord_bot
 {
     public class Bot
     {
-        public static bool googlemode { get; set; }
         public static bool doCheckBadWords { get; set; }
         public static bool silentMode { get; set; }
         public static bool randomMode { get; set; }
@@ -41,7 +40,6 @@ namespace unbis_discord_bot
 
             configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
 
-            googlemode = true;
             doCheckBadWords = true;
 
             var config = new DiscordConfiguration

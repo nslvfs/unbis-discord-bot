@@ -40,6 +40,11 @@ namespace unbis_discord_bot.Commands
         [Description("Random distorted xSicht")]
         public async Task RndDXSichter(CommandContext ctx)
         {
+            if (ctx.Channel.Id != 816990123568660510)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false); ;
+                return;
+            }
             int maxMemeWidth = 500;
             var files = Directory.GetFiles(Bot.configJson.xSichterPath, "*.*", SearchOption.AllDirectories);
             var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
