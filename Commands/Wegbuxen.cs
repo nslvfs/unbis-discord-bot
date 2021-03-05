@@ -112,7 +112,8 @@ namespace unbis_discord_bot.Commands
                     Bot.RemoveUserfromMessageArchiv(ctx.Member.Id);
                     Thread.Sleep(1000 * 60 * 10); // 10 Min
                     await member.RevokeRoleAsync(roleMuted);
-                    await ctx.Channel.SendMessageAsync(member.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
+                    var outChannel = ctx.Guild.GetChannel(816990123568660510);
+                    await outChannel.SendMessageAsync(member.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
                 }
                 else
                 {

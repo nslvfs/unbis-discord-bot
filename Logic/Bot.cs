@@ -55,7 +55,7 @@ namespace unbis_discord_bot
                     DiscordIntents.GuildMessageReactions,
                 AutoReconnect = true,
                 MinimumLogLevel = LogLevel.Information,
-                LogTimestampFormat = "dd MMM yyyy - hh:mm:ss tt",
+                LogTimestampFormat = "dd MMM yyyy - HH:mm:ss tt",
             };
 
             Client = new DiscordClient(config);
@@ -121,6 +121,9 @@ namespace unbis_discord_bot
                 Message.ChannelId = e.Channel.Id;
                 Message.Timestamp = e.Emoji.CreationTimestamp;
                 ArchivMessages.Add(Message);
+            }
+            if(e.User.Id == 816383436201656341) { 
+                _ = e.Message.DeleteAllReactionsAsync().ConfigureAwait(false);
             }
             return Task.CompletedTask;
         }
@@ -354,10 +357,12 @@ namespace unbis_discord_bot
             var roleMuted = g.GetRole(807921762570469386);
             await target.GrantRoleAsync(roleMuted);
             Bot.RemoveUserfromMessageArchiv(target.Id);
-            await channel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minuten gemuted").ConfigureAwait(false);
+
+            var outChannel = g.GetChannel(816990123568660510);
+            await outChannel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minute(n) still").ConfigureAwait(false);
             Thread.Sleep(1000 * 60 * durationMin);
             await target.RevokeRoleAsync(roleMuted);
-            await channel.SendMessageAsync(target.Mention + " jetzt nicht mehr gemuted").ConfigureAwait(false);
+            await outChannel.SendMessageAsync(target.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
         }
     }
 }
