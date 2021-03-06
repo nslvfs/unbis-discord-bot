@@ -158,7 +158,7 @@ namespace unbis_discord_bot.Commands
         [Description("verschlüßel einen text")]
         public async Task EncodeMesage(CommandContext ctx, [RemainingText] string qry)
         {
-            if (Bot.checkBadWords(qry))
+            if (Bot.CheckBadWords(qry))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
@@ -174,7 +174,7 @@ namespace unbis_discord_bot.Commands
         public async Task DecodeMesage(CommandContext ctx, [RemainingText] string qry)
         {
             string decryptedstring = Logic.Encryption.Decrypt(qry, Bot.configJson.cryptoPwd);
-            if (Bot.checkBadWords(decryptedstring))
+            if (Bot.CheckBadWords(decryptedstring))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;

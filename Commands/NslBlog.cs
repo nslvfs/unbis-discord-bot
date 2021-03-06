@@ -20,7 +20,7 @@ namespace unbis_discord_bot.Commands
         [Description("sanitzer test")]
         public async Task Sani(CommandContext ctx, [RemainingText] string qry)
         {
-            if (Bot.checkBadWords(qry))
+            if (Bot.CheckBadWords(qry))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
@@ -40,7 +40,7 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            if (Bot.checkBadWords(qry))
+            if (Bot.CheckBadWords(qry))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;

@@ -12,7 +12,7 @@ namespace unbis_discord_bot.Commands
         [Description("google bild halt du depp")]
         public async Task GoogleBild(CommandContext ctx, [RemainingText] string qry)
         {
-            if (Bot.checkBadWords(qry))
+            if (Bot.CheckBadWords(qry))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
@@ -36,7 +36,7 @@ namespace unbis_discord_bot.Commands
                 {
                     result = image.ThumbnailLink;
                 }
-                if (!Bot.checkBadWords(result))
+                if (!Bot.CheckBadWords(result))
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + image.Link).ConfigureAwait(false);
                 }

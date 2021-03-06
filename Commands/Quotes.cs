@@ -36,7 +36,7 @@ namespace unbis_discord_bot.Commands
         [Description("Fügt ein Zitat zu !quote hinzu.")]
         public async Task QuoteAdd(CommandContext ctx, [RemainingText] string qry)
         {
-            if (Bot.checkBadWords(qry))
+            if (Bot.CheckBadWords(qry))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;

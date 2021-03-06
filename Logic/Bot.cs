@@ -185,10 +185,12 @@ namespace unbis_discord_bot
                 ArchivMessages.Add(Message);
             }
 
-            if (checkBadWords(e.Content))
+            if (CheckBadWords(e.Content))
             {
+                var newMessage = ReplaceBadwords(e.Content);
                 await e.DeleteAsync();
                 await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
+                await e.Channel.SendMessageAsync(e.Author.Mention + " wollte sagen: " + newMessage).ConfigureAwait(false);
                 _ = Mute(e.Channel, (DiscordMember)e.Author, g, 1);
                 return;
             }
@@ -260,14 +262,13 @@ namespace unbis_discord_bot
                     await e.Channel.SendMessageAsync("das was " + target + " sagt").ConfigureAwait(false);
                 }
             }
-
         }
 
         private async Task Client_GuildMemberUpdated(DiscordClient sender, GuildMemberUpdateEventArgs e)
         {
             if (e.Guild.Id == 791393115097137171)
             {
-                if (checkBadWords(e.NicknameAfter))
+                if (CheckBadWords(e.NicknameAfter))
                 {
                     try
                     {
@@ -307,7 +308,7 @@ namespace unbis_discord_bot
             return Task.CompletedTask;
         }
 
-        public static bool checkBadWords(string Message)
+        public static bool CheckBadWords(string Message)
         {
             if (!doCheckBadWords)
             {
@@ -346,6 +347,51 @@ namespace unbis_discord_bot
                 }
             }
             return false;
+        }
+
+        public static string ReplaceBadwords(string Message)
+        {
+            string output = Message;
+            var fileName = configJson.badwords;
+            var badWords = new List<string>();
+            if (File.Exists(fileName))
+            {
+                foreach (var line in File.ReadLines(fileName))
+                {
+                    badWords.Add(line);
+                }
+            }
+            else
+            {
+                File.Create(fileName).Dispose();
+            }
+            var found = true;
+            while(found) { 
+                foreach (var item in badWords)
+                {
+                    found = false;
+                    if (Message.Contains(item))
+                    {
+                        found = true;
+                        output = Message.Replace(item, "ZENSIERT");
+                    }
+                    
+                    if (Message.ToLower().Contains(item.ToLower()))
+                    {
+                        output = Message.ToLower();
+                        output = Message.Replace(item.ToLower(), "ZENSIERT");
+                        found = true;
+                    }
+                    var msg = Regex.Replace(Message, @"([^\w]|_)", "");
+                    if (msg.Contains(item))
+                    {
+                        Console.WriteLine(item);
+                        output = msg.Replace(item.ToLower(), "ZENSIERT");
+                        found = true;
+                    }
+                }
+            }
+            return output;
         }
 
         public static async Task Mute(DiscordChannel channel, DiscordMember target, DiscordGuild g, int durationMin = 10)

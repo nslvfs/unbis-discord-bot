@@ -73,7 +73,7 @@ namespace unbis_discord_bot.Commands
         public async Task Pick(CommandContext ctx, params string[] args)
         {
             foreach(var arg in args)
-            if (Bot.checkBadWords(arg))
+            if (Bot.CheckBadWords(arg))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
