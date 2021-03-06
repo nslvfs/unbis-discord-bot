@@ -136,7 +136,7 @@ namespace unbis_discord_bot.Commands
         public async Task Normimeter(CommandContext ctx, DiscordUser target)
         {
             int res = 100;
-            if(target.Id != 351514728734130177 && target.Id != 690985661695655966)
+            if (target.Id != 351514728734130177 && target.Id != 690985661695655966)
             {
                 res = Shared.GenerateRandomNumber(1, 30);
             }

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
@@ -214,12 +213,14 @@ namespace unbis_discord_bot.Commands
                     await ctx.Channel.SendMessageAsync(item).ConfigureAwait(false);
                     return;
                 }
-                if (ctx.Message.Content.ToLower().Contains(item.ToLower())) { 
+                if (ctx.Message.Content.ToLower().Contains(item.ToLower()))
+                {
                     await ctx.Channel.SendMessageAsync(item).ConfigureAwait(false);
                     return;
                 }
                 var msg = Regex.Replace(ctx.Message.Content, @"([^\w]|_)", "");
-                if (msg.Contains(item)) {
+                if (msg.Contains(item))
+                {
                     await ctx.Channel.SendMessageAsync(item).ConfigureAwait(false);
                     return;
                 }

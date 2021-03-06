@@ -122,7 +122,8 @@ namespace unbis_discord_bot
                 Message.Timestamp = e.Emoji.CreationTimestamp;
                 ArchivMessages.Add(Message);
             }
-            if(e.User.Id == 816383436201656341) { 
+            if (e.User.Id == 816383436201656341)
+            {
                 _ = e.Message.DeleteAllReactionsAsync().ConfigureAwait(false);
             }
             return Task.CompletedTask;
@@ -368,7 +369,8 @@ namespace unbis_discord_bot
             }
             var found = true;
             var useOriginale = true;
-            while(found) { 
+            while (found)
+            {
                 foreach (var item in badWords)
                 {
                     found = false;
@@ -378,7 +380,7 @@ namespace unbis_discord_bot
                         found = true;
                         useOriginale = false;
                     }
-                    
+
                     if (teststring.ToLower().Contains(item.ToLower()))
                     {
                         teststring = teststring.ToLower();
@@ -396,9 +398,13 @@ namespace unbis_discord_bot
                     }
                 }
             }
-            if(!useOriginale)
+            if (!useOriginale)
             {
                 output = teststring;
+            }
+            if (output.Length >= 2000)
+            {
+                output = output.Substring(0, output.Length - 100) + "...";
             }
             return output;
         }
