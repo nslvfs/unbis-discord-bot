@@ -125,7 +125,7 @@ namespace unbis_discord_bot
             }
             if (e.User.Id == 816383436201656341)
             {
-                _ = e.Message.DeleteAllReactionsAsync().ConfigureAwait(false);
+                await e.Message.DeleteAllReactionsAsync().ConfigureAwait(false);
             }
             return Task.CompletedTask;
         }
@@ -193,7 +193,7 @@ namespace unbis_discord_bot
                 await e.DeleteAsync();
                 await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
                 await e.Channel.SendMessageAsync(e.Author.Mention + " wollte sagen: " + newMessage).ConfigureAwait(false);
-                _ = Mute(e.Channel, (DiscordMember)e.Author, g, 1);
+                await Mute(e.Channel, (DiscordMember)e.Author, g, 1).ConfigureAwait(false);
                 return;
             }
 
@@ -201,7 +201,7 @@ namespace unbis_discord_bot
             {
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode && e.Channel.Id != 812403060416446474)
                 {
-                    _ = Mute(e.Channel, (DiscordMember)e.Author, g, 3);
+                    await Mute(e.Channel, (DiscordMember)e.Author, g, 3).ConfigureAwait(false);
                     await e.DeleteAsync();
                 }
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && randomMode && !e.Author.IsBot)
@@ -243,7 +243,7 @@ namespace unbis_discord_bot
                     {
                         if (g.Id == 791393115097137171)
                         {
-                            _ = Mute(e.Channel, (DiscordMember)e.Author, g);
+                            await Mute(e.Channel, (DiscordMember)e.Author, g).ConfigureAwait(false);
                         }
                     }
                 }

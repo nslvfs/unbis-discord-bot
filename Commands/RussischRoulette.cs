@@ -77,7 +77,7 @@ namespace unbis_discord_bot.Commands
                     _semaphoregate.Release();
                     if (ctx.Guild.Id == 791393115097137171)
                     {
-                        _ = Bot.Mute(ctx.Channel, ctx.Member, ctx.Guild);
+                        await Bot.Mute(ctx.Channel, ctx.Member, ctx.Guild).ConfigureAwait(false);
                     }
                 }
             }
