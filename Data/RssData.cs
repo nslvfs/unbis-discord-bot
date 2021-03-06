@@ -1,4 +1,4 @@
-﻿namespace unbis_discord_bot.Data
+﻿namespace unbis_discord_bot.Model
 {
     public class RssData
     {

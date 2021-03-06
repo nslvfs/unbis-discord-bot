@@ -12,7 +12,7 @@ namespace unbis_discord_bot.Commands
         [Description("Gibt ein zufälliges Zitat wieder.")]
         public async Task Quote(CommandContext ctx)
         {
-            var temp = new Data.Quotes(Bot.configJson, ctx.Guild.Id);
+            var temp = new Model.Quotes(Bot.configJson, ctx.Guild.Id);
             if (temp.quotes.Count > 0)
             {
                 var res = Shared.GenerateRandomNumber(0, temp.quotes.Count - 1);
@@ -66,7 +66,7 @@ namespace unbis_discord_bot.Commands
         [Description("Gibt ein Zitat von Dr. Axel Stoll wieder.")]
         public async Task QuoteStoll(CommandContext ctx)
         {
-            var temp = new Data.Stoll();
+            var temp = new Model.Stoll();
             var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
             await ctx.Channel.SendMessageAsync("Dr. Axel Stoll, promovierter Naturwissenschaftler, sagt: " + temp.array[res]).ConfigureAwait(false);
         }
@@ -75,7 +75,7 @@ namespace unbis_discord_bot.Commands
         [Description("Gibt ein Zitat von Julia Seeliger wieder.")]
         public async Task QuoteSeeliger(CommandContext ctx)
         {
-            var temp = new Data.Seeliger();
+            var temp = new Model.Seeliger();
             var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
             await ctx.Channel.SendMessageAsync("Julia Seeliger sagt: " + temp.array[res]).ConfigureAwait(false);
         }

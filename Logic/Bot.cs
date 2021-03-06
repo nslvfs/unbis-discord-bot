@@ -97,6 +97,7 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<JaNein>();
             Commands.RegisterCommands<NslBlog>();
             Commands.RegisterCommands<Quotes>();
+            Commands.RegisterCommands<RattenLinks>();
             Commands.RegisterCommands<RssFeeds>();
             Commands.RegisterCommands<RussischRoulette>();
             Commands.RegisterCommands<SimpleCmds>();
@@ -186,7 +187,7 @@ namespace unbis_discord_bot
                 ArchivMessages.Add(Message);
             }
 
-            if (CheckBadWords(e.Content))
+            if (CheckBadWords(e.Content) && g.Id == 791393115097137171)
             {
                 var newMessage = ReplaceBadwords(e.Content);
                 await e.DeleteAsync();
@@ -412,6 +413,10 @@ namespace unbis_discord_bot
         public static async Task Mute(DiscordChannel channel, DiscordMember target, DiscordGuild g, int durationMin = 10)
         {
             if (target.Id == 807641560006000670)
+            {
+                return;
+            }
+            if(g.Id != 791393115097137171)
             {
                 return;
             }

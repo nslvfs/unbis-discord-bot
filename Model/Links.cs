@@ -3,19 +3,18 @@ using System.IO;
 
 namespace unbis_discord_bot.Model
 {
-    class Quotes
+    class Links
     {
-        public List<string> quotes { get; set; }
-
-        public Quotes(ConfigJson config, ulong gId)
+        public List<string> links { get; set; }
+        public Links(ConfigJson config, ulong gId)
         {
-            var fileName = config.quotePath + gId + ".txt";
-            quotes = new List<string>();
+            var fileName = config.quotePath + gId + " gif.txt";
+            links = new List<string>();
             if (File.Exists(fileName))
             {
                 foreach (var line in File.ReadLines(fileName))
                 {
-                    quotes.Add(line);
+                    links.Add(line);
                 }
             }
             else

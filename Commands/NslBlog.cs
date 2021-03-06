@@ -86,7 +86,7 @@ namespace unbis_discord_bot.Commands
                     File.WriteAllText(contentFile, outTxt + currentContent);
                     if (File.Exists(rssFile))
                     {
-                        var _rssData = new Data.RssData();
+                        var _rssData = new Model.RssData();
                         string newData = "<item>\n";
                         newData = newData + "<title>" + username + ": " + qry + "</title>\n";
                         newData = newData + "<link>https://blog.neuschwabenland.net/#" + lineCount + "</link>\n";
