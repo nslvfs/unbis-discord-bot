@@ -351,6 +351,7 @@ namespace unbis_discord_bot
 
         public static string ReplaceBadwords(string Message)
         {
+            string teststring = Message;
             string output = Message;
             var fileName = configJson.badwords;
             var badWords = new List<string>();
@@ -366,30 +367,38 @@ namespace unbis_discord_bot
                 File.Create(fileName).Dispose();
             }
             var found = true;
+            var useOriginale = true;
             while(found) { 
                 foreach (var item in badWords)
                 {
                     found = false;
-                    if (Message.Contains(item))
+                    if (teststring.Contains(item))
                     {
+                        teststring = teststring.Replace(item, "ZENSIERT");
                         found = true;
-                        output = Message.Replace(item, "ZENSIERT");
+                        useOriginale = false;
                     }
                     
-                    if (Message.ToLower().Contains(item.ToLower()))
+                    if (teststring.ToLower().Contains(item.ToLower()))
                     {
-                        output = Message.ToLower();
-                        output = Message.Replace(item.ToLower(), "ZENSIERT");
+                        teststring = teststring.ToLower();
+                        teststring = teststring.Replace(item.ToLower(), "ZENSIERT");
                         found = true;
+                        useOriginale = false;
                     }
-                    var msg = Regex.Replace(Message, @"([^\w]|_)", "");
+                    var msg = Regex.Replace(teststring, @"([^\w]|_)", "");
                     if (msg.Contains(item))
                     {
                         Console.WriteLine(item);
-                        output = msg.Replace(item.ToLower(), "ZENSIERT");
+                        teststring = msg.Replace(item, "ZENSIERT");
                         found = true;
+                        useOriginale = false;
                     }
                 }
+            }
+            if(!useOriginale)
+            {
+                output = teststring;
             }
             return output;
         }
