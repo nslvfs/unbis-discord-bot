@@ -101,7 +101,6 @@ namespace unbis_discord_bot
             Commands = Client.UseCommandsNext(commandsConfig);
             Commands.CommandExecuted += Commands_CommandExecuted;
             Commands.CommandErrored += Commands_CommandErrored;
-            // Commands.SetHelpFormatter<Logic.HelpFormatter>();
             Commands.RegisterCommands<AdminCommands>();
             Commands.RegisterCommands<BadWords>();
             Commands.RegisterCommands<Flaschendrehen>();
