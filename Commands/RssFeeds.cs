@@ -12,7 +12,7 @@ namespace unbis_discord_bot.Commands
         [Description("Letzte Fefe-Artikel ")]
         public async Task Fefe(CommandContext ctx, int anz = 1)
         {
-            if (ctx.Channel.Id != 816990123568660510)
+            if (ctx.Channel.Id != Bot.channelIdRotz)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
@@ -49,7 +49,7 @@ namespace unbis_discord_bot.Commands
         [Description("Letzte Spiegel-Topmledung ")]
         public async Task Spiegel(CommandContext ctx, int anz = 1)
         {
-            if (ctx.Channel.Id != 816990123568660510)
+            if (ctx.Channel.Id != Bot.channelIdRotz)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
@@ -100,7 +100,7 @@ namespace unbis_discord_bot.Commands
         [Description("Letzte Spiegel-Eilmeldungen ")]
         public async Task SpiegelEil(CommandContext ctx, int anz = 1)
         {
-            if (ctx.Channel.Id != 816990123568660510)
+            if (ctx.Channel.Id != Bot.channelIdRotz)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;

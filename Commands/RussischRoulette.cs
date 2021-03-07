@@ -22,7 +22,7 @@ namespace unbis_discord_bot.Commands
             {
                 int index = 0;
                 await _semaphoregate.WaitAsync();
-                if (ctx.Channel.Id == 812403060416446474) //kiosk
+                if (ctx.Channel.Id == Bot.channelIdKiosk)
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nicht hier").ConfigureAwait(false);
                     _semaphoregate.Release();
@@ -75,7 +75,7 @@ namespace unbis_discord_bot.Commands
                     rouletteData[index].revKammer = -1;
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
                     _semaphoregate.Release();
-                    if (ctx.Guild.Id == 791393115097137171)
+                    if (ctx.Guild.Id == Bot.guildIdUnbi)
                     {
                         await Bot.Mute(ctx.Channel, ctx.Member, ctx.Guild).ConfigureAwait(false);
                     }

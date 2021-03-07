@@ -20,6 +20,18 @@ namespace unbis_discord_bot
 {
     public class Bot
     {
+        public const long guildIdUnbi = 791393115097137171;
+        public const long guildIdRatte = 442300530996543489;
+        public const long channelIdRotz = 816990123568660510;
+        public const long channelIdKiosk = 812403060416446474;
+        public const long channelIdMain = 808405679417196546;
+        public const long roleIdMuted = 807921762570469386;
+        public const long botIdSelf = 807641560006000670;
+        public const long botIdSantos = 816383436201656341;
+        public const long botIdSpurdo = 812064630364700684;
+        public const long userIdEsso = 351514728734130177;
+        public const long userIdRattan = 690985661695655966;
+        public const long userIdvfs = 134719067016658945;
         public static bool doCheckBadWords { get; set; }
         public static bool silentMode { get; set; }
         public static bool randomMode { get; set; }
@@ -123,7 +135,7 @@ namespace unbis_discord_bot
                 Message.Timestamp = e.Emoji.CreationTimestamp;
                 ArchivMessages.Add(Message);
             }
-            if (e.User.Id == 816383436201656341)
+            if (e.User.Id == Bot.botIdSantos)
             {
                 await e.Message.DeleteAllReactionsAsync().ConfigureAwait(false);
             }
@@ -188,7 +200,7 @@ namespace unbis_discord_bot
                     ArchivMessages.Add(Message);
                 }
 
-                if (g.Id == 791393115097137171)
+                if (g.Id == Bot.guildIdUnbi)
                 {
                     if (CheckBadWords(e.Content))
                     {
@@ -200,14 +212,14 @@ namespace unbis_discord_bot
                         return;
                     }
 
-                    if ((e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode && e.Channel.Id != 812403060416446474) && !e.Author.IsBot)
+                    if ((e.Author.Id != Bot.botIdSelf && e.Author.Id != Bot.userIdvfs && silentMode && e.Channel.Id != Bot.channelIdKiosk) && !e.Author.IsBot)
                     {
                         await Mute(e.Channel, (DiscordMember)e.Author, g, 3).ConfigureAwait(false);
                         await e.DeleteAsync();
                         return;
                     }
 
-                    if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && randomMode && !e.Author.IsBot)
+                    if (e.Author.Id != Bot.botIdSelf && e.Author.Id != Bot.userIdvfs && randomMode && !e.Author.IsBot)
                     {
                         string rnd = Shared.GenerateRandomNumber(1000, 9999).ToString();
 
@@ -243,9 +255,9 @@ namespace unbis_discord_bot
                         var userIds = e.MentionedUsers;
                         foreach (var userID in userIds)
                         {
-                            if (userID.Id == 134719067016658945)
+                            if (userID.Id == Bot.userIdvfs)
                             {
-                                if (g.Id == 791393115097137171)
+                                if (g.Id == Bot.guildIdUnbi)
                                 {
                                     await Mute(e.Channel, (DiscordMember)e.Author, g).ConfigureAwait(false);
                                 }
@@ -283,7 +295,7 @@ namespace unbis_discord_bot
 
         private async Task Client_GuildMemberUpdated(DiscordClient sender, GuildMemberUpdateEventArgs e)
         {
-            if (e.Guild.Id == 791393115097137171)
+            if (e.Guild.Id == Bot.guildIdUnbi)
             {
                 if (CheckBadWords(e.NicknameAfter))
                 {
@@ -431,17 +443,17 @@ namespace unbis_discord_bot
 
         public static async Task Mute(DiscordChannel channel, DiscordMember target, DiscordGuild g, int durationMin = 10)
         {
-            if (target.Id == 807641560006000670 || g.Id != 791393115097137171)
+            if (target.Id == Bot.botIdSelf || g.Id != Bot.guildIdUnbi)
             {
                 return;
             }
             try
             {
-                var roleMuted = g.GetRole(807921762570469386);
+                var roleMuted = g.GetRole(Bot.roleIdMuted);
                 _ = target.GrantRoleAsync(roleMuted);
                 _ = Bot.RemoveUserfromMessageArchiv(target.Id);
 
-                var outChannel = g.GetChannel(816990123568660510);
+                var outChannel = g.GetChannel(Bot.channelIdRotz);
                 await outChannel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minute(n) still").ConfigureAwait(false);
                 Thread.Sleep(1000 * 60 * durationMin);
                 await target.RevokeRoleAsync(roleMuted);

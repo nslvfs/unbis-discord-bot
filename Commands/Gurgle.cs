@@ -12,7 +12,7 @@ namespace unbis_discord_bot.Commands
         [Description("google bild halt du depp")]
         public async Task GoogleBild(CommandContext ctx, [RemainingText] string qry)
         {
-            if (Bot.CheckBadWords(qry) || ctx.Channel.Id != 816990123568660510)
+            if (Bot.CheckBadWords(qry) || ctx.Channel.Id != Bot.channelIdRotz)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;

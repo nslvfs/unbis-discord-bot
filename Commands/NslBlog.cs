@@ -35,7 +35,7 @@ namespace unbis_discord_bot.Commands
         [Description("Einen Artikel posten")]
         public async Task BPost(CommandContext ctx, [RemainingText] string qry)
         {
-            if (ctx.Guild.Id != 791393115097137171 || Bot.CheckBadWords(qry))
+            if (ctx.Guild.Id != Bot.guildIdUnbi || Bot.CheckBadWords(qry))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
@@ -74,7 +74,7 @@ namespace unbis_discord_bot.Commands
                         await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist ein Blog und kein Twitter, bisschen mehr kannst wohl schreiben!").ConfigureAwait(false);
                         return;
                     }
-                    if ((username.Contains("vfs") || username.Contains("unbi") || username.Contains("unbequem")) && ctx.Member.Id != 134719067016658945)
+                    if ((username.Contains("vfs") || username.Contains("unbi") || username.Contains("unbequem")) && ctx.Member.Id != Bot.userIdvfs)
                     {
                         username = "arschloch";
                     }

@@ -40,7 +40,7 @@ namespace unbis_discord_bot.Commands
         [Description("Random distorted xSicht")]
         public async Task RndDXSichter(CommandContext ctx)
         {
-            if (ctx.Channel.Id != 816990123568660510)
+            if (ctx.Channel.Id != Bot.channelIdRotz)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;

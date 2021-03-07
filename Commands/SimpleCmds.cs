@@ -49,7 +49,7 @@ namespace unbis_discord_bot.Commands
         public async Task Belastung(CommandContext ctx)
         {
 
-            if (ctx.Member.Id == 134719067016658945)
+            if (ctx.Member.Id == Bot.userIdvfs)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Es ist alles sehr belastend").ConfigureAwait(false);
                 return;
@@ -124,7 +124,7 @@ namespace unbis_discord_bot.Commands
         public async Task Durstometer(CommandContext ctx, DiscordUser target)
         {
             int res = 100;
-            if (target.Id != 351514728734130177)
+            if (target.Id != Bot.userIdEsso)
             {
                 res = Shared.GenerateRandomNumber(1, res);
             }
@@ -136,7 +136,7 @@ namespace unbis_discord_bot.Commands
         public async Task Normimeter(CommandContext ctx, DiscordUser target)
         {
             int res = 100;
-            if (target.Id != 351514728734130177 && target.Id != 690985661695655966)
+            if (target.Id != Bot.userIdEsso && target.Id != Bot.userIdRattan)
             {
                 res = Shared.GenerateRandomNumber(1, 30);
             }

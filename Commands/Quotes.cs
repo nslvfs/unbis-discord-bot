@@ -16,7 +16,7 @@ namespace unbis_discord_bot.Commands
             if (temp.quotes.Count > 0)
             {
                 var res = Shared.GenerateRandomNumber(0, temp.quotes.Count - 1);
-                if (ctx.Guild.Id == 442300530996543489)
+                if (ctx.Guild.Id == Bot.guildIdRatte)
                 {
                     await ctx.Channel.SendMessageAsync("Kevin sagt: " + temp.quotes[res]).ConfigureAwait(false);
                 }

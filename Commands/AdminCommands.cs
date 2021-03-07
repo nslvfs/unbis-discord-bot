@@ -45,7 +45,7 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task Mute(CommandContext ctx, DiscordMember target)
         {
-            if (ctx.Guild.Id != 791393115097137171)
+            if (ctx.Guild.Id != Bot.guildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
@@ -58,7 +58,7 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task kick(CommandContext ctx, DiscordMember target)
         {
-            if (ctx.Guild.Id != 791393115097137171)
+            if (ctx.Guild.Id != Bot.guildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
@@ -72,7 +72,7 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task Stille(CommandContext ctx)
         {
-            if (ctx.Guild.Id != 791393115097137171)
+            if (ctx.Guild.Id != Bot.guildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
@@ -86,7 +86,7 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task RandomMode(CommandContext ctx)
         {
-            if (ctx.Guild.Id != 791393115097137171)
+            if (ctx.Guild.Id != Bot.guildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
@@ -100,7 +100,7 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task CryptoMode(CommandContext ctx)
         {
-            if (ctx.Guild.Id != 791393115097137171)
+            if (ctx.Guild.Id != Bot.guildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;

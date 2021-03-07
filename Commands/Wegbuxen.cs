@@ -32,7 +32,7 @@ namespace unbis_discord_bot.Commands
                 _semaphoregate.Release();
                 return;
             }
-            if (ctx.Guild.Id != 791393115097137171)
+            if (ctx.Guild.Id != Bot.guildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 _semaphoregate.Release();
@@ -43,7 +43,7 @@ namespace unbis_discord_bot.Commands
             var client = ctx.Client;
             var interactivity = client.GetInteractivity();
 
-            if (target.Id == 807641560006000670 || target.Id == 134719067016658945)
+            if (target.Id == Bot.botIdSelf || target.Id == Bot.userIdvfs)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Unzulässiges Ziel " + target.Mention).ConfigureAwait(false);
                 _semaphoregate.Release();
@@ -103,16 +103,16 @@ namespace unbis_discord_bot.Commands
                 {
                     pollResultText.Append("Buxung erfolgreich");
                     await ctx.RespondAsync(pollResultText.ToString());
-                    var roleMuted = ctx.Guild.GetRole(807921762570469386);
+                    var roleMuted = ctx.Guild.GetRole(Bot.roleIdMuted);
                     var userId = ctx.Message.MentionedUsers.First().Id;
                     DiscordMember member = await ctx.Guild.GetMemberAsync(userId);
                     //await member.RemoveAsync("Im Namen des Volkes.");                  
                     await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
                     await member.GrantRoleAsync(roleMuted);
-                    Bot.RemoveUserfromMessageArchiv(ctx.Member.Id);
+                    _ = Bot.RemoveUserfromMessageArchiv(ctx.Member.Id);
                     Thread.Sleep(1000 * 60 * 10); // 10 Min
                     await member.RevokeRoleAsync(roleMuted);
-                    var outChannel = ctx.Guild.GetChannel(816990123568660510);
+                    var outChannel = ctx.Guild.GetChannel(Bot.channelIdRotz);
                     await outChannel.SendMessageAsync(member.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
                 }
                 else
