@@ -270,10 +270,11 @@ namespace unbis_discord_bot
                         await e.Channel.SendMessageAsync("das was " + target + " sagt").ConfigureAwait(false);
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Exception :" + ex.Message);
-                if(ex.InnerException != null)
+                if (ex.InnerException != null)
                 {
                     Console.WriteLine("Inner Exception :" + ex.Message);
                 }
@@ -344,7 +345,8 @@ namespace unbis_discord_bot
             {
                 File.Create(fileName).Dispose();
             }
-            if(Message != null) { 
+            if (Message != null)
+            {
                 foreach (var item in badWords)
                 {
                     if (Message.Contains(item))
@@ -433,7 +435,8 @@ namespace unbis_discord_bot
             {
                 return;
             }
-            try { 
+            try
+            {
                 var roleMuted = g.GetRole(807921762570469386);
                 _ = target.GrantRoleAsync(roleMuted);
                 _ = Bot.RemoveUserfromMessageArchiv(target.Id);
@@ -443,7 +446,8 @@ namespace unbis_discord_bot
                 Thread.Sleep(1000 * 60 * durationMin);
                 await target.RevokeRoleAsync(roleMuted);
                 await outChannel.SendMessageAsync(target.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Exception :" + ex.Message);
                 if (ex.InnerException != null)
