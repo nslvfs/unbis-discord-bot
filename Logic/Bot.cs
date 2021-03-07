@@ -167,7 +167,7 @@ namespace unbis_discord_bot
 
         private async Task Client_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
         {
-            await Client_MessageHandling(sender, e.Message, e.Guild);
+            await Client_MessageHandling(sender, e.Message, e.Guild).ConfigureAwait(false);
         }
         private async Task Client_MessageUpdated(DiscordClient sender, MessageUpdateEventArgs e)
         {
@@ -176,95 +176,106 @@ namespace unbis_discord_bot
 
         private async Task Client_MessageHandling(DiscordClient sender, DiscordMessage e, DiscordGuild g)
         {
-            var Message = new Model.Message();
-            if (!e.Author.IsBot)
+            try
             {
-                Message.Author = e.Author;
-                Message.AuthorId = e.Author.Id;
-                Message.ChannelId = e.Channel.Id;
-                Message.Timestamp = e.Timestamp;
-                ArchivMessages.Add(Message);
-            }
-
-
-            if (g.Id == 791393115097137171)
-            {
-                if (CheckBadWords(e.Content))
+                var Message = new Model.Message();
+                if (!e.Author.IsBot)
                 {
-                    var newMessage = ReplaceBadwords(e.Content);
-                    await e.DeleteAsync();
-                    await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
-                    await e.Channel.SendMessageAsync(e.Author.Mention + " wollte sagen: " + newMessage).ConfigureAwait(false);
-                    await Mute(e.Channel, (DiscordMember)e.Author, g, 1).ConfigureAwait(false);
-                    return;
+                    Message.Author = e.Author;
+                    Message.AuthorId = e.Author.Id;
+                    Message.ChannelId = e.Channel.Id;
+                    Message.Timestamp = e.Timestamp;
+                    ArchivMessages.Add(Message);
                 }
 
-                if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode && e.Channel.Id != 812403060416446474)
+                if (g.Id == 791393115097137171)
                 {
-                    await Mute(e.Channel, (DiscordMember)e.Author, g, 3).ConfigureAwait(false);
-                    await e.DeleteAsync();
-                }
-
-                if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && randomMode && !e.Author.IsBot)
-                {
-                    string rnd = Shared.GenerateRandomNumber(1000, 9999).ToString();
-
-                    await ((DiscordMember)e.Author).ModifyAsync(x =>
+                    if (CheckBadWords(e.Content))
                     {
-                        x.Nickname = rnd;
-                        x.AuditLogReason = $"Changed by Random.Mode).";
-                    });
-                }
-
-                if (cryptoMode && !e.Author.IsBot)
-                {
-                    try
-                    {
-                        string message = e.Content;
-                        string author = ((DiscordMember)e.Author).DisplayName;
-                        string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+                        var newMessage = ReplaceBadwords(e.Content);
+                        await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention);
+                        await e.Channel.SendMessageAsync(e.Author.Mention + " wollte sagen: " + newMessage);
+                        _ = Mute(e.Channel, (DiscordMember)e.Author, g, 1);
                         await e.DeleteAsync();
-                        Console.WriteLine("Cleartext: " + dtNow + "| " + author + ": " + message);
-                        string encryptedstring = Logic.Encryption.Encrypt(message, configJson.cryptoPwd);
-                        await e.Channel.SendMessageAsync(author + ": " + encryptedstring).ConfigureAwait(false);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
+                        return;
                     }
 
-                }
-
-                if (e.Content.StartsWith(".kiss") || e.Content.StartsWith(".kizz"))
-                {
-                    var userIds = e.MentionedUsers;
-                    foreach (var userID in userIds)
+                    if ((e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode && e.Channel.Id != 812403060416446474) && !e.Author.IsBot)
                     {
-                        if (userID.Id == 134719067016658945)
+                        await Mute(e.Channel, (DiscordMember)e.Author, g, 3).ConfigureAwait(false);
+                        await e.DeleteAsync();
+                        return;
+                    }
+
+                    if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && randomMode && !e.Author.IsBot)
+                    {
+                        string rnd = Shared.GenerateRandomNumber(1000, 9999).ToString();
+
+                        await ((DiscordMember)e.Author).ModifyAsync(x =>
                         {
-                            if (g.Id == 791393115097137171)
+                            x.Nickname = rnd;
+                            x.AuditLogReason = $"Changed by Random.Mode).";
+                        });
+                    }
+
+                    if (cryptoMode && !e.Author.IsBot)
+                    {
+                        try
+                        {
+                            string message = e.Content;
+                            string author = ((DiscordMember)e.Author).DisplayName;
+                            string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+                            Console.WriteLine("Cleartext: " + dtNow + "| " + author + ": " + message);
+                            string encryptedstring = Logic.Encryption.Encrypt(message, configJson.cryptoPwd);
+                            await e.Channel.SendMessageAsync(author + ": " + encryptedstring).ConfigureAwait(false);
+                            await e.DeleteAsync();
+                            return;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+
+                    }
+
+                    if (e.Content.StartsWith(".kiss") || e.Content.StartsWith(".kizz"))
+                    {
+                        var userIds = e.MentionedUsers;
+                        foreach (var userID in userIds)
+                        {
+                            if (userID.Id == 134719067016658945)
                             {
-                                await Mute(e.Channel, (DiscordMember)e.Author, g).ConfigureAwait(false);
+                                if (g.Id == 791393115097137171)
+                                {
+                                    await Mute(e.Channel, (DiscordMember)e.Author, g).ConfigureAwait(false);
+                                }
                             }
                         }
                     }
+
                 }
-            }
 
-            var msgArr = e.Content.Split();
-            if (msgArr.Length >= 3)
-            {
-                if (msgArr[0] == "was" && msgArr[msgArr.Length - 1] == "sagt")
+                var msgArr = e.Content.Split();
+                if (msgArr.Length >= 3)
                 {
-                    string target = string.Empty;
-                    for (int i = 1; i <= msgArr.Length - 2; i++)
+                    if (msgArr[0] == "was" && msgArr[msgArr.Length - 1] == "sagt")
                     {
-                        target = target + " " + msgArr[i];
-                    }
+                        string target = string.Empty;
+                        for (int i = 1; i <= msgArr.Length - 2; i++)
+                        {
+                            target = target + " " + msgArr[i];
+                        }
 
-                    target = target.Trim();
-                    await e.Channel.SendMessageAsync("das was " + target + " sagt").ConfigureAwait(false);
+                        target = target.Trim();
+                        await e.Channel.SendMessageAsync("das was " + target + " sagt").ConfigureAwait(false);
+                    }
+                }
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Exception :" + ex.Message);
+                if(ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception :" + ex.Message);
                 }
             }
         }
@@ -302,9 +313,10 @@ namespace unbis_discord_bot
 
         }
 
-        public static void RemoveUserfromMessageArchiv(ulong userId)
+        public static Task RemoveUserfromMessageArchiv(ulong userId)
         {
             ArchivMessages.RemoveAll(item => item.AuthorId == userId);
+            return Task.CompletedTask;
         }
 
         private Task Client_ClientError(DiscordClient sender, ClientErrorEventArgs e)
@@ -332,23 +344,25 @@ namespace unbis_discord_bot
             {
                 File.Create(fileName).Dispose();
             }
-            foreach (var item in badWords)
-            {
-                if (Message.Contains(item))
+            if(Message != null) { 
+                foreach (var item in badWords)
                 {
-                    Console.WriteLine(item);
-                    return true;
-                }
-                if (Message.ToLower().Contains(item.ToLower()))
-                {
-                    Console.WriteLine(item);
-                    return true;
-                }
-                var msg = Regex.Replace(Message, @"([^\w]|_)", "");
-                if (msg.Contains(item))
-                {
-                    Console.WriteLine(item);
-                    return true;
+                    if (Message.Contains(item))
+                    {
+                        Console.WriteLine(item);
+                        return true;
+                    }
+                    if (Message.ToLower().Contains(item.ToLower()))
+                    {
+                        Console.WriteLine(item);
+                        return true;
+                    }
+                    var msg = Regex.Replace(Message, @"([^\w]|_)", "");
+                    if (msg.Contains(item))
+                    {
+                        Console.WriteLine(item);
+                        return true;
+                    }
                 }
             }
             return false;
@@ -419,16 +433,24 @@ namespace unbis_discord_bot
             {
                 return;
             }
+            try { 
+                var roleMuted = g.GetRole(807921762570469386);
+                _ = target.GrantRoleAsync(roleMuted);
+                _ = Bot.RemoveUserfromMessageArchiv(target.Id);
 
-            var roleMuted = g.GetRole(807921762570469386);
-            await target.GrantRoleAsync(roleMuted);
-            Bot.RemoveUserfromMessageArchiv(target.Id);
-
-            var outChannel = g.GetChannel(816990123568660510);
-            await outChannel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minute(n) still").ConfigureAwait(false);
-            Thread.Sleep(1000 * 60 * durationMin);
-            await target.RevokeRoleAsync(roleMuted);
-            await outChannel.SendMessageAsync(target.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
+                var outChannel = g.GetChannel(816990123568660510);
+                await outChannel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minute(n) still").ConfigureAwait(false);
+                Thread.Sleep(1000 * 60 * durationMin);
+                await target.RevokeRoleAsync(roleMuted);
+                await outChannel.SendMessageAsync(target.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Exception :" + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception :" + ex.Message);
+                }
+            }
         }
     }
 }
