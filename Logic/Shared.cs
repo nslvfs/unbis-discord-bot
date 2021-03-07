@@ -17,16 +17,10 @@ namespace unbis_discord_bot
         public static int GenerateRandomNumber(int min, int max)
         {
             RNGCryptoServiceProvider c = new RNGCryptoServiceProvider();
-            // Ein integer benötigt 4 Byte
             byte[] randomNumber = new byte[4];
-            // dann füllen wir den Array mit zufälligen Bytes
             c.GetBytes(randomNumber);
-            // schließlich wandeln wir den Byte-Array in einen Integer um
             int result = Math.Abs(BitConverter.ToInt32(randomNumber, 0));
-            // da bis jetzt noch keine Begrenzung der Zahlen vorgenommen wurde,
-            // wird diese Begrenzung mit einer einfachen Modulo-Rechnung hinzu-
-            // gefügt
-            return result % (max - min + 1) + min; //fix by opi
+            return result % (max - min + 1) + min;
         }
 
         public static List<DiscordUser> GetActiveUsers(CommandContext ctx)

@@ -106,11 +106,10 @@ namespace unbis_discord_bot.Commands
                     var roleMuted = ctx.Guild.GetRole(Bot.roleIdMuted);
                     var userId = ctx.Message.MentionedUsers.First().Id;
                     DiscordMember member = await ctx.Guild.GetMemberAsync(userId);
-                    //await member.RemoveAsync("Im Namen des Volkes.");                  
                     await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
                     await member.GrantRoleAsync(roleMuted);
                     _ = Bot.RemoveUserfromMessageArchiv(ctx.Member.Id);
-                    Thread.Sleep(1000 * 60 * 10); // 10 Min
+                    Thread.Sleep(1000 * 60 * 10);
                     await member.RevokeRoleAsync(roleMuted);
                     var outChannel = ctx.Guild.GetChannel(Bot.channelIdRotz);
                     await outChannel.SendMessageAsync(member.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
