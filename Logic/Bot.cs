@@ -112,7 +112,7 @@ namespace unbis_discord_bot
             await Task.Delay(-1);
         }
 
-        private Task Client_ReactionAdded(DiscordClient sender, MessageReactionAddEventArgs e)
+        private async Task Client_ReactionAdded(DiscordClient sender, MessageReactionAddEventArgs e)
         {
             var Message = new Model.Message();
             if (!e.User.IsBot)
@@ -127,7 +127,6 @@ namespace unbis_discord_bot
             {
                 await e.Message.DeleteAllReactionsAsync().ConfigureAwait(false);
             }
-            return Task.CompletedTask;
         }
 
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
@@ -187,23 +186,25 @@ namespace unbis_discord_bot
                 ArchivMessages.Add(Message);
             }
 
-            if (CheckBadWords(e.Content) && g.Id == 791393115097137171)
-            {
-                var newMessage = ReplaceBadwords(e.Content);
-                await e.DeleteAsync();
-                await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
-                await e.Channel.SendMessageAsync(e.Author.Mention + " wollte sagen: " + newMessage).ConfigureAwait(false);
-                await Mute(e.Channel, (DiscordMember)e.Author, g, 1).ConfigureAwait(false);
-                return;
-            }
 
             if (g.Id == 791393115097137171)
             {
+                if (CheckBadWords(e.Content))
+                {
+                    var newMessage = ReplaceBadwords(e.Content);
+                    await e.DeleteAsync();
+                    await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention).ConfigureAwait(false);
+                    await e.Channel.SendMessageAsync(e.Author.Mention + " wollte sagen: " + newMessage).ConfigureAwait(false);
+                    await Mute(e.Channel, (DiscordMember)e.Author, g, 1).ConfigureAwait(false);
+                    return;
+                }
+
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && silentMode && e.Channel.Id != 812403060416446474)
                 {
                     await Mute(e.Channel, (DiscordMember)e.Author, g, 3).ConfigureAwait(false);
                     await e.DeleteAsync();
                 }
+
                 if (e.Author.Id != 807641560006000670 && e.Author.Id != 134719067016658945 && randomMode && !e.Author.IsBot)
                 {
                     string rnd = Shared.GenerateRandomNumber(1000, 9999).ToString();
@@ -214,6 +215,7 @@ namespace unbis_discord_bot
                         x.AuditLogReason = $"Changed by Random.Mode).";
                     });
                 }
+
                 if (cryptoMode && !e.Author.IsBot)
                 {
                     try
@@ -233,17 +235,18 @@ namespace unbis_discord_bot
                     }
 
                 }
-            }
-            if (e.Content.StartsWith(".kiss") || e.Content.StartsWith(".kizz"))
-            {
-                var userIds = e.MentionedUsers;
-                foreach (var userID in userIds)
+
+                if (e.Content.StartsWith(".kiss") || e.Content.StartsWith(".kizz"))
                 {
-                    if (userID.Id == 134719067016658945)
+                    var userIds = e.MentionedUsers;
+                    foreach (var userID in userIds)
                     {
-                        if (g.Id == 791393115097137171)
+                        if (userID.Id == 134719067016658945)
                         {
-                            await Mute(e.Channel, (DiscordMember)e.Author, g).ConfigureAwait(false);
+                            if (g.Id == 791393115097137171)
+                            {
+                                await Mute(e.Channel, (DiscordMember)e.Author, g).ConfigureAwait(false);
+                            }
                         }
                     }
                 }
@@ -412,14 +415,11 @@ namespace unbis_discord_bot
 
         public static async Task Mute(DiscordChannel channel, DiscordMember target, DiscordGuild g, int durationMin = 10)
         {
-            if (target.Id == 807641560006000670)
+            if (target.Id == 807641560006000670 || g.Id != 791393115097137171)
             {
                 return;
             }
-            if(g.Id != 791393115097137171)
-            {
-                return;
-            }
+
             var roleMuted = g.GetRole(807921762570469386);
             await target.GrantRoleAsync(roleMuted);
             Bot.RemoveUserfromMessageArchiv(target.Id);

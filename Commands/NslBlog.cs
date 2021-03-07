@@ -35,16 +35,12 @@ namespace unbis_discord_bot.Commands
         [Description("Einen Artikel posten")]
         public async Task BPost(CommandContext ctx, [RemainingText] string qry)
         {
-            if (ctx.Guild.Id != 791393115097137171)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
-                return;
-            }
-            if (Bot.CheckBadWords(qry))
+            if (ctx.Guild.Id != 791393115097137171 || Bot.CheckBadWords(qry))
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
                 return;
             }
+
             string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
             var contentFile = Bot.configJson.blogContent;
             int rssLineCount = 0;
@@ -113,11 +109,13 @@ namespace unbis_discord_bot.Commands
                     else
                     {
                         await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": RSS-File nicht gefunden.").ConfigureAwait(false);
+                        return;
                     }
                 }
                 else
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Content-File nicht gefunden.").ConfigureAwait(false);
+                    return;
                 }
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": https://blog.neuschwabenland.net/#" + lineCount).ConfigureAwait(false);
             }

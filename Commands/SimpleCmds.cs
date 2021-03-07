@@ -126,7 +126,7 @@ namespace unbis_discord_bot.Commands
             int res = 100;
             if (target.Id != 351514728734130177)
             {
-                res = Shared.GenerateRandomNumber(1, 100);
+                res = Shared.GenerateRandomNumber(1, res);
             }
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " ist " + res + "% durstig").ConfigureAwait(false);
         }
@@ -141,16 +141,6 @@ namespace unbis_discord_bot.Commands
                 res = Shared.GenerateRandomNumber(1, 30);
             }
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " ist " + res + "% Normie").ConfigureAwait(false);
-        }
-
-        [Command("cryptotweet")]
-        [Aliases("ct")]
-        [RequireOwner]
-        [Description("verschlüßelten tweet rausrotzen")]
-        public async Task EncodeTweet(CommandContext ctx, [RemainingText] string qry)
-        {
-            string encryptedstring = Logic.Encryption.Encrypt(qry, Bot.configJson.cryptoPwd);
-            await ctx.Channel.SendMessageAsync(".tweet " + encryptedstring).ConfigureAwait(false);
         }
 
         [Command("encode")]

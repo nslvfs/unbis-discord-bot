@@ -11,7 +11,7 @@ namespace unbis_discord_bot.Commands
 
         [Command("AddGif")]
         [Description("Fügt ein Gif zu !gif hinzu.")]
-        public async Task QuoteAdd(CommandContext ctx, [RemainingText] string qry)
+        public async Task AddGif(CommandContext ctx, [RemainingText] string qry)
         {
             if (Bot.CheckBadWords(qry) || ctx.Guild.Id != 442300530996543489)
             {
@@ -43,7 +43,7 @@ namespace unbis_discord_bot.Commands
 
         [Command("gif")]
         [Description("Gibt ein zufälliges gif wieder.")]
-        public async Task Quote(CommandContext ctx)
+        public async Task Gif(CommandContext ctx)
         {
             if (ctx.Guild.Id != 442300530996543489)
             {
