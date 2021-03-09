@@ -38,7 +38,7 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.CheckBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
 

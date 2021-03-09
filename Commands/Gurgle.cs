@@ -14,7 +14,7 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.CheckBadWords(qry) || ctx.Channel.Id != Bot.channelIdRotz)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
             int limit = 3;
@@ -37,7 +37,7 @@ namespace unbis_discord_bot.Commands
                 }
                 else
                 {
-                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
                 }
             }
 

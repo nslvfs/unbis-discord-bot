@@ -2,7 +2,10 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
@@ -78,7 +81,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
             Bot.silentMode = !Bot.silentMode;
-            await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
         }
 
         [Command("RandomMode")]
@@ -92,7 +95,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
             Bot.randomMode = !Bot.randomMode;
-            await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
         }
 
         [Command("CryptoMode")]
@@ -106,7 +109,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
             Bot.cryptoMode = !Bot.cryptoMode;
-            await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
         }
 
 
@@ -130,14 +133,28 @@ namespace unbis_discord_bot.Commands
                     x.Nickname = new_nickname;
                     x.AuditLogReason = $"Changed by {ctx.User.Username} ({ctx.User.Id}).";
                 });
-                await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
 
             }
             catch (Exception ex)
             {
                 System.Console.WriteLine(ex.Message);
-                await ctx.Channel.SendMessageAsync(":C").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(Bot.configJson.negativAnswer).ConfigureAwait(false);
             }
+        }
+
+        [Command("rehash")]
+        [Description("config Datei neu einlesen")]
+        [RequireOwner]
+        public async Task Rehash(CommandContext ctx)
+        {
+            var json = string.Empty;
+            using (var fs = File.OpenRead("config.json"))
+            using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
+                json = sr.ReadToEnd();
+
+            Bot.configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
         }
 
     }

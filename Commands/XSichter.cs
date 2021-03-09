@@ -27,7 +27,7 @@ namespace unbis_discord_bot.Commands
             using (var fs = new FileStream("temp.jpg", FileMode.Open, FileAccess.Read))
             {
                 await new DiscordMessageBuilder()
-                    .WithContent("o7")
+                    .WithContent(Bot.configJson.positivAnswer)
                     .WithFiles(new System.Collections.Generic.Dictionary<string, Stream>() { { "xsichter.jpg", fs } })
                     .SendAsync(ctx.Channel)
                     .ConfigureAwait(false);
@@ -42,7 +42,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != Bot.channelIdRotz)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": nope").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
             int maxMemeWidth = 500;

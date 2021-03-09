@@ -34,6 +34,12 @@ namespace unbis_discord_bot
         [JsonProperty("badwords")]
         public string badwords { get; private set; }
 
+        [JsonProperty("negativAnswer")]
+        public string negativAnswer { get; set; }
+
+        [JsonProperty("positivAnswer")]
+        public string positivAnswer { get; set; }
+
     }
 }
 

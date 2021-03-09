@@ -8,5 +8,7 @@
   "xSichterPath": "/var/www/xSichter/pics/",
   "gurgleApi": "",
   "gurgleSeachEngineId": "",
-  "badwords": "badwords.txt"
+  "badwords": "badwords.txt",
+  "negativAnswer": "nope",
+  "positivAnswer":  "o7"
 }

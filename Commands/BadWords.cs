@@ -28,7 +28,7 @@ namespace unbis_discord_bot.Commands
                     w.WriteLine(newline.Trim());
                 }
             }
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": o7").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.positivAnswer).ConfigureAwait(false);
         }
 
         [Command("validate")]
@@ -85,7 +85,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
             Bot.doCheckBadWords = !Bot.doCheckBadWords;
-            await ctx.Channel.SendMessageAsync("o7").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
         }
     }
 }
