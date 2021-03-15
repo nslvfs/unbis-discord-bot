@@ -34,6 +34,9 @@ namespace unbis_discord_bot
         public const long userIdvfs = 134719067016658945;
         public static bool doCheckBadWords { get; set; }
         public static bool silentMode { get; set; }
+
+        public static DiscordMessage lastEssoMessage { get; set; }
+        public static DateTime botStart { get; set; }
         public static bool randomMode { get; set; }
         public static bool cryptoMode { get; set; }
         public static DiscordClient Client { get; private set; }
@@ -51,12 +54,13 @@ namespace unbis_discord_bot
                 json = sr.ReadToEnd();
 
             configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
-
+            botStart = DateTime.Now;
             doCheckBadWords = true;
 
             var config = new DiscordConfiguration
             {
                 Token = configJson.Token,
+                
                 TokenType = TokenType.Bot,
                 Intents = DiscordIntents.GuildMessages |
                     DiscordIntents.GuildBans |
@@ -103,6 +107,7 @@ namespace unbis_discord_bot
             Commands.CommandErrored += Commands_CommandErrored;
             Commands.RegisterCommands<AdminCommands>();
             Commands.RegisterCommands<BadWords>();
+            Commands.RegisterCommands<Esso>();
             Commands.RegisterCommands<Flaschendrehen>();
             Commands.RegisterCommands<Gurgle>();
             Commands.RegisterCommands<JaNein>();
@@ -189,6 +194,10 @@ namespace unbis_discord_bot
         {
             try
             {
+                if(e.Author.Id == userIdEsso)
+                {
+                    lastEssoMessage = e;
+                }
                 var Message = new Model.Message();
                 if (!e.Author.IsBot)
                 {
