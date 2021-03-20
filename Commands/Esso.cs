@@ -21,7 +21,7 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("normimeter")]
-        [Description("Durstigkeit in Prozent eines Users")]
+        [Description("Normigkeit in Prozent eines Users")]
         public async Task Normimeter(CommandContext ctx, DiscordUser target)
         {
             int res = 100;
