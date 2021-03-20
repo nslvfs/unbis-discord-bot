@@ -36,6 +36,11 @@ namespace unbis_discord_bot
         public static bool silentMode { get; set; }
 
         public static DiscordMessage lastEssoMessage { get; set; }
+
+        public static DiscordMessage lastRattanMessage { get; set; }
+
+        public static DateTime lastRattanMessageDt { get; set; }
+
         public static DateTime botStart { get; set; }
         public static bool randomMode { get; set; }
         public static bool cryptoMode { get; set; }
@@ -55,6 +60,9 @@ namespace unbis_discord_bot
 
             configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
             botStart = DateTime.Now;
+            
+            //assigns year, month, day, hour, min, seconds
+
             doCheckBadWords = true;
 
             var config = new DiscordConfiguration
@@ -197,6 +205,10 @@ namespace unbis_discord_bot
                 if(e.Author.Id == userIdEsso)
                 {
                     lastEssoMessage = e;
+                }
+                if (e.Author.Id == userIdRattan)
+                {
+                    lastRattanMessage = e;
                 }
                 var Message = new Model.Message();
                 if (!e.Author.IsBot)
