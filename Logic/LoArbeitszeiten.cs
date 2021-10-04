@@ -81,7 +81,6 @@ namespace unbis_discord_bot.Logic
             GetSingleDay(id, day);
         }
 
-
         private static UserWeek ReadWeekFile(ulong id)
         {
             string fileName = id.ToString() + ".json";

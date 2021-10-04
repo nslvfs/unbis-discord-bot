@@ -44,9 +44,9 @@ namespace unbis_discord_bot.Commands
         {
             string[] tage = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
             var temp = LoArbeitszeiten.ValidateInput(begin, end);
-            if(!temp)
+            if (!temp)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Eingabe ungültig" ).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Eingabe ungültig").ConfigureAwait(false);
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Gültige Tage: Mo, Di, Mi, Do, Fr, Sa, So").ConfigureAwait(false);
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Gültige Zeiten z.B.: 6:12, 20:15").ConfigureAwait(false);
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Beispielerhafter Aufruf:").ConfigureAwait(false);
@@ -70,7 +70,6 @@ namespace unbis_discord_bot.Commands
                 return;
             }
 
-            
             LoArbeitszeiten.SetSingleDay(ctx.User.Id, day, beginTs, endTs);
 
         }

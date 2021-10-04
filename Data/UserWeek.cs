@@ -18,8 +18,6 @@ namespace unbis_discord_bot.Model
 
         public UserWeek() { }
 
-
-
     }
 
     [Serializable]
