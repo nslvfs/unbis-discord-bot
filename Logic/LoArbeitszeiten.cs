@@ -69,7 +69,7 @@ namespace unbis_discord_bot.Logic
                     return "arbeitet am " + getDay + " von " + begin + " bis " + end;
                 }
             }
-            return "arbeitet anscheinend am " + getDay + "nicht";
+            return "arbeitet anscheinend am " + getDay + " nicht";
         }
 
         public static void GetSingleDay(ulong id)

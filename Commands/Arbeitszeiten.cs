@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
 {
-    class Arbeitszeiten : BaseCommandModule
+    public class Arbeitszeiten : BaseCommandModule
     {
         [Command("arbeit")]
         [Description("Fragt die Arbeitstage für ein User ab")]
@@ -47,7 +47,7 @@ namespace unbis_discord_bot.Commands
             if(!temp)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Eingabe ungültig" ).ConfigureAwait(false);
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Gültige Tage: Mo, Di, Mi, Do, Fr, Sa So").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Gültige Tage: Mo, Di, Mi, Do, Fr, Sa, So").ConfigureAwait(false);
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Gültige Zeiten z.B.: 6:12, 20:15").ConfigureAwait(false);
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Beispielerhafter Aufruf:").ConfigureAwait(false);
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": !setarbeit Mo 10:00 18:30").ConfigureAwait(false);
@@ -70,6 +70,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
 
+            
             LoArbeitszeiten.SetSingleDay(ctx.User.Id, day, beginTs, endTs);
 
         }
