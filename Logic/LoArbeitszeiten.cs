@@ -44,9 +44,10 @@ namespace unbis_discord_bot.Logic
                     {
                         day.sBegin = begin.ToString(("hh':'mm")); ;
                         day.sEnd = end.ToString(("hh':'mm")); ;
+                        WriteWeekFile(dataItem);
+                        return;
                     }
-                    WriteWeekFile(dataItem);
-                    return;
+
                 }
                 WorkDay addDay = new WorkDay(newDay);
                 addDay.sBegin = begin.ToString(("hh':'mm")); ;
