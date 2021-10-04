@@ -30,8 +30,8 @@ namespace unbis_discord_bot.Logic
             {
                 UserWeek dataItem = new UserWeek(userId);
                 WorkDay addDay = new WorkDay(newDay);
-                addDay.Begin = begin;
-                addDay.End = end;
+                addDay.sBegin = begin.ToString(("hh':'mm"));
+                addDay.sEnd = end.ToString(("hh':'mm")); ;
                 dataItem.Week.Add(addDay);
                 WriteWeekFile(dataItem);
             }
@@ -42,15 +42,15 @@ namespace unbis_discord_bot.Logic
                 {
                     if (day.DayName == newDay)
                     {
-                        day.Begin = begin;
-                        day.End = end;
+                        day.sBegin = begin.ToString(("hh':'mm")); ;
+                        day.sEnd = end.ToString(("hh':'mm")); ;
                     }
                     WriteWeekFile(dataItem);
                     return;
                 }
                 WorkDay addDay = new WorkDay(newDay);
-                addDay.Begin = begin;
-                addDay.End = end;
+                addDay.sBegin = begin.ToString(("hh':'mm")); ;
+                addDay.sEnd = end.ToString(("hh':'mm")); ;
                 dataItem.Week.Add(addDay);
                 WriteWeekFile(dataItem);
             }
@@ -64,8 +64,8 @@ namespace unbis_discord_bot.Logic
             {
                 if (day.DayName == getDay)
                 {
-                    var begin = day.Begin.ToString(("mm':'ss"));
-                    var end = day.End.ToString(("mm':'ss"));
+                    var begin = day.sBegin;
+                    var end = day.sEnd;
                     return "arbeitet am " + getDay + " von " + begin + " bis " + end;
                 }
             }

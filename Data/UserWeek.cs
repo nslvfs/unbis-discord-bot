@@ -26,8 +26,10 @@ namespace unbis_discord_bot.Model
     public class WorkDay
     {
         public string DayName { get; set; }
-        public TimeSpan Begin { get; set; }
-        public TimeSpan End { get; set; }
+
+        public string sBegin { get; set; }
+
+        public string sEnd { get; set; }
 
         public WorkDay(string name)
         {
