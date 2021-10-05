@@ -19,6 +19,10 @@ namespace unbis_discord_bot.Commands
         [Description("Fragt die Arbeitstage für ein User ab")]
         public async Task Arbeit(CommandContext ctx, DiscordUser target, string day = "")
         {
+            if (day.Length == 2)
+            {
+                day = char.ToUpper(day[0]) + day.Substring(1).ToLower();
+            }
             string[] tage = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
             if (day != "")
             { 
@@ -41,6 +45,10 @@ namespace unbis_discord_bot.Commands
         [Description("Fragt die Arbeitstage für ein User ab")]
         public async Task SetArbeit(CommandContext ctx, string day, string begin, string end)
         {
+            if (day.Length == 2)
+            {
+                day = char.ToUpper(day[0]) + day.Substring(1).ToLower();
+            }
             string[] tage = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
             var temp = LoArbeitszeiten.ValidateInput(begin, end);
             if (!temp)
@@ -77,6 +85,9 @@ namespace unbis_discord_bot.Commands
         [Description("Fragt die Arbeitstage für ein User ab")]
         public async Task DelArbeit(CommandContext ctx, string day)
         {
+            if(day.Length == 2) {
+                day = char.ToUpper(day[0]) + day.Substring(1).ToLower();
+            }
             string[] tage = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
             if (Array.IndexOf(tage, day) == -1)
             {
