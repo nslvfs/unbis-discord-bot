@@ -61,7 +61,7 @@ namespace unbis_discord_bot.Logic
         public static string GetSingleDay(ulong id, string getDay)
         {
             UserWeek dataItem = ReadWeekFile(id);
-            if(dataItem == null)
+            if (dataItem == null)
             {
                 return "keine Daten Vorhanden";
             }
@@ -99,7 +99,7 @@ namespace unbis_discord_bot.Logic
                     break;
                 }
             }
-            if(found)
+            if (found)
             {
                 dataItem.Week.Remove(temp);
                 WriteWeekFile(dataItem);
@@ -110,7 +110,8 @@ namespace unbis_discord_bot.Logic
         private static UserWeek ReadWeekFile(ulong id)
         {
             string fileName = id.ToString() + ".json";
-            if(File.Exists(fileName)) { 
+            if (File.Exists(fileName))
+            {
                 string jsonString = File.ReadAllText(fileName);
                 UserWeek data = JsonSerializer.Deserialize<UserWeek>(jsonString);
                 return data;
