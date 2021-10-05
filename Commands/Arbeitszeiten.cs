@@ -37,6 +37,10 @@ namespace unbis_discord_bot.Commands
                 {
                     var outTxt = LoArbeitszeiten.GetSingleDay(target.Id, tag);
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " " + outTxt).ConfigureAwait(false);
+                    if (outTxt == "keine Daten Vorhanden")
+                    {
+                        break;
+                    }
                 }
             }
         }
