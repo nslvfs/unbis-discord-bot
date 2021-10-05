@@ -81,6 +81,28 @@ namespace unbis_discord_bot.Logic
             GetSingleDay(id, day);
         }
 
+        public static void DelSingleDay(ulong id, string getDay)
+        {
+            UserWeek dataItem = ReadWeekFile(id);
+            WorkDay temp = new WorkDay();
+            bool found = false;
+            foreach (var day in dataItem.Week)
+            {
+                if (day.DayName == getDay)
+                {
+                    temp = day;
+                    found = true;
+                    break;
+                }
+            }
+            if(found)
+            {
+                dataItem.Week.Remove(temp);
+                WriteWeekFile(dataItem);
+            }
+
+        }
+
         private static UserWeek ReadWeekFile(ulong id)
         {
             string fileName = id.ToString() + ".json";

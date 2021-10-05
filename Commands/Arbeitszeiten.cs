@@ -17,24 +17,23 @@ namespace unbis_discord_bot.Commands
     {
         [Command("arbeit")]
         [Description("Fragt die Arbeitstage für ein User ab")]
-        public async Task Arbeit(CommandContext ctx, DiscordUser target)
+        public async Task Arbeit(CommandContext ctx, DiscordUser target, string day = "")
         {
             string[] tage = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
-            foreach (var tag in tage)
+            if (day != "")
+            { 
+                int i = Array.IndexOf(tage, day);
+                {
+                    var outTxt = LoArbeitszeiten.GetSingleDay(target.Id, tage[i]);
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " " + outTxt).ConfigureAwait(false);
+                }
+            } else
             {
-                var outTxt = LoArbeitszeiten.GetSingleDay(target.Id, tag);
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " " + outTxt).ConfigureAwait(false);
-            }
-        }
-
-        [Description("Fragt einen Arbeitstag für ein User ab")]
-        public async Task Arbeit(CommandContext ctx, DiscordUser target, string day)
-        {
-            string[] tage = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
-            int i = Array.IndexOf(tage, day);
-            {
-                var outTxt = LoArbeitszeiten.GetSingleDay(target.Id, tage[i]);
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " " + outTxt).ConfigureAwait(false);
+                foreach (var tag in tage)
+                {
+                    var outTxt = LoArbeitszeiten.GetSingleDay(target.Id, tag);
+                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " " + outTxt).ConfigureAwait(false);
+                }
             }
         }
 
@@ -71,7 +70,30 @@ namespace unbis_discord_bot.Commands
             }
 
             LoArbeitszeiten.SetSingleDay(ctx.User.Id, day, beginTs, endTs);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": o7").ConfigureAwait(false);
+        }
 
+        [Command("delarbeit")]
+        [Description("Fragt die Arbeitstage für ein User ab")]
+        public async Task DelArbeit(CommandContext ctx, string day)
+        {
+            string[] tage = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
+            if (Array.IndexOf(tage, day) == -1)
+            {
+                string outTxt = "Ungültiger Tag! Gültige Einträge: ";
+                foreach (var str in tage)
+                {
+                    outTxt = outTxt + str + ", ";
+                }
+                outTxt = outTxt.Substring(0, outTxt.Length - 2);
+                Console.WriteLine(outTxt);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + outTxt).ConfigureAwait(false);
+                return;
+            } else
+            {
+                LoArbeitszeiten.DelSingleDay(ctx.Member.Id, day);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": o7").ConfigureAwait(false);
+            }
         }
     }
 }
