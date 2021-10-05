@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using unbis_discord_bot.Logic;
-using unbis_discord_bot.Model;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using DSharpPlus.Interactivity.Enums;
-using DSharpPlus.Interactivity.Extensions;
-using System.Threading;
+using System;
 using System.Threading.Tasks;
+using unbis_discord_bot.Logic;
 
 namespace unbis_discord_bot.Commands
 {
