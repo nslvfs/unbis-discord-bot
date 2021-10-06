@@ -117,7 +117,6 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<BadWords>();
             Commands.RegisterCommands<Esso>();
             Commands.RegisterCommands<Flaschendrehen>();
-            Commands.RegisterCommands<Gurgle>();
             Commands.RegisterCommands<JaNein>();
             Commands.RegisterCommands<NslBlog>();
             Commands.RegisterCommands<Quotes>();

@@ -16,9 +16,8 @@ namespace unbis_discord_bot.Logic
                 TimeSpan endTs = TimeSpan.Parse(end);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                //Console.WriteLine(ex.Message);
                 return false;
             }
         }
