@@ -107,5 +107,38 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": o7").ConfigureAwait(false);
             }
         }
+
+        [Command("delallarbeit")]
+        [Description("Löscht die Arbeitswoche")]
+        public async Task DelAllArbeit(CommandContext ctx)
+        {
+            LoArbeitszeiten.DelWeek(ctx.Member.Id);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": o7").ConfigureAwait(false);
+
+        }
+
+        [Command("setallarbeit")]
+        [Description("Löscht die Arbeitswoche")]
+        public async Task SetAllDays(CommandContext ctx, string begin, string end)
+        {
+            string[] tage = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
+            var temp = LoArbeitszeiten.ValidateInput(begin, end);
+            if (!temp)
+            {
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Eingabe ungültig").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Gültige Zeiten z.B.: 6:12, 20:15").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Beispielerhafter Aufruf:").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": !setarbeit Mo 10:00 18:30").ConfigureAwait(false);
+                return;
+            }
+
+            TimeSpan beginTs = TimeSpan.Parse(begin);
+            TimeSpan endTs = TimeSpan.Parse(end);
+            foreach(var tag in tage)
+            {
+                LoArbeitszeiten.SetSingleDay(ctx.User.Id, tag, beginTs, endTs);
+            }
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": o7").ConfigureAwait(false);
+        }
     }
 }

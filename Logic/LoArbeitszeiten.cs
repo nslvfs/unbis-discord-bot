@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using unbis_discord_bot.Model;
@@ -104,6 +105,15 @@ namespace unbis_discord_bot.Logic
                 dataItem.Week.Remove(temp);
                 WriteWeekFile(dataItem);
             }
+
+        }
+
+        public static void DelWeek(ulong id)
+        {
+            UserWeek dataItem = ReadWeekFile(id);
+            dataItem.Week = new List<WorkDay>();
+            WriteWeekFile(dataItem);
+            
 
         }
 
