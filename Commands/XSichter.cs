@@ -34,7 +34,6 @@ namespace unbis_discord_bot.Commands
             }
         }
 
-
         [Command("dxsichter")]
         [Aliases("dxs")]
         [Description("Random distorted xSicht")]

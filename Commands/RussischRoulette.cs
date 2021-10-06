@@ -81,8 +81,6 @@ namespace unbis_discord_bot.Commands
                     }
                 }
             }
-
-
         }
     }
 }

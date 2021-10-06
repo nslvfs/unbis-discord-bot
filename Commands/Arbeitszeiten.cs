@@ -134,7 +134,7 @@ namespace unbis_discord_bot.Commands
 
             TimeSpan beginTs = TimeSpan.Parse(begin);
             TimeSpan endTs = TimeSpan.Parse(end);
-            foreach(var tag in tage)
+            foreach (var tag in tage)
             {
                 LoArbeitszeiten.SetSingleDay(ctx.User.Id, tag, beginTs, endTs);
             }

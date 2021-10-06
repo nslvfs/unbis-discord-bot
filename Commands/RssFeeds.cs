@@ -95,7 +95,6 @@ namespace unbis_discord_bot.Commands
             }
         }
 
-
         [Command("spiegeleil")]
         [Description("Letzte Spiegel-Eilmeldungen ")]
         public async Task SpiegelEil(CommandContext ctx, int anz = 1)

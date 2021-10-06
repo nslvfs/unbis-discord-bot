@@ -47,7 +47,6 @@ namespace unbis_discord_bot.Logic
                         WriteWeekFile(dataItem);
                         return;
                     }
-
                 }
                 WorkDay addDay = new WorkDay(newDay);
                 addDay.sBegin = begin.ToString(("hh':'mm")); ;
@@ -112,8 +111,6 @@ namespace unbis_discord_bot.Logic
             UserWeek dataItem = ReadWeekFile(id);
             dataItem.Week = new List<WorkDay>();
             WriteWeekFile(dataItem);
-            
-
         }
 
         private static UserWeek ReadWeekFile(ulong id)

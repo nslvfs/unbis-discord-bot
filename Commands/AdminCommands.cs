@@ -112,8 +112,6 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
         }
 
-
-
         [Command("sudo"), Description("sudo"), Hidden, RequireOwner]
         public async Task Sudo(CommandContext ctx, [Description("Ziel")] DiscordMember member, [RemainingText, Description("Befehl")] string command)
         {

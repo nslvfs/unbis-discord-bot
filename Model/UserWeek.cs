@@ -15,9 +15,7 @@ namespace unbis_discord_bot.Model
             UserId = id;
             Week = new List<WorkDay>();
         }
-
         public UserWeek() { }
-
     }
 
     [Serializable]
@@ -33,7 +31,6 @@ namespace unbis_discord_bot.Model
         {
             DayName = name;
         }
-
         public WorkDay() { }
     }
 }

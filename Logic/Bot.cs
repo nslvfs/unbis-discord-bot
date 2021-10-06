@@ -60,7 +60,7 @@ namespace unbis_discord_bot
 
             configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
             botStart = DateTime.Now;
-            
+
             //assigns year, month, day, hour, min, seconds
 
             doCheckBadWords = true;
@@ -68,7 +68,7 @@ namespace unbis_discord_bot
             var config = new DiscordConfiguration
             {
                 Token = configJson.Token,
-                
+
                 TokenType = TokenType.Bot,
                 Intents = DiscordIntents.GuildMessages |
                     DiscordIntents.GuildBans |
@@ -202,7 +202,7 @@ namespace unbis_discord_bot
         {
             try
             {
-                if(e.Author.Id == userIdEsso)
+                if (e.Author.Id == userIdEsso)
                 {
                     lastEssoMessage = e;
                 }
