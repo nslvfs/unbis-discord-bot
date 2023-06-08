@@ -1,0 +1,5 @@
+tmux new -s discord
+cd discordbot
+sudo dotnet unbis-discord-bot.dll
+
+tmux attach discord
