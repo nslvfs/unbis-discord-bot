@@ -14,7 +14,7 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task AddBadWord(CommandContext ctx, params string[] args)
         {
-            var fileName = Bot.configJson.badwords;
+            var fileName = Bot.ConfigJson.badwords;
 
             if (!File.Exists(fileName))
             {
@@ -28,7 +28,7 @@ namespace unbis_discord_bot.Commands
                     w.WriteLine(newline.Trim());
                 }
             }
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.positivAnswer).ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
         }
 
         [Command("validate")]
@@ -37,8 +37,8 @@ namespace unbis_discord_bot.Commands
         [Description("validiert")]
         public async Task ValidateBadwords(CommandContext ctx, [RemainingText] string qry)
         {
-            Bot.doCheckBadWords = false;
-            var fileName = Bot.configJson.badwords;
+            Bot.DoCheckBadWords = false;
+            var fileName = Bot.ConfigJson.badwords;
             var badWords = new List<string>();
             if (File.Exists(fileName))
             {
@@ -84,8 +84,8 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            Bot.doCheckBadWords = !Bot.doCheckBadWords;
-            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
+            Bot.DoCheckBadWords = !Bot.DoCheckBadWords;
+            await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
         }
     }
 }

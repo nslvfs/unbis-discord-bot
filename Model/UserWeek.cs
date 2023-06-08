@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace unbis_discord_bot.Model
 {
@@ -23,9 +22,9 @@ namespace unbis_discord_bot.Model
     {
         public string DayName { get; set; }
 
-        public string sBegin { get; set; }
+        public string SBegin { get; set; }
 
-        public string sEnd { get; set; }
+        public string SEnd { get; set; }
 
         public WorkDay(string name)
         {

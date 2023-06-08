@@ -15,11 +15,11 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.CheckBadWords(qry) || ctx.Guild.Id != Bot.guildIdRatte)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
 
-            var fileName = Bot.configJson.quotePath + ctx.Guild.Id + " gif.txt";
+            var fileName = Bot.ConfigJson.quotePath + ctx.Guild.Id + " gif.txt";
 
             Uri uriResult;
             bool result = Uri.TryCreate(qry, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
@@ -47,10 +47,10 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Guild.Id != Bot.guildIdRatte)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
-            var temp = new Model.Links(Bot.configJson, ctx.Guild.Id);
+            var temp = new Model.Links(Bot.ConfigJson, ctx.Guild.Id);
             if (temp.links.Count > 0)
             {
                 var res = Shared.GenerateRandomNumber(0, temp.links.Count - 1);

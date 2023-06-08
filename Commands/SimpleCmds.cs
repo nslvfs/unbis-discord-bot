@@ -1,6 +1,5 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
@@ -126,10 +125,10 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.CheckBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
-            string encryptedstring = Logic.Encryption.Encrypt(qry, Bot.configJson.cryptoPwd);
+            string encryptedstring = Logic.Encryption.Encrypt(qry, Bot.ConfigJson.cryptoPwd);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " " + encryptedstring).ConfigureAwait(false);
         }
 
@@ -139,10 +138,10 @@ namespace unbis_discord_bot.Commands
         [Description("verschlüßel einen text")]
         public async Task DecodeMesage(CommandContext ctx, [RemainingText] string qry)
         {
-            string decryptedstring = Logic.Encryption.Decrypt(qry, Bot.configJson.cryptoPwd);
+            string decryptedstring = Logic.Encryption.Decrypt(qry, Bot.ConfigJson.cryptoPwd);
             if (Bot.CheckBadWords(decryptedstring))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + " " + decryptedstring).ConfigureAwait(false);

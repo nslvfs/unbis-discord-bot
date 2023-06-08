@@ -80,8 +80,8 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            Bot.silentMode = !Bot.silentMode;
-            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
+            Bot.SilentMode = !Bot.SilentMode;
+            await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
         }
 
         [Command("RandomMode")]
@@ -94,8 +94,8 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            Bot.randomMode = !Bot.randomMode;
-            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
+            Bot.RandomMode = !Bot.RandomMode;
+            await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
         }
 
         [Command("CryptoMode")]
@@ -108,8 +108,8 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            Bot.cryptoMode = !Bot.cryptoMode;
-            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
+            Bot.CryptoMode = !Bot.CryptoMode;
+            await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
         }
 
         [Command("sudo"), Description("sudo"), Hidden, RequireOwner]
@@ -131,13 +131,13 @@ namespace unbis_discord_bot.Commands
                     x.Nickname = new_nickname;
                     x.AuditLogReason = $"Changed by {ctx.User.Username} ({ctx.User.Id}).";
                 });
-                await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
 
             }
             catch (Exception ex)
             {
                 System.Console.WriteLine(ex.Message);
-                await ctx.Channel.SendMessageAsync(Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
             }
         }
 
@@ -151,8 +151,8 @@ namespace unbis_discord_bot.Commands
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = sr.ReadToEnd();
 
-            Bot.configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
-            await ctx.Channel.SendMessageAsync(Bot.configJson.positivAnswer).ConfigureAwait(false);
+            Bot.ConfigJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
         }
 
     }

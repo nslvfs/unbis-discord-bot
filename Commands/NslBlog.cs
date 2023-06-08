@@ -22,7 +22,7 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.CheckBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
             var sanitizer = new Ganss.XSS.HtmlSanitizer();
@@ -37,15 +37,15 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Guild.Id != Bot.guildIdUnbi || Bot.CheckBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
 
             string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
-            var contentFile = Bot.configJson.blogContent;
+            var contentFile = Bot.ConfigJson.blogContent;
             int rssLineCount = 0;
             int lineCount = 0;
-            var rssFile = Bot.configJson.blogRss;
+            var rssFile = Bot.ConfigJson.blogRss;
 
             try
             {

@@ -12,7 +12,7 @@ namespace unbis_discord_bot.Commands
         [Description("Gibt ein zufälliges Zitat wieder.")]
         public async Task Quote(CommandContext ctx)
         {
-            var temp = new Model.Quotes(Bot.configJson, ctx.Guild.Id);
+            var temp = new Model.Quotes(Bot.ConfigJson, ctx.Guild.Id);
             if (temp.quotes.Count > 0)
             {
                 var res = Shared.GenerateRandomNumber(0, temp.quotes.Count - 1);
@@ -38,11 +38,11 @@ namespace unbis_discord_bot.Commands
         {
             if (Bot.CheckBadWords(qry))
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
 
-            var fileName = Bot.configJson.quotePath + ctx.Guild.Id + ".txt";
+            var fileName = Bot.ConfigJson.quotePath + ctx.Guild.Id + ".txt";
             if (qry.Length <= 3)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Das ist kein Quote").ConfigureAwait(false);

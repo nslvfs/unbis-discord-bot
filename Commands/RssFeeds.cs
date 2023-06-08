@@ -14,7 +14,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != Bot.channelIdRotz)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
             string title = string.Empty;
@@ -51,7 +51,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != Bot.channelIdRotz)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
             if (anz > 3)
@@ -101,7 +101,7 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != Bot.channelIdRotz)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
             if (anz > 3)

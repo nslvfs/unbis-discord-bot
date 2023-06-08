@@ -17,7 +17,7 @@ namespace unbis_discord_bot.Commands
         public async Task RndXSichter(CommandContext ctx)
         {
             int maxMemeWidth = 500;
-            var files = Directory.GetFiles(Bot.configJson.xSichterPath, "*.*", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(Bot.ConfigJson.xSichterPath, "*.*", SearchOption.AllDirectories);
             var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
             Image photo = new Bitmap(files[rndIndex]);
             var divisor = photo.Width / maxMemeWidth;
@@ -27,7 +27,7 @@ namespace unbis_discord_bot.Commands
             using (var fs = new FileStream("temp.jpg", FileMode.Open, FileAccess.Read))
             {
                 await new DiscordMessageBuilder()
-                    .WithContent(Bot.configJson.positivAnswer)
+                    .WithContent(Bot.ConfigJson.positivAnswer)
                     .WithFiles(new System.Collections.Generic.Dictionary<string, Stream>() { { "xsichter.jpg", fs } })
                     .SendAsync(ctx.Channel)
                     .ConfigureAwait(false);
@@ -41,11 +41,11 @@ namespace unbis_discord_bot.Commands
         {
             if (ctx.Channel.Id != Bot.channelIdRotz)
             {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.configJson.negativAnswer).ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
             int maxMemeWidth = 500;
-            var files = Directory.GetFiles(Bot.configJson.xSichterPath, "*.*", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(Bot.ConfigJson.xSichterPath, "*.*", SearchOption.AllDirectories);
             var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
             Image photo = new Bitmap(files[rndIndex]);
             var divisor = photo.Width / maxMemeWidth;

@@ -32,22 +32,22 @@ namespace unbis_discord_bot
         public const long userIdEsso = 351514728734130177;
         public const long userIdRattan = 690985661695655966;
         public const long userIdvfs = 134719067016658945;
-        public static bool doCheckBadWords { get; set; }
-        public static bool silentMode { get; set; }
+        public static bool DoCheckBadWords { get; set; }
+        public static bool SilentMode { get; set; }
 
-        public static DiscordMessage lastEssoMessage { get; set; }
+        public static DiscordMessage LastEssoMessage { get; set; }
 
-        public static DiscordMessage lastRattanMessage { get; set; }
+        public static DiscordMessage LastRattanMessage { get; set; }
 
-        public static DateTime lastRattanMessageDt { get; set; }
+        public static DateTime LastRattanMessageDt { get; set; }
 
-        public static DateTime botStart { get; set; }
-        public static bool randomMode { get; set; }
-        public static bool cryptoMode { get; set; }
+        public static DateTime BotStart { get; set; }
+        public static bool RandomMode { get; set; }
+        public static bool CryptoMode { get; set; }
         public static DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
-        public static ConfigJson configJson { get; set; }
+        public static ConfigJson ConfigJson { get; set; }
         public static List<Model.Message> ArchivMessages { get; set; }
         public readonly EventId BotEventId = new EventId(42, "exekutivfs");
         public async Task TaskAsync()
@@ -58,16 +58,16 @@ namespace unbis_discord_bot
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = sr.ReadToEnd();
 
-            configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
-            botStart = DateTime.Now;
+            ConfigJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            BotStart = DateTime.Now;
 
             //assigns year, month, day, hour, min, seconds
 
-            doCheckBadWords = true;
+            DoCheckBadWords = true;
 
             var config = new DiscordConfiguration
             {
-                Token = configJson.Token,
+                Token = ConfigJson.Token,
 
                 TokenType = TokenType.Bot,
                 Intents = DiscordIntents.GuildMessages |
@@ -88,7 +88,7 @@ namespace unbis_discord_bot
 
             var commandsConfig = new CommandsNextConfiguration
             {
-                StringPrefixes = new string[] { configJson.Prefix },
+                StringPrefixes = new string[] { ConfigJson.Prefix },
                 EnableDms = false,
                 EnableMentionPrefix = true,
                 DmHelp = false,
@@ -156,8 +156,8 @@ namespace unbis_discord_bot
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
         {
             sender.Logger.LogInformation(BotEventId, "Client läuft");
-            silentMode = false;
-            randomMode = false;
+            SilentMode = false;
+            RandomMode = false;
             return Task.CompletedTask;
         }
 
@@ -176,7 +176,7 @@ namespace unbis_discord_bot
         private async Task Commands_CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
         {
             e.Context.Client.Logger.LogError(BotEventId, $"{e.Context.User.Username} versuchte '{e.Command?.QualifiedName ?? "<unbekannter befehl>"}' Fehler: {e.Exception.GetType()}: {e.Exception.Message ?? "<keine nachricht>"}", DateTime.Now);
-            if (e.Exception is ChecksFailedException ex)
+            if (e.Exception is ChecksFailedException)
             {
                 var emoji = DiscordEmoji.FromName(e.Context.Client, ":no_entry:");
                 var embed = new DiscordEmbedBuilder
@@ -204,11 +204,11 @@ namespace unbis_discord_bot
             {
                 if (e.Author.Id == userIdEsso)
                 {
-                    lastEssoMessage = e;
+                    LastEssoMessage = e;
                 }
                 if (e.Author.Id == userIdRattan)
                 {
-                    lastRattanMessage = e;
+                    LastRattanMessage = e;
                 }
                 var Message = new Model.Message();
                 if (!e.Author.IsBot)
@@ -232,14 +232,14 @@ namespace unbis_discord_bot
                         return;
                     }
 
-                    if ((e.Author.Id != Bot.botIdSelf && e.Author.Id != Bot.userIdvfs && silentMode && e.Channel.Id != Bot.channelIdKiosk) && !e.Author.IsBot)
+                    if ((e.Author.Id != Bot.botIdSelf && e.Author.Id != Bot.userIdvfs && SilentMode && e.Channel.Id != Bot.channelIdKiosk) && !e.Author.IsBot)
                     {
                         await Mute(e.Channel, (DiscordMember)e.Author, g, 3).ConfigureAwait(false);
                         await e.DeleteAsync();
                         return;
                     }
 
-                    if (e.Author.Id != Bot.botIdSelf && e.Author.Id != Bot.userIdvfs && randomMode && !e.Author.IsBot)
+                    if (e.Author.Id != Bot.botIdSelf && e.Author.Id != Bot.userIdvfs && RandomMode && !e.Author.IsBot)
                     {
                         string rnd = Shared.GenerateRandomNumber(1000, 9999).ToString();
 
@@ -250,7 +250,7 @@ namespace unbis_discord_bot
                         });
                     }
 
-                    if (cryptoMode && !e.Author.IsBot)
+                    if (CryptoMode && !e.Author.IsBot)
                     {
                         try
                         {
@@ -258,7 +258,7 @@ namespace unbis_discord_bot
                             string author = ((DiscordMember)e.Author).DisplayName;
                             string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
                             Console.WriteLine("Cleartext: " + dtNow + "| " + author + ": " + message);
-                            string encryptedstring = Logic.Encryption.Encrypt(message, configJson.cryptoPwd);
+                            string encryptedstring = Logic.Encryption.Encrypt(message, ConfigJson.cryptoPwd);
                             await e.Channel.SendMessageAsync(author + ": " + encryptedstring).ConfigureAwait(false);
                             await e.DeleteAsync();
                             return;
@@ -290,7 +290,7 @@ namespace unbis_discord_bot
                 var msgArr = e.Content.Split();
                 if (msgArr.Length >= 3)
                 {
-                    if (msgArr[0] == "was" && msgArr[msgArr.Length - 1] == "sagt")
+                    if (msgArr[0] == "was" && msgArr[^1] == "sagt")
                     {
                         string target = string.Empty;
                         for (int i = 1; i <= msgArr.Length - 2; i++)
@@ -360,11 +360,11 @@ namespace unbis_discord_bot
 
         public static bool CheckBadWords(string Message)
         {
-            if (!doCheckBadWords)
+            if (!DoCheckBadWords)
             {
                 return false;
             }
-            var fileName = configJson.badwords;
+            var fileName = ConfigJson.badwords;
             var badWords = new List<string>();
             if (File.Exists(fileName))
             {
@@ -406,7 +406,7 @@ namespace unbis_discord_bot
         {
             string teststring = Message;
             string output = Message;
-            var fileName = configJson.badwords;
+            var fileName = ConfigJson.badwords;
             var badWords = new List<string>();
             if (File.Exists(fileName))
             {
@@ -456,7 +456,7 @@ namespace unbis_discord_bot
             }
             if (output.Length >= 2000)
             {
-                output = output.Substring(0, output.Length - 100) + "...";
+                output = output[..^100] + "...";
             }
             return output;
         }
