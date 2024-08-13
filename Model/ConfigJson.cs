@@ -40,6 +40,9 @@ namespace unbis_discord_bot
         [JsonProperty("positivAnswer")]
         public string positivAnswer { get; set; }
 
+        [JsonProperty("wettenDBFile")]
+        public string wettenDBFile { get; set; }
+
     }
 }
 
