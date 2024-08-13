@@ -14,41 +14,6 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
         }
 
-        [Command("arbeiten")]
-        [Description("Arbeiten?")]
-        public async Task Arbeiten(CommandContext ctx)
-        {
-            if (ctx.Member.IsOwner)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
-            }
-            else
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
-            }
-        }
-
-        [Command("nappen")]
-        [Description("Nappen?")]
-        public async Task Nappen(CommandContext ctx)
-        {
-            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
-        }
-
-        [Command("feierabend")]
-        [Description("Feierabend?")]
-        public async Task Feierabend(CommandContext ctx)
-        {
-            if (ctx.Member.IsOwner)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
-            }
-            else
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
-            }
-        }
-
         [Command("jn")]
         [Description("Beantwortet eine Ja/Nein Frage")]
         public async Task NeinJa(CommandContext ctx)

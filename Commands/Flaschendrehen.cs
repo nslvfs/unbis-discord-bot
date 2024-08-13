@@ -9,7 +9,6 @@ namespace unbis_discord_bot.Commands
     public class Flaschendrehen : BaseCommandModule
     {
         [Command("spin")]
-        [Aliases("wichsen")]
         [Description("Klassisches Flaschendrehen")]
         public async Task Spin(CommandContext ctx)
         {

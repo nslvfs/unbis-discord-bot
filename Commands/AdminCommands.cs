@@ -39,7 +39,7 @@ namespace unbis_discord_bot.Commands
                 var name = ((DiscordMember)user).DisplayName;
                 result = result + name + ", ";
             }
-            result = result.Substring(0, result.Length - 2);
+            result = result[..^2];
             await ctx.Channel.SendMessageAsync(result).ConfigureAwait(false);
         }
 
@@ -59,7 +59,7 @@ namespace unbis_discord_bot.Commands
         [Command("kick")]
         [Description("kickt ein Mitglied")]
         [RequireOwner]
-        public async Task kick(CommandContext ctx, DiscordMember target)
+        public async Task Kick(CommandContext ctx, DiscordMember target)
         {
             if (ctx.Guild.Id != Bot.guildIdUnbi)
             {
@@ -68,77 +68,6 @@ namespace unbis_discord_bot.Commands
             }
             await target.RemoveAsync("!kick von " + ctx.Member.DisplayName);
             await ctx.Channel.SendMessageAsync("|▀▄▀▄▀| unbequem ihm sein discord sagt danke |▀▄▀▄▀| ♫♪♫ Porsche Sportauspuff Sound ♫♪♫").ConfigureAwait(false);
-        }
-
-        [Command("Stille")]
-        [Description("Stille herrscht")]
-        [RequireOwner]
-        public async Task Stille(CommandContext ctx)
-        {
-            if (ctx.Guild.Id != Bot.guildIdUnbi)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
-                return;
-            }
-            Bot.SilentMode = !Bot.SilentMode;
-            await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
-        }
-
-        [Command("RandomMode")]
-        [Description("Zufall herrscht")]
-        [RequireOwner]
-        public async Task RandomMode(CommandContext ctx)
-        {
-            if (ctx.Guild.Id != Bot.guildIdUnbi)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
-                return;
-            }
-            Bot.RandomMode = !Bot.RandomMode;
-            await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
-        }
-
-        [Command("CryptoMode")]
-        [Description("Verschlüßelung herrscht")]
-        [RequireOwner]
-        public async Task CryptoMode(CommandContext ctx)
-        {
-            if (ctx.Guild.Id != Bot.guildIdUnbi)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
-                return;
-            }
-            Bot.CryptoMode = !Bot.CryptoMode;
-            await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
-        }
-
-        [Command("sudo"), Description("sudo"), Hidden, RequireOwner]
-        public async Task Sudo(CommandContext ctx, [Description("Ziel")] DiscordMember member, [RemainingText, Description("Befehl")] string command)
-        {
-            var cmds = ctx.CommandsNext;
-            var cmd = cmds.FindCommand(command, out var customArgs);
-            var fakeContext = cmds.CreateFakeContext(member, ctx.Channel, command, ctx.Prefix, cmd, customArgs);
-            await cmds.ExecuteCommandAsync(fakeContext).ConfigureAwait(false);
-        }
-
-        [Command("nick"), Description("Nicknamen von dritten ändern"), RequirePermissions(Permissions.ManageNicknames)]
-        public async Task ChangeNickname(CommandContext ctx, [Description("Ziel")] DiscordMember member, [RemainingText, Description("Neuer Nick")] string new_nickname)
-        {
-            try
-            {
-                await member.ModifyAsync(x =>
-                {
-                    x.Nickname = new_nickname;
-                    x.AuditLogReason = $"Changed by {ctx.User.Username} ({ctx.User.Id}).";
-                });
-                await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
-
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine(ex.Message);
-                await ctx.Channel.SendMessageAsync(Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
-            }
         }
 
         [Command("rehash")]

@@ -57,17 +57,15 @@ namespace unbis_discord_bot
 
         public static string GetRedirect(string url)
         {
-            using (var client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip }))
+            using var client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip });
+            var request = new HttpRequestMessage()
             {
-                var request = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(url),
-                    Method = HttpMethod.Get
-                };
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Get
+            };
 
-                HttpResponseMessage response = client.SendAsync(request).Result;
-                return response.RequestMessage.RequestUri.ToString();
-            }
+            HttpResponseMessage response = client.SendAsync(request).Result;
+            return response.RequestMessage.RequestUri.ToString();
 
         }
 

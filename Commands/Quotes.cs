@@ -62,38 +62,7 @@ namespace unbis_discord_bot.Commands
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Quote hinzugefügt du Pisser!").ConfigureAwait(false);
         }
 
-        [Command("Stoll")]
-        [Description("Gibt ein Zitat von Dr. Axel Stoll wieder.")]
-        public async Task QuoteStoll(CommandContext ctx)
-        {
-            var temp = new Model.Stoll();
-            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
-            await ctx.Channel.SendMessageAsync("Dr. Axel Stoll, promovierter Naturwissenschaftler, sagt: " + temp.array[res]).ConfigureAwait(false);
-        }
 
-        [Command("Seeliger")]
-        [Description("Gibt ein Zitat von Julia Seeliger wieder.")]
-        public async Task QuoteSeeliger(CommandContext ctx)
-        {
-            var temp = new Model.Seeliger();
-            var res = Shared.GenerateRandomNumber(0, temp.array.Length - 1);
-            await ctx.Channel.SendMessageAsync("Julia Seeliger sagt: " + temp.array[res]).ConfigureAwait(false);
-        }
 
-        [Command("Bash")]
-        [Description("Gibt ein zufälliges Zitat von http://bash.org zurück")]
-        public async Task Bash(CommandContext ctx)
-        {
-            var res = Logic.Bash.GetBash();
-            await ctx.Channel.SendMessageAsync("Bash.org sagt:\n" + res).ConfigureAwait(false);
-        }
-
-        [Command("GBash")]
-        [Description("Gibt ein zufälliges Zitat von http://german-bash.org zurück")]
-        public async Task GBash(CommandContext ctx)
-        {
-            var res = Logic.Bash.GetGermanBash();
-            await ctx.Channel.SendMessageAsync("German-Bash.org sagt:\n" + res).ConfigureAwait(false);
-        }
     }
 }

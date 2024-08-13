@@ -33,7 +33,6 @@ namespace unbis_discord_bot
         public const long userIdRattan = 690985661695655966;
         public const long userIdvfs = 134719067016658945;
         public static bool DoCheckBadWords { get; set; }
-        public static bool SilentMode { get; set; }
 
         public static DiscordMessage LastEssoMessage { get; set; }
 
@@ -42,8 +41,6 @@ namespace unbis_discord_bot
         public static DateTime LastRattanMessageDt { get; set; }
 
         public static DateTime BotStart { get; set; }
-        public static bool RandomMode { get; set; }
-        public static bool CryptoMode { get; set; }
         public static DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
@@ -115,19 +112,15 @@ namespace unbis_discord_bot
             Commands.CommandErrored += Commands_CommandErrored;
             Commands.RegisterCommands<AdminCommands>();
             Commands.RegisterCommands<BadWords>();
-            Commands.RegisterCommands<Esso>();
             Commands.RegisterCommands<Flaschendrehen>();
             Commands.RegisterCommands<JaNein>();
-            Commands.RegisterCommands<NslBlog>();
             Commands.RegisterCommands<Quotes>();
-            Commands.RegisterCommands<RattenLinks>();
             Commands.RegisterCommands<RssFeeds>();
             Commands.RegisterCommands<RussischRoulette>();
             Commands.RegisterCommands<SimpleCmds>();
             Commands.RegisterCommands<Urls>();
             Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<XSichter>();
-            Commands.RegisterCommands<Arbeitszeiten>();
 
             var _messageCache = Task.Factory.StartNew(() => ClearMessageCache());
 
@@ -156,8 +149,6 @@ namespace unbis_discord_bot
         private Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
         {
             sender.Logger.LogInformation(BotEventId, "Client läuft");
-            SilentMode = false;
-            RandomMode = false;
             return Task.CompletedTask;
         }
 
@@ -232,43 +223,6 @@ namespace unbis_discord_bot
                         return;
                     }
 
-                    if ((e.Author.Id != Bot.botIdSelf && e.Author.Id != Bot.userIdvfs && SilentMode && e.Channel.Id != Bot.channelIdKiosk) && !e.Author.IsBot)
-                    {
-                        await Mute(e.Channel, (DiscordMember)e.Author, g, 3).ConfigureAwait(false);
-                        await e.DeleteAsync();
-                        return;
-                    }
-
-                    if (e.Author.Id != Bot.botIdSelf && e.Author.Id != Bot.userIdvfs && RandomMode && !e.Author.IsBot)
-                    {
-                        string rnd = Shared.GenerateRandomNumber(1000, 9999).ToString();
-
-                        await ((DiscordMember)e.Author).ModifyAsync(x =>
-                        {
-                            x.Nickname = rnd;
-                            x.AuditLogReason = $"Changed by Random.Mode).";
-                        });
-                    }
-
-                    if (CryptoMode && !e.Author.IsBot)
-                    {
-                        try
-                        {
-                            string message = e.Content;
-                            string author = ((DiscordMember)e.Author).DisplayName;
-                            string dtNow = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
-                            Console.WriteLine("Cleartext: " + dtNow + "| " + author + ": " + message);
-                            string encryptedstring = Logic.Encryption.Encrypt(message, ConfigJson.cryptoPwd);
-                            await e.Channel.SendMessageAsync(author + ": " + encryptedstring).ConfigureAwait(false);
-                            await e.DeleteAsync();
-                            return;
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
-
-                    }
 
                     if (e.Content.StartsWith(".kiss") || e.Content.StartsWith(".kizz"))
                     {
