@@ -29,15 +29,8 @@ namespace unbis_discord_bot
         public const long roleIdMuted = 807921762570469386;
         public static bool DoCheckBadWords { get; set; }
 
-        public static DiscordMessage LastEssoMessage { get; set; }
-
-        public static DiscordMessage LastRattanMessage { get; set; }
-
-        public static DateTime LastRattanMessageDt { get; set; }
-
         public static DateTime BotStart { get; set; }
         public static DiscordClient Client { get; private set; }
-        public InteractivityExtension Interactivity { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
         public static ConfigJson ConfigJson { get; set; }
         public static List<Model.Message> ArchivMessages { get; set; }
@@ -123,6 +116,84 @@ namespace unbis_discord_bot
             await Client.ConnectAsync();
 
             await Task.Delay(-1);
+        }
+
+        public static Task RemoveUserfromMessageArchiv(ulong userId)
+        {
+            ArchivMessages.RemoveAll(item => item.AuthorId == userId);
+            return Task.CompletedTask;
+        }
+
+        public static async Task Mute(DiscordChannel channel, DiscordMember target, DiscordGuild g, int durationMin = 10)
+        {
+            if (target.Id == Bot.botIdSelf || g.Id != Bot.guildIdUnbi)
+            {
+                return;
+            }
+            try
+            {
+                var roleMuted = g.GetRole(Bot.roleIdMuted);
+                _ = target.GrantRoleAsync(roleMuted);
+                _ = Bot.RemoveUserfromMessageArchiv(target.Id);
+
+                var outChannel = g.GetChannel(Bot.channelIdRotz);
+                await outChannel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minute(n) still").ConfigureAwait(false);
+                Thread.Sleep(1000 * 60 * durationMin);
+                await target.RevokeRoleAsync(roleMuted);
+                await outChannel.SendMessageAsync(target.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception :" + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception :" + ex.Message);
+                }
+            }
+        }
+
+        public static bool CheckBadWords(string Message)
+        {
+            if (!DoCheckBadWords)
+            {
+                return false;
+            }
+            var fileName = ConfigJson.badwords;
+            var badWords = new List<string>();
+            if (File.Exists(fileName))
+            {
+                foreach (var line in File.ReadLines(fileName))
+                {
+                    badWords.Add(line);
+                }
+            }
+            else
+            {
+                File.Create(fileName).Dispose();
+            }
+            if (Message != null)
+            {
+                foreach (var item in badWords)
+                {
+                    if (Message.Contains(item))
+                    {
+                        Console.WriteLine(item);
+                        return true;
+                    }
+                    if (Message.ToLower().Contains(item.ToLower()))
+                    {
+                        Console.WriteLine(item);
+                        return true;
+                    }
+                    var msg = Regex.Replace(Message, @"([^\w]|_)", "");
+                    if (msg.Contains(item))
+                    {
+                        Console.WriteLine(item);
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private async Task Client_ReactionAdded(DiscordClient sender, MessageReactionAddEventArgs e)
@@ -252,13 +323,6 @@ namespace unbis_discord_bot
                 ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
                 Thread.Sleep(1000 * 60 * 5);
             }
-
-        }
-
-        public static Task RemoveUserfromMessageArchiv(ulong userId)
-        {
-            ArchivMessages.RemoveAll(item => item.AuthorId == userId);
-            return Task.CompletedTask;
         }
 
         private Task Client_ClientError(DiscordClient sender, ClientErrorEventArgs e)
@@ -267,51 +331,7 @@ namespace unbis_discord_bot
             return Task.CompletedTask;
         }
 
-        public static bool CheckBadWords(string Message)
-        {
-            if (!DoCheckBadWords)
-            {
-                return false;
-            }
-            var fileName = ConfigJson.badwords;
-            var badWords = new List<string>();
-            if (File.Exists(fileName))
-            {
-                foreach (var line in File.ReadLines(fileName))
-                {
-                    badWords.Add(line);
-                }
-            }
-            else
-            {
-                File.Create(fileName).Dispose();
-            }
-            if (Message != null)
-            {
-                foreach (var item in badWords)
-                {
-                    if (Message.Contains(item))
-                    {
-                        Console.WriteLine(item);
-                        return true;
-                    }
-                    if (Message.ToLower().Contains(item.ToLower()))
-                    {
-                        Console.WriteLine(item);
-                        return true;
-                    }
-                    var msg = Regex.Replace(Message, @"([^\w]|_)", "");
-                    if (msg.Contains(item))
-                    {
-                        Console.WriteLine(item);
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public static string ReplaceBadwords(string Message)
+        private static string ReplaceBadwords(string Message)
         {
             string teststring = Message;
             string output = Message;
@@ -368,34 +388,6 @@ namespace unbis_discord_bot
                 output = output[..^100] + "...";
             }
             return output;
-        }
-
-        public static async Task Mute(DiscordChannel channel, DiscordMember target, DiscordGuild g, int durationMin = 10)
-        {
-            if (target.Id == Bot.botIdSelf || g.Id != Bot.guildIdUnbi)
-            {
-                return;
-            }
-            try
-            {
-                var roleMuted = g.GetRole(Bot.roleIdMuted);
-                _ = target.GrantRoleAsync(roleMuted);
-                _ = Bot.RemoveUserfromMessageArchiv(target.Id);
-
-                var outChannel = g.GetChannel(Bot.channelIdRotz);
-                await outChannel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minute(n) still").ConfigureAwait(false);
-                Thread.Sleep(1000 * 60 * durationMin);
-                await target.RevokeRoleAsync(roleMuted);
-                await outChannel.SendMessageAsync(target.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Exception :" + ex.Message);
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine("Inner Exception :" + ex.Message);
-                }
-            }
-        }
+        }   
     }
 }

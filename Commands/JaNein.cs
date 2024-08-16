@@ -22,15 +22,14 @@ namespace unbis_discord_bot.Commands
             if (res <= 50)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nein").ConfigureAwait(false);
+                return;
             }
-            else if (res <= 98)
+            if (res <= 98)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Ja").ConfigureAwait(false);
+                return;
             }
-            else
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Keine Ahnung, halts Maul").ConfigureAwait(false);
-            }
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Keine Ahnung, halts Maul").ConfigureAwait(false);
         }
 
         [Command("pick")]
@@ -38,11 +37,13 @@ namespace unbis_discord_bot.Commands
         public async Task Pick(CommandContext ctx, params string[] args)
         {
             foreach (var arg in args)
+            {
                 if (Bot.CheckBadWords(arg))
                 {
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                     return;
                 }
+            }
             var i = Shared.GenerateRandomNumber(0, args.Length - 1);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + args[i]).ConfigureAwait(false);
         }
