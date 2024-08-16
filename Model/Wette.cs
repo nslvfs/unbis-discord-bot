@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace unbis_discord_bot.Model
@@ -8,9 +6,9 @@ namespace unbis_discord_bot.Model
     {
         public long UserIdStartedBet { get; set; }
         public string BetTopic { get; set; }
-        public List<WettTeilnehmer> WettEinsaetze {get;set;}
+        public List<WettTeilnehmer> WettEinsaetze { get; set; }
 
-        public Wette() 
+        public Wette()
         {
             WettEinsaetze = new List<WettTeilnehmer>();
         }
@@ -19,7 +17,7 @@ namespace unbis_discord_bot.Model
 
     public class WettTeilnehmer
     {
-        public long UserId {get;set;}
-        public ulong WettEinsatz {get;set;}
+        public long UserId { get; set; }
+        public ulong WettEinsatz { get; set; }
     }
 }

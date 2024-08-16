@@ -8,7 +8,7 @@ namespace unbis_discord_bot.Model
         [JsonProperty("id")]
         public long id { get; set; }
         [JsonProperty("tokenBalance")]
-        public ulong tokenBalance {  get; set; }
+        public ulong tokenBalance { get; set; }
         [JsonProperty("lastReceived")]
         public DateTime lastReceived { get; set; }
     }

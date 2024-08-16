@@ -1,22 +1,27 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using Newtonsoft.Json;
+using System.Text;
 using unbis_discord_bot.Model;
 
 namespace unbis_discord_bot.Logic
 {
     public class WettenDassLogic
     {
-        private ConfigJson configJson {get; set;}
-        private List<WettUser> dbData {get;set;}
+        private ConfigJson configJson { get; set; }
+        public List<WettUser> dbData { get; set; }
+
+        public WettenDassLogic()
+        {
+            ReadFile();
+        }
         private void ReadFile()
         {
             ReadConfig();
             var file = configJson.wettenDBFile;
             var json = String.Empty;
-            if(File.Exists(file))
+            if (File.Exists(file))
             {
                 using (var fs = File.OpenRead(file))
                 using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
@@ -37,7 +42,7 @@ namespace unbis_discord_bot.Logic
 
         private void ReadConfig()
         {
-            if(configJson.wettenDBFile != null) 
+            if (configJson.wettenDBFile != null)
             {
                 var json = string.Empty;
                 using (var fs = File.OpenRead("config.json"))
