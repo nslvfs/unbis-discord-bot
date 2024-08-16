@@ -23,15 +23,10 @@ namespace unbis_discord_bot
         public const long guildIdUnbi = 791393115097137171;
         public const long guildIdRatte = 442300530996543489;
         public const long channelIdRotz = 816990123568660510;
-        public const long channelIdKiosk = 812403060416446474;
-        public const long channelIdMain = 808405679417196546;
-        public const long roleIdMuted = 807921762570469386;
+        public const long userIdvfs = 134719067016658945;
         public const long botIdSelf = 807641560006000670;
         public const long botIdSantos = 816383436201656341;
-        public const long botIdSpurdo = 812064630364700684;
-        public const long userIdEsso = 351514728734130177;
-        public const long userIdRattan = 690985661695655966;
-        public const long userIdvfs = 134719067016658945;
+        public const long roleIdMuted = 807921762570469386;
         public static bool DoCheckBadWords { get; set; }
 
         public static DiscordMessage LastEssoMessage { get; set; }
@@ -194,14 +189,6 @@ namespace unbis_discord_bot
         {
             try
             {
-                if (e.Author.Id == userIdEsso)
-                {
-                    LastEssoMessage = e;
-                }
-                if (e.Author.Id == userIdRattan)
-                {
-                    LastRattanMessage = e;
-                }
                 var Message = new Model.Message();
                 if (!e.Author.IsBot)
                 {
@@ -222,39 +209,6 @@ namespace unbis_discord_bot
                         _ = Mute(e.Channel, (DiscordMember)e.Author, g, 1);
                         await e.DeleteAsync();
                         return;
-                    }
-
-
-                    if (e.Content.StartsWith(".kiss") || e.Content.StartsWith(".kizz"))
-                    {
-                        var userIds = e.MentionedUsers;
-                        foreach (var userID in userIds)
-                        {
-                            if (userID.Id == Bot.userIdvfs)
-                            {
-                                if (g.Id == Bot.guildIdUnbi)
-                                {
-                                    await Mute(e.Channel, (DiscordMember)e.Author, g).ConfigureAwait(false);
-                                }
-                            }
-                        }
-                    }
-
-                }
-
-                var msgArr = e.Content.Split();
-                if (msgArr.Length >= 3)
-                {
-                    if (msgArr[0] == "was" && msgArr[^1] == "sagt")
-                    {
-                        string target = string.Empty;
-                        for (int i = 1; i <= msgArr.Length - 2; i++)
-                        {
-                            target = target + " " + msgArr[i];
-                        }
-
-                        target = target.Trim();
-                        await e.Channel.SendMessageAsync("das was " + target + " sagt").ConfigureAwait(false);
                     }
                 }
             }

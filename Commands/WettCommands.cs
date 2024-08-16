@@ -7,15 +7,12 @@ namespace unbis_discord_bot.Commands
 {
     public class WettCommands : BaseCommandModule
     {
-        public WettenDassLogic wettLogic { get; set; }
+        public WettenDassLogic WettLogic { get; set; }
         [Command("newbet")]
         [Description("Startet eine neue Wette")]
         public async Task StartNewBet(CommandContext ctx, params string[] args)
         {
-            if (wettLogic == null)
-            {
-                wettLogic = new WettenDassLogic();
-            }
+            WettLogic ??= new WettenDassLogic();
         }
     }
 }

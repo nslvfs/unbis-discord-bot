@@ -29,7 +29,6 @@ namespace unbis_discord_bot.Commands
             {
                 await ctx.Channel.SendMessageAsync("Keine Quotes gefunden :c").ConfigureAwait(false);
             }
-
         }
 
         [Command("Addquote")]

@@ -81,8 +81,8 @@ namespace unbis_discord_bot.Commands
 
             var pollResult = await interactivity.DoPollAsync(pollStartMessage, _pollEmojiCache, PollBehaviour.DeleteEmojis, duration);
 
-            var yesVotes = 0;
-            var noVotes = 0;
+            int yesVotes;
+            int noVotes;
             if (pollResult[0].Emoji == "✅")
             {
                 yesVotes = pollResult[0].Total;

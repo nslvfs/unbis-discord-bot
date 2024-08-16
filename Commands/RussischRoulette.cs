@@ -22,12 +22,6 @@ namespace unbis_discord_bot.Commands
             {
                 int index = 0;
                 await _semaphoregate.WaitAsync();
-                if (ctx.Channel.Id == Bot.channelIdKiosk)
-                {
-                    await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Nicht hier").ConfigureAwait(false);
-                    _semaphoregate.Release();
-                    return;
-                }
                 var found = false;
                 foreach (var item in rouletteData)
                 {
@@ -40,9 +34,11 @@ namespace unbis_discord_bot.Commands
                 }
                 if (!found)
                 {
-                    Model.PerChannelRoulette newItem = new Model.PerChannelRoulette();
-                    newItem.channelId = ctx.Channel.Id;
-                    newItem.revShots = -1;
+                    Model.PerChannelRoulette newItem = new Model.PerChannelRoulette
+                    {
+                        channelId = ctx.Channel.Id,
+                        revShots = -1
+                    };
                     rouletteData.Add(newItem);
                 }
                 await RouletteLogic(ctx, rouletteData.Count - 1);
