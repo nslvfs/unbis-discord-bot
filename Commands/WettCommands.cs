@@ -25,8 +25,14 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync("Es läuft bereits eine Wette: \"" + curWettTopic + "\"").ConfigureAwait(false);
                 return;
             }
+            
             WettLogic ??= new WettenDassLogic();
             curWettTopic = string.Join(" ", args);
+            if (Bot.CheckBadWords(curWettTopic, true))
+            {
+                await ctx.Channel.SendMessageAsync("Ungültige Wette.").ConfigureAwait(false);
+                return;
+            }
             wettmeister = ctx.Member.Id;
             await ctx.Channel.SendMessageAsync("Die Wette \"" + curWettTopic + "\" wurde gestart. Nimm teil mit !bet <einsatz> <ergebnis ja/nein>. Zum Beispiel: !bet 100 Ja").ConfigureAwait(false);
             wetteActive = true;
@@ -68,7 +74,7 @@ namespace unbis_discord_bot.Commands
             }
             if(wettmeister == ctx.Member.Id)
             {
-                await ctx.Channel.SendMessageAsync("Als Eröffener der Wette darfst du nicht teilnehmen.").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Als Eröffner der Wette darfst du nicht teilnehmen.").ConfigureAwait(false);
                 return;
             }
             

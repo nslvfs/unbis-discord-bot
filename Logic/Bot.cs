@@ -152,9 +152,9 @@ namespace unbis_discord_bot
             }
         }
 
-        public static bool CheckBadWords(string Message)
+        public static bool CheckBadWords(string Message, bool overrideMode = false)
         {
-            if (!DoCheckBadWords)
+            if (!DoCheckBadWords && !overrideMode)
             {
                 return false;
             }
