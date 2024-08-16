@@ -12,11 +12,6 @@ namespace unbis_discord_bot.Commands
         [Description("Letzte Fefe-Artikel ")]
         public async Task Fefe(CommandContext ctx, int anz = 1)
         {
-            if (ctx.Channel.Id != Bot.channelIdRotz)
-            {
-                await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
-                return;
-            }
             string title = string.Empty;
             if (anz > 3)
             {

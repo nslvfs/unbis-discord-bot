@@ -121,6 +121,7 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<Urls>();
             Commands.RegisterCommands<Wegbuxen>();
             Commands.RegisterCommands<XSichter>();
+            Commands.RegisterCommands<WettCommands>();
 
             var _messageCache = Task.Factory.StartNew(() => ClearMessageCache());
 
