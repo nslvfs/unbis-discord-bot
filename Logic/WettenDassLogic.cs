@@ -12,9 +12,12 @@ namespace unbis_discord_bot.Logic
         private ConfigJson Config { get; set; }
         public List<WettUser> DbData { get; set; }
 
+        public Wette CurWette { get; set; }
+
         public WettenDassLogic()
         {
             ReadFile();
+            CurWette = new Wette();
         }
         private void ReadFile()
         {
