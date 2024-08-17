@@ -27,6 +27,7 @@ namespace unbis_discord_bot.Logic
         {
             var configUser = GetUserFromDb(id);
             var user = CurWette.WettEinsaetze.FirstOrDefault(x => x.UserId == id);
+
             if (user == null)
             {
                 user = new WettTeilnehmer();
@@ -34,15 +35,23 @@ namespace unbis_discord_bot.Logic
                 user.Vote = vote;
                 user.Amount = amount;
             }
-            if(amount > configUser.tokenBalance)
+
+            if (vote != user.Vote)
             {
-                await ctx.Channel.SendMessageAsync("Du hast nicht genügend Tokens").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Du kannst nicht auf beide Ergebnisse Wetten").ConfigureAwait(false);
                 return;
             }
+
+            if (amount > configUser.tokenBalance)
+            {
+                await ctx.Channel.SendMessageAsync("Du hast nicht genügend Tokens.").ConfigureAwait(false);
+                return;
+            }
+
             configUser.tokenBalance -= amount;
             user.Amount += amount;
 
-            if(vote == "yes")
+            if (vote == "yes")
                 CurWette.yesPot += amount;
 
             if (vote == "no")
@@ -64,6 +73,7 @@ namespace unbis_discord_bot.Logic
             }
             return configUser;
         }
+
         public void ReadFile()
         {
             ReadConfig();

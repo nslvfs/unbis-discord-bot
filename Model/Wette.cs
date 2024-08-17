@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace unbis_discord_bot.Model
 {
     public class Wette
     {
-        public long UserIdStartedBet { get; set; }
+        public ulong UserIdStartedBet { get; set; }
         public string BetTopic { get; set; }
         public List<WettTeilnehmer> WettEinsaetze { get; set; }
 
         public bool wetteActive = false;
 
         public string curWettTopic = "";
+
+        public DateTime BetStarted { get; set; }
 
         public ulong totalPot
         { get { return yesPot + noPot; } }
