@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace unbis_discord_bot.Model
 {
@@ -13,11 +14,11 @@ namespace unbis_discord_bot.Model
 
         public string curWettTopic = "";
 
-        public long totalPot
+        public ulong totalPot
         { get { return yesPot + noPot; } }
 
-        public long yesPot { get; set; }
-        public long noPot { get; set; }
+        public ulong yesPot { get; set; }
+        public ulong noPot { get; set; }
 
         public double getOddsYes
         {
@@ -45,13 +46,12 @@ namespace unbis_discord_bot.Model
             yesPot = 0;
             noPot = 0;
         }
-
     }
 
     public class WettTeilnehmer
     {
-        public long UserId { get; set; }
-        public ulong WettEinsatz { get; set; }
-        public string vote { get; set; }
+        public ulong UserId { get; set; }
+        public ulong Amount { get; set; }
+        public string Vote { get; set; }
     }
 }

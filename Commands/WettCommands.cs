@@ -1,5 +1,8 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using unbis_discord_bot.Logic;
 
@@ -62,7 +65,7 @@ namespace unbis_discord_bot.Commands
 
         [Command("bet")]
         [Description("Biete auf eine laufende Wette")]
-        public async Task Bet(CommandContext ctx, long amount, string janein)
+        public async Task Bet(CommandContext ctx, ulong amount, string janein)
         {
             if (!WettLogic.CurWette.wetteActive)
             {
@@ -74,7 +77,20 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync("Als Eröffner der Wette darfst du nicht teilnehmen.").ConfigureAwait(false);
                 return;
             }
+            await WettLogic.AddUserToBet(ctx.User.Id, janein.ToLower(), amount, ctx).ConfigureAwait(false);
+        }
 
+        [Command("addTokens")]
+        [RequireOwner]
+        [Description("Cheat")]
+        public async Task AddTokens(CommandContext ctx, DiscordUser target, ulong amount)
+        {
+            WettLogic ??= new WettenDassLogic();
+            var user = WettLogic.GetUserFromDb(target.Id);
+            user.tokenBalance += amount;
+            user.lastReceived = DateTime.Now;
+            WettLogic.WriteFile();
+            await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " neue Token Balance: " + user.tokenBalance).ConfigureAwait(false);
         }
 
     }

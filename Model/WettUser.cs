@@ -6,7 +6,7 @@ namespace unbis_discord_bot.Model
     public class WettUser
     {
         [JsonProperty("id")]
-        public long id { get; set; }
+        public ulong id { get; set; }
         [JsonProperty("tokenBalance")]
         public ulong tokenBalance { get; set; }
         [JsonProperty("lastReceived")]
