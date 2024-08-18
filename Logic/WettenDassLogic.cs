@@ -45,7 +45,7 @@ namespace unbis_discord_bot.Logic
 
             if (amount > configUser.tokenBalance)
             {
-                await ctx.Channel.SendMessageAsync("Du hast nicht genügend Tokens.").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Du hast nicht genügend Token.").ConfigureAwait(false);
                 return false;
             }
 

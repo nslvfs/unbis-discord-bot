@@ -25,8 +25,8 @@ namespace unbis_discord_bot.Model
         {
             get
             {
-                double tempYes = (double)yesPot + 100.0;
-                double tempNo = (double)noPot + 100.0;
+                double tempYes = (double)yesPot + 1.0;
+                double tempNo = (double)noPot + 1.0;
                 return Math.Round(tempNo / tempYes + 1.0, 2);
             }
         }
@@ -35,8 +35,8 @@ namespace unbis_discord_bot.Model
         {
             get
             {
-                double tempYes = (double)yesPot + 100.0;
-                double tempNo = (double)noPot + 100.0;
+                double tempYes = (double)yesPot + 1.0;
+                double tempNo = (double)noPot + 1.0;
                 return Math.Round(tempYes / tempNo + 1.0, 2);
             }
         }
