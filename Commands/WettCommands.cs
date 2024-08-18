@@ -149,7 +149,6 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("token")]
-        [Aliases("tokens")]
         [Description("Zeigt die verfügbaren Token eines Nutzers an")]
         public async Task Tokens(CommandContext ctx, DiscordUser target)
         {
@@ -160,7 +159,6 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("token")]
-        [Aliases("tokens")]
         [Description("Zeigt deine aktuell verfügbaren Token an")]
         public async Task Tokens(CommandContext ctx)
         {
