@@ -54,7 +54,10 @@ namespace unbis_discord_bot.Commands
                 await ctx.Channel.SendMessageAsync("Es läuft derzeit keine Wette.").ConfigureAwait(false);
                 return;
             }
-            if (WettLogic.CurWette.UserIdStartedBet != ctx.Member.Id)
+
+            bool bypass = (DateTime.Now - WettLogic.CurWette.BetStarted).Days  >= 1;
+
+            if (WettLogic.CurWette.UserIdStartedBet != ctx.Member.Id && bypass == false)
             {
                 await ctx.Channel.SendMessageAsync("Du hast die Wette nicht gestartet.").ConfigureAwait(false);
                 return;
