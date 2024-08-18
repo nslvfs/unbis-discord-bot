@@ -77,7 +77,7 @@ namespace unbis_discord_bot.Commands
                     multiplikator = WettLogic.CurWette.getOddsNo;
                 var winAmount = Convert.ToUInt64(gewinner.Amount * multiplikator);
                 user.tokenBalance += winAmount;
-                var dcUser = ctx.Channel.Users.FirstOrDefault(x => x.Id == WettLogic.CurWette.UserIdStartedBet);
+                var dcUser = ctx.Channel.Users.FirstOrDefault(x => x.Id == gewinner.UserId);
                 await ctx.Channel.SendMessageAsync(dcUser.Mention + " hat " + winAmount + " Token gewonnen. Neue Token Balance: " + user.tokenBalance).ConfigureAwait(false);
             }
             WettLogic.WriteFile();
@@ -180,6 +180,28 @@ namespace unbis_discord_bot.Commands
             user.lastReceived = DateTime.Now;
             WettLogic.WriteFile();
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + target.Mention + " neue Token Balance: " + user.tokenBalance).ConfigureAwait(false);
+        }
+
+        [Command("top10")]
+        [Description("Eat the rich!")]
+        public async Task TopTen(CommandContext ctx)
+        {
+            WettLogic ??= new WettenDassLogic();
+            WettLogic.TokenGiveOut();
+            var list = WettLogic.DbData.OrderByDescending(x => x.tokenBalance).ToList();
+            int i = 0;
+            string outTxt = string.Empty;
+            foreach (var item in list)
+            {
+                i++;
+                var dcUser = ctx.Channel.Users.FirstOrDefault(x => x.Id == item.id);
+                outTxt += i + ". " + dcUser.Mention + " (" + item.tokenBalance + ")\n";
+                
+                if (i == 10)
+                    break;
+            }
+
+            await ctx.Channel.SendMessageAsync(outTxt).ConfigureAwait(false);
         }
     }
 }
