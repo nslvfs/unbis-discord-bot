@@ -150,7 +150,7 @@ namespace unbis_discord_bot.Commands
 
         [Command("tokens")]
         [Description("Zeigt die verfügbaren Tokens eines Nutzers an")]
-        public async Task GetId(CommandContext ctx, DiscordUser target)
+        public async Task Tokens(CommandContext ctx, DiscordUser target)
         {
             WettLogic ??= new WettenDassLogic();
             WettLogic.TokenGiveOut();
