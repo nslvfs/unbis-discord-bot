@@ -46,6 +46,9 @@ namespace unbis_discord_bot.Commands
         [Description("Startet eine neue Wette")]
         public async Task EndBet(CommandContext ctx, string result)
         {
+            WettLogic ??= new WettenDassLogic();
+            WettLogic.TokenGiveOut();
+
             if (!WettLogic.CurWette.wetteActive)
             {
                 await ctx.Channel.SendMessageAsync("Es läuft derzeit keine Wette.").ConfigureAwait(false);
@@ -84,6 +87,9 @@ namespace unbis_discord_bot.Commands
         [Description("Biete auf eine laufende Wette")]
         public async Task Bet(CommandContext ctx, ulong amount, string janein)
         {
+            WettLogic ??= new WettenDassLogic();
+            WettLogic.TokenGiveOut();
+
             janein = janein.ToLower();
 
             if (!WettLogic.CurWette.wetteActive)
@@ -127,6 +133,8 @@ namespace unbis_discord_bot.Commands
         public async Task Bet(CommandContext ctx)
         {
             WettLogic ??= new WettenDassLogic();
+            WettLogic.TokenGiveOut();
+
             if (!WettLogic.CurWette.wetteActive)
             {
                 await ctx.Channel.SendMessageAsync("Es läuft derzeit keine Wette.").ConfigureAwait(false);
@@ -145,6 +153,7 @@ namespace unbis_discord_bot.Commands
         public async Task GetId(CommandContext ctx, DiscordUser target)
         {
             WettLogic ??= new WettenDassLogic();
+            WettLogic.TokenGiveOut();
             var user = WettLogic.GetUserFromDb(target.Id);
             await ctx.Channel.SendMessageAsync(target.Mention + " hat noch " + user.tokenBalance + " Token zum Wetten").ConfigureAwait(false);
         }
@@ -154,6 +163,7 @@ namespace unbis_discord_bot.Commands
         public async Task Tokens(CommandContext ctx)
         {
             WettLogic ??= new WettenDassLogic();
+            WettLogic.TokenGiveOut();
             var user = WettLogic.GetUserFromDb(ctx.User.Id);
             await ctx.Channel.SendMessageAsync(ctx.User.Mention + " hat noch " + user.tokenBalance + " Token zum Wetten").ConfigureAwait(false);
         }
@@ -164,6 +174,7 @@ namespace unbis_discord_bot.Commands
         public async Task AddTokens(CommandContext ctx, DiscordUser target, ulong amount)
         {
             WettLogic ??= new WettenDassLogic();
+            WettLogic.TokenGiveOut();
             var user = WettLogic.GetUserFromDb(target.Id);
             user.tokenBalance += amount;
             user.lastReceived = DateTime.Now;

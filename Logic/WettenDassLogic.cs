@@ -86,6 +86,7 @@ namespace unbis_discord_bot.Logic
                 configUser.lastReceived = DateTime.Now;
                 configUser.tokenBalance = 1000;
                 DbData.Add(configUser);
+                WriteFile();
             }
             return configUser;
         }
