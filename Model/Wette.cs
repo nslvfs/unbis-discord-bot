@@ -41,6 +41,15 @@ namespace unbis_discord_bot.Model
             }
         }
 
+        public ulong DealerCut
+        {
+            get
+            {
+                ulong temp = Convert.ToUInt64(totalPot * 0.1);
+                return temp;
+            }
+        }
+
         public Wette()
         {
             WettEinsaetze = new List<WettTeilnehmer>();
