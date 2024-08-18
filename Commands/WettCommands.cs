@@ -71,6 +71,7 @@ namespace unbis_discord_bot.Commands
             var gewinners = WettLogic.CurWette.WettEinsaetze.Where(x => x.Vote == result).ToList();
             var userBonus = WettLogic.DbData.SingleOrDefault(x => x.id == WettLogic.CurWette.UserIdStartedBet);
             userBonus.tokenBalance += WettLogic.CurWette.DealerCut;
+            await ctx.Channel.SendMessageAsync("Der Wettstarter erhält eine Sonderzahlung von " + WettLogic.CurWette.DealerCut + " Token").ConfigureAwait(false);
             foreach (var gewinner in gewinners)
             {
                 var user = WettLogic.DbData.FirstOrDefault(x => x.id == gewinner.UserId);
