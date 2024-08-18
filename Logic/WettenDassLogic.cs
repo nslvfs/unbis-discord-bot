@@ -23,40 +23,56 @@ namespace unbis_discord_bot.Logic
             CurWette = new Wette();
         }
 
-        public async Task AddUserToBet(ulong id, string vote, ulong amount, CommandContext ctx)
+        public async Task<bool> AddUserToBet(ulong id, string vote, ulong amount, CommandContext ctx)
         {
             var configUser = GetUserFromDb(id);
-            var user = CurWette.WettEinsaetze.FirstOrDefault(x => x.UserId == id);
+            var wettUser = CurWette.WettEinsaetze.FirstOrDefault(x => x.UserId == id);
 
-            if (user == null)
+            if (wettUser == null)
             {
-                user = new WettTeilnehmer();
-                user.UserId = id;
-                user.Vote = vote;
-                user.Amount = amount;
+                wettUser = new WettTeilnehmer();
+                wettUser.UserId = id;
+                wettUser.Vote = vote;
+                wettUser.Amount = 0;
+                CurWette.WettEinsaetze.Add(wettUser);
             }
 
-            if (vote != user.Vote)
+            if (vote != wettUser.Vote)
             {
                 await ctx.Channel.SendMessageAsync("Du kannst nicht auf beide Ergebnisse Wetten").ConfigureAwait(false);
-                return;
+                return false;
             }
 
             if (amount > configUser.tokenBalance)
             {
                 await ctx.Channel.SendMessageAsync("Du hast nicht genügend Tokens.").ConfigureAwait(false);
-                return;
+                return false;
             }
 
             configUser.tokenBalance -= amount;
-            user.Amount += amount;
+            wettUser.Amount += amount;
 
-            if (vote == "yes")
+            if (vote == "ja")
                 CurWette.yesPot += amount;
 
-            if (vote == "no")
+            if (vote == "nein")
                 CurWette.noPot += amount;
 
+            WriteFile();
+            return true;
+        }
+
+        public void TokenGiveOut()
+        {
+            foreach (var user in DbData)
+            {
+                var diff = (DateTime.Now - user.lastReceived).TotalDays;
+                if (diff >= 7)
+                {
+                    user.tokenBalance += 1000;
+                    user.lastReceived = DateTime.Now;
+                }
+            }
             WriteFile();
         }
 
