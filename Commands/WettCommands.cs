@@ -132,7 +132,10 @@ namespace unbis_discord_bot.Commands
             if (!bothPots)
             {
                 if (WettLogic.CurWette.yesPot > 0 && WettLogic.CurWette.noPot > 0)
+                {
+                    await ctx.Channel.SendMessageAsync("In beide Töpfe wurde gesetzt - die Wettannahme schließt in 5 Minuten").ConfigureAwait(false);
                     WettLogic.CurWette.BetStarted = DateTime.Now;
+                }
             }
             bothPots = WettLogic.CurWette.yesPot > 0 && WettLogic.CurWette.noPot > 0;
 
