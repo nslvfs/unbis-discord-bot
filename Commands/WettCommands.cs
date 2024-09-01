@@ -55,7 +55,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
 
-            bool bypass = (DateTime.Now - WettLogic.CurWette.BetStarted).Days  >= 1;
+            bool bypass = (DateTime.Now - WettLogic.CurWette.BetStarted).Days >= 1;
 
             if (WettLogic.CurWette.UserIdStartedBet != ctx.Member.Id && bypass == false)
             {
@@ -117,8 +117,10 @@ namespace unbis_discord_bot.Commands
                 return;
             }
 
+            var bothPots = WettLogic.CurWette.yesPot > 0 && WettLogic.CurWette.noPot > 0;
+
             var diff = (DateTime.Now - WettLogic.CurWette.BetStarted).Minutes;
-            if (diff >= 5)
+            if (diff >= 5 && bothPots)
             {
                 await ctx.Channel.SendMessageAsync("Die Zeit um Wetten zu platzieren ist vorrüber.").ConfigureAwait(false);
                 return;
@@ -127,6 +129,13 @@ namespace unbis_discord_bot.Commands
             var betted = await WettLogic.AddUserToBet(ctx.User.Id, janein, amount, ctx).ConfigureAwait(false);
             if (!betted)
                 return;
+            if (!bothPots)
+            {
+                if (WettLogic.CurWette.yesPot > 0 && WettLogic.CurWette.noPot > 0)
+                    WettLogic.CurWette.BetStarted = DateTime.Now;
+            }
+            bothPots = WettLogic.CurWette.yesPot > 0 && WettLogic.CurWette.noPot > 0;
+
             var totalAmount = WettLogic.CurWette.WettEinsaetze.First(x => x.UserId == ctx.Member.Id).Amount;
             outTxt += ctx.User.Mention + " hat " + totalAmount + " Token  auf \"" + janein + "\" gesetzt.\n";
             outTxt += "Im Pot sind " + WettLogic.CurWette.totalPot + " Token\n";
@@ -151,7 +160,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
             string outTxt = string.Empty;
-            
+
             outTxt += "Die Wette lautet " + WettLogic.CurWette.curWettTopic + "\n";
             var user = ctx.Channel.Users.FirstOrDefault(x => x.Id == WettLogic.CurWette.UserIdStartedBet);
             outTxt += "Gestartet von " + user.Mention + "\n";
