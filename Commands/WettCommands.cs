@@ -222,7 +222,14 @@ namespace unbis_discord_bot.Commands
             {
                 i++;
                 var dcUser = ctx.Channel.Users.FirstOrDefault(x => x.Id == item.id);
-                outTxt += i + ". " + dcUser.Mention + " (" + item.tokenBalance + ")\n";
+                if (item.id == 414546340777951243)
+                {
+                    outTxt += i + ". Ratz (" + item.tokenBalance + ")\n";
+                }
+                else
+                {
+                    outTxt += i + ". " + dcUser.Mention + " (" + item.tokenBalance + ")\n";
+                }
 
                 if (i == 10)
                     break;
