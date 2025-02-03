@@ -10,7 +10,7 @@ namespace unbis_discord_bot.Commands
         [Command("fefe")]
         [Aliases("effe")]
         [Description("Letzte Fefe-Artikel ")]
-        public async Task Fefe(CommandContext ctx, int anz = 1)
+        public static async Task Fefe(CommandContext ctx, int anz = 1)
         {
             string title = string.Empty;
             if (anz > 3)

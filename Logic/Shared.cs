@@ -16,16 +16,16 @@ namespace unbis_discord_bot
     {
         public static int GenerateRandomNumber(int min, int max)
         {
-            RNGCryptoServiceProvider c = new RNGCryptoServiceProvider();
+            Random rand = new();
             byte[] randomNumber = new byte[4];
-            c.GetBytes(randomNumber);
+            rand.NextBytes(randomNumber);
             int result = Math.Abs(BitConverter.ToInt32(randomNumber, 0));
             return result % (max - min + 1) + min;
         }
 
         public static List<DiscordUser> GetActiveUsers(CommandContext ctx)
         {
-            List<DiscordUser> userList = new List<DiscordUser>();
+            List<DiscordUser> userList = [];
 
             foreach (var msg in Bot.ArchivMessages)
             {

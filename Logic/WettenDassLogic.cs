@@ -30,10 +30,12 @@ namespace unbis_discord_bot.Logic
 
             if (wettUser == null)
             {
-                wettUser = new WettTeilnehmer();
-                wettUser.UserId = id;
-                wettUser.Vote = vote;
-                wettUser.Amount = 0;
+                wettUser = new WettTeilnehmer
+                {
+                    UserId = id,
+                    Vote = vote,
+                    Amount = 0
+                };
                 CurWette.WettEinsaetze.Add(wettUser);
             }
 
@@ -53,10 +55,10 @@ namespace unbis_discord_bot.Logic
             wettUser.Amount += amount;
 
             if (vote == "ja")
-                CurWette.yesPot += amount;
+                CurWette.YesPot += amount;
 
             if (vote == "nein")
-                CurWette.noPot += amount;
+                CurWette.NoPot += amount;
 
             WriteFile();
             return true;
@@ -81,10 +83,12 @@ namespace unbis_discord_bot.Logic
             var configUser = DbData.FirstOrDefault(x => x.id == id);
             if (configUser == null)
             {
-                configUser = new WettUser();
-                configUser.id = id;
-                configUser.lastReceived = DateTime.Now;
-                configUser.tokenBalance = 1000;
+                configUser = new WettUser
+                {
+                    id = id,
+                    lastReceived = DateTime.Now,
+                    tokenBalance = 1000
+                };
                 DbData.Add(configUser);
                 WriteFile();
             }
@@ -104,7 +108,7 @@ namespace unbis_discord_bot.Logic
                 DbData = JsonConvert.DeserializeObject<List<WettUser>>(json);
                 return;
             }
-            DbData = new List<WettUser>();
+            DbData = [];
         }
 
         public void WriteFile()

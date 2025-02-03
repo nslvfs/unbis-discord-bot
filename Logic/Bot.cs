@@ -34,11 +34,11 @@ namespace unbis_discord_bot
         public CommandsNextExtension Commands { get; private set; }
         public static ConfigJson ConfigJson { get; set; }
         public static List<Model.Message> ArchivMessages { get; set; }
-        public readonly EventId BotEventId = new EventId(42, "exekutivfs");
+        public readonly EventId BotEventId = new(42, "exekutivfs");
         public async Task TaskAsync()
         {
             var json = string.Empty;
-            ArchivMessages = new List<Model.Message>();
+            ArchivMessages = [];
             using (var fs = File.OpenRead("config.json"))
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = sr.ReadToEnd();
@@ -73,7 +73,7 @@ namespace unbis_discord_bot
 
             var commandsConfig = new CommandsNextConfiguration
             {
-                StringPrefixes = new string[] { ConfigJson.Prefix },
+                StringPrefixes = [ConfigJson.Prefix],
                 EnableDms = false,
                 EnableMentionPrefix = true,
                 DmHelp = false,
@@ -124,7 +124,7 @@ namespace unbis_discord_bot
             return Task.CompletedTask;
         }
 
-        public static async Task Mute(DiscordChannel channel, DiscordMember target, DiscordGuild g, int durationMin = 10)
+        public static async Task Mute(DiscordMember target, DiscordGuild g, int durationMin = 10)
         {
             if (target.Id == Bot.botIdSelf || g.Id != Bot.guildIdUnbi)
             {
@@ -180,7 +180,7 @@ namespace unbis_discord_bot
                         Console.WriteLine(item);
                         return true;
                     }
-                    if (Message.ToLower().Contains(item.ToLower()))
+                    if (Message.Contains(item, StringComparison.CurrentCultureIgnoreCase))
                     {
                         Console.WriteLine(item);
                         return true;
@@ -249,14 +249,14 @@ namespace unbis_discord_bot
 
         private async Task Client_MessageCreated(DiscordClient sender, MessageCreateEventArgs e)
         {
-            await Client_MessageHandling(sender, e.Message, e.Guild).ConfigureAwait(false);
+            await Client_MessageHandling(e.Message, e.Guild).ConfigureAwait(false);
         }
         private async Task Client_MessageUpdated(DiscordClient sender, MessageUpdateEventArgs e)
         {
-            await Client_MessageHandling(sender, e.Message, e.Guild);
+            await Client_MessageHandling(e.Message, e.Guild);
         }
 
-        private async Task Client_MessageHandling(DiscordClient sender, DiscordMessage e, DiscordGuild g)
+        private static async Task Client_MessageHandling(DiscordMessage e, DiscordGuild g)
         {
             try
             {
@@ -277,7 +277,7 @@ namespace unbis_discord_bot
                         var newMessage = ReplaceBadwords(e.Content);
                         await e.Channel.SendMessageAsync("Ah ah aaaah das sagen wir hier nicht! " + e.Author.Mention);
                         await e.Channel.SendMessageAsync(e.Author.Mention + " wollte sagen: " + newMessage);
-                        _ = Mute(e.Channel, (DiscordMember)e.Author, g, 1);
+                        _ = Mute((DiscordMember)e.Author, g, 1);
                         await e.DeleteAsync();
                         return;
                     }
@@ -362,7 +362,7 @@ namespace unbis_discord_bot
                         useOriginale = false;
                     }
 
-                    if (teststring.ToLower().Contains(item.ToLower()))
+                    if (teststring.Contains(item, StringComparison.CurrentCultureIgnoreCase))
                     {
                         teststring = teststring.ToLower();
                         teststring = teststring.Replace(item.ToLower(), "ZENSIERT");
@@ -388,6 +388,6 @@ namespace unbis_discord_bot
                 output = output[..^100] + "...";
             }
             return output;
-        }   
+        }
     }
 }

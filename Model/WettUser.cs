@@ -5,11 +5,11 @@ namespace unbis_discord_bot.Model
 {
     public class WettUser
     {
-        [JsonProperty("id")]
+        [JsonProperty(nameof(id))]
         public ulong id { get; set; }
-        [JsonProperty("tokenBalance")]
+        [JsonProperty(nameof(tokenBalance))]
         public ulong tokenBalance { get; set; }
-        [JsonProperty("lastReceived")]
+        [JsonProperty(nameof(lastReceived))]
         public DateTime lastReceived { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace unbis_discord_bot.Commands
         [Command("xsichter")]
         [Aliases("xs")]
         [Description("Random xSicht")]
-        public async Task RndXSichter(CommandContext ctx)
+        public static async Task RndXSichter(CommandContext ctx)
         {
             int maxMemeWidth = 500;
             var files = Directory.GetFiles(Bot.ConfigJson.xSichterPath, "*.*", SearchOption.AllDirectories);
@@ -35,7 +35,7 @@ namespace unbis_discord_bot.Commands
         [Command("dxsichter")]
         [Aliases("dxs")]
         [Description("Random distorted xSicht")]
-        public async Task RndDXSichter(CommandContext ctx)
+        public static async Task RndDXSichter(CommandContext ctx)
         {
             if (ctx.Channel.Id != Bot.channelIdRotz)
             {
@@ -79,7 +79,7 @@ namespace unbis_discord_bot.Commands
             int newWidth = (int)(photo.Width * scaleFactor);
             int newHeight = (int)(photo.Height * scaleFactor);
 
-            using Bitmap bmp = new Bitmap(newWidth, newHeight);
+            using Bitmap bmp = new(newWidth, newHeight);
             using Graphics g = Graphics.FromImage(bmp);
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.SmoothingMode = SmoothingMode.HighQuality;

@@ -34,10 +34,12 @@ namespace unbis_discord_bot.Commands
                 return;
             }
 
-            WettLogic.CurWette = new Wette();
-            WettLogic.CurWette.curWettTopic = wettTopic;
-            WettLogic.CurWette.UserIdStartedBet = ctx.Member.Id;
-            WettLogic.CurWette.BetStarted = DateTime.Now;
+            WettLogic.CurWette = new Wette
+            {
+                curWettTopic = wettTopic,
+                UserIdStartedBet = ctx.Member.Id,
+                BetStarted = DateTime.Now
+            };
             await ctx.Channel.SendMessageAsync("Die Wette \"" + WettLogic.CurWette.curWettTopic + "\" wurde gestart. Nimm teil mit !bet <einsatz> <ergebnis ja/nein>. Zum Beispiel: !bet 100 Ja").ConfigureAwait(false);
             WettLogic.CurWette.wetteActive = true;
         }
@@ -79,9 +81,9 @@ namespace unbis_discord_bot.Commands
             foreach (var gewinner in gewinners)
             {
                 var user = WettLogic.DbData.FirstOrDefault(x => x.id == gewinner.UserId);
-                var multiplikator = WettLogic.CurWette.getOddsYes;
+                var multiplikator = WettLogic.CurWette.GetOddsYes;
                 if (result == "nein")
-                    multiplikator = WettLogic.CurWette.getOddsNo;
+                    multiplikator = WettLogic.CurWette.GetOddsNo;
                 var winAmount = Convert.ToUInt64(gewinner.Amount * multiplikator);
                 user.tokenBalance += winAmount;
                 var dcUser = ctx.Channel.Users.FirstOrDefault(x => x.Id == gewinner.UserId);
@@ -117,7 +119,7 @@ namespace unbis_discord_bot.Commands
                 return;
             }
 
-            var bothPots = WettLogic.CurWette.yesPot > 0 && WettLogic.CurWette.noPot > 0;
+            var bothPots = WettLogic.CurWette.YesPot > 0 && WettLogic.CurWette.NoPot > 0;
 
             var diff = (DateTime.Now - WettLogic.CurWette.BetStarted).Minutes;
             if (diff >= 5 && bothPots)
@@ -131,19 +133,19 @@ namespace unbis_discord_bot.Commands
                 return;
             if (!bothPots)
             {
-                if (WettLogic.CurWette.yesPot > 0 && WettLogic.CurWette.noPot > 0)
+                if (WettLogic.CurWette.YesPot > 0 && WettLogic.CurWette.NoPot > 0)
                 {
                     await ctx.Channel.SendMessageAsync("In beide Töpfe wurde gesetzt - die Wettannahme schließt in 5 Minuten").ConfigureAwait(false);
                     WettLogic.CurWette.BetStarted = DateTime.Now;
                 }
             }
-            bothPots = WettLogic.CurWette.yesPot > 0 && WettLogic.CurWette.noPot > 0;
+            bothPots = WettLogic.CurWette.YesPot > 0 && WettLogic.CurWette.NoPot > 0;
 
             var totalAmount = WettLogic.CurWette.WettEinsaetze.First(x => x.UserId == ctx.Member.Id).Amount;
             outTxt += ctx.User.Mention + " hat " + totalAmount + " Token  auf \"" + janein + "\" gesetzt.\n";
-            outTxt += "Im Pot sind " + WettLogic.CurWette.totalPot + " Token\n";
-            outTxt += "Ja-Wetten: " + WettLogic.CurWette.yesPot + " Token (Quote: " + WettLogic.CurWette.getOddsYes + ")\n";
-            outTxt += "Nein-Wetten: " + WettLogic.CurWette.noPot + " Token (Quote: " + WettLogic.CurWette.getOddsNo + ")\n";
+            outTxt += "Im Pot sind " + WettLogic.CurWette.TotalPot + " Token\n";
+            outTxt += "Ja-Wetten: " + WettLogic.CurWette.YesPot + " Token (Quote: " + WettLogic.CurWette.GetOddsYes + ")\n";
+            outTxt += "Nein-Wetten: " + WettLogic.CurWette.NoPot + " Token (Quote: " + WettLogic.CurWette.GetOddsNo + ")\n";
             outTxt += "Wettstarter-Bonus: " + WettLogic.CurWette.DealerCut + " Token\n";
             var user = WettLogic.GetUserFromDb(ctx.User.Id);
             outTxt += ctx.User.Mention + " hat noch " + user.tokenBalance + " Token zum Wetten\n";
@@ -167,9 +169,9 @@ namespace unbis_discord_bot.Commands
             outTxt += "Die Wette lautet " + WettLogic.CurWette.curWettTopic + "\n";
             var user = ctx.Channel.Users.FirstOrDefault(x => x.Id == WettLogic.CurWette.UserIdStartedBet);
             outTxt += "Gestartet von " + user.Mention + "\n";
-            outTxt += "Im Pot sind " + WettLogic.CurWette.totalPot + " Token\n";
-            outTxt += "Ja-Wetten: " + WettLogic.CurWette.yesPot + " Token (Quote: " + WettLogic.CurWette.getOddsYes + ")\n";
-            outTxt += "Nein-Wetten: " + WettLogic.CurWette.noPot + " Token (Quote: " + WettLogic.CurWette.getOddsNo + ")\n";
+            outTxt += "Im Pot sind " + WettLogic.CurWette.TotalPot + " Token\n";
+            outTxt += "Ja-Wetten: " + WettLogic.CurWette.YesPot + " Token (Quote: " + WettLogic.CurWette.GetOddsYes + ")\n";
+            outTxt += "Nein-Wetten: " + WettLogic.CurWette.NoPot + " Token (Quote: " + WettLogic.CurWette.GetOddsNo + ")\n";
             outTxt += "Wettstarter-Bonus: " + WettLogic.CurWette.DealerCut + " Token\n";
 
             await ctx.Channel.SendMessageAsync(outTxt).ConfigureAwait(false);

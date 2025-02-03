@@ -15,28 +15,28 @@ namespace unbis_discord_bot.Model
 
         public DateTime BetStarted { get; set; }
 
-        public ulong totalPot
-        { get { return yesPot + noPot; } }
+        public ulong TotalPot
+        { get { return YesPot + NoPot; } }
 
-        public ulong yesPot { get; set; }
-        public ulong noPot { get; set; }
+        public ulong YesPot { get; set; }
+        public ulong NoPot { get; set; }
 
-        public double getOddsYes
+        public double GetOddsYes
         {
             get
             {
-                double tempYes = (double)yesPot + 1.0;
-                double tempNo = (double)noPot + 1.0;
+                double tempYes = (double)YesPot + 1.0;
+                double tempNo = (double)NoPot + 1.0;
                 return Math.Round(tempNo / tempYes + 1.0, 2);
             }
         }
 
-        public double getOddsNo
+        public double GetOddsNo
         {
             get
             {
-                double tempYes = (double)yesPot + 1.0;
-                double tempNo = (double)noPot + 1.0;
+                double tempYes = (double)YesPot + 1.0;
+                double tempNo = (double)NoPot + 1.0;
                 return Math.Round(tempYes / tempNo + 1.0, 2);
             }
         }
@@ -45,16 +45,16 @@ namespace unbis_discord_bot.Model
         {
             get
             {
-                ulong temp = Convert.ToUInt64(totalPot * 0.1);
+                ulong temp = Convert.ToUInt64(TotalPot * 0.1);
                 return temp;
             }
         }
 
         public Wette()
         {
-            WettEinsaetze = new List<WettTeilnehmer>();
-            yesPot = 0;
-            noPot = 0;
+            WettEinsaetze = [];
+            YesPot = 0;
+            NoPot = 0;
         }
     }
 
