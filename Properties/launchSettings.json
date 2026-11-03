@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "WSL 2": {
+      "commandName": "WSL2",
+      "distributionName": "Ubuntu"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}
