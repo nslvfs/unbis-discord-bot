@@ -1,9 +1,8 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+using SkiaSharp;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -14,94 +13,68 @@ namespace unbis_discord_bot.Commands
         [Command("xsichter")]
         [Aliases("xs")]
         [Description("Random xSicht")]
-        public static async Task RndXSichter(CommandContext ctx)
+        public async Task RndXSichter(CommandContext ctx)
         {
-            int maxMemeWidth = 500;
-            var files = Directory.GetFiles(Bot.ConfigJson.xSichterPath, "*.*", SearchOption.AllDirectories);
-            var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
-            Image photo = new Bitmap(files[rndIndex]);
-            var divisor = photo.Width / maxMemeWidth;
-            var newHeight = photo.Height / divisor;
-
-            ResizeImageAndSaveThumb(files[rndIndex], newHeight, maxMemeWidth, ImageFormat.Jpeg);
-            using var fs = new FileStream("temp.jpg", FileMode.Open, FileAccess.Read);
-            await new DiscordMessageBuilder()
-                .WithContent(Bot.ConfigJson.positivAnswer)
-                .WithFiles(new System.Collections.Generic.Dictionary<string, Stream>() { { "xsichter.jpg", fs } })
-                .SendAsync(ctx.Channel)
-                .ConfigureAwait(false);
+            await SendRandomXSicht(ctx, Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
         }
 
         [Command("dxsichter")]
         [Aliases("dxs")]
         [Description("Random distorted xSicht")]
-        public static async Task RndDXSichter(CommandContext ctx)
+        public async Task RndDXSichter(CommandContext ctx)
         {
-            if (ctx.Channel.Id != Bot.channelIdRotz)
+            if (ctx.Channel.Id != Bot.ConfigJson.ChannelIdRotz)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + Bot.ConfigJson.negativAnswer).ConfigureAwait(false);
                 return;
             }
-            int maxMemeWidth = 500;
+            await SendRandomXSicht(ctx, ".distort").ConfigureAwait(false);
+        }
+
+        private const int MaxMemeWidth = 500;
+
+        private static async Task SendRandomXSicht(CommandContext ctx, string content)
+        {
             var files = Directory.GetFiles(Bot.ConfigJson.xSichterPath, "*.*", SearchOption.AllDirectories);
             var rndIndex = Shared.GenerateRandomNumber(0, files.Length - 1);
-            Image photo = new Bitmap(files[rndIndex]);
-            var divisor = photo.Width / maxMemeWidth;
-            var newHeight = photo.Height / divisor;
-
-            ResizeImageAndSaveThumb(files[rndIndex], newHeight, maxMemeWidth, ImageFormat.Jpeg);
-            using var fs = new FileStream("temp.jpg", FileMode.Open, FileAccess.Read);
-            await new DiscordMessageBuilder()
-                .WithContent(".distort")
-                .WithFiles(new System.Collections.Generic.Dictionary<string, Stream>() { { "xsichter.jpg", fs } })
-                .SendAsync(ctx.Channel)
-                .ConfigureAwait(false);
-        }
-        public static void ResizeImageAndSaveThumb(string FileNameInput, double ResizeHeight, double ResizeWidth, ImageFormat OutputFormat)
-        {
-            using Image photo = new Bitmap(FileNameInput);
-            double aspectRatio = (double)photo.Width / photo.Height;
-            double boxRatio = ResizeWidth / ResizeHeight;
-            double scaleFactor = 0;
-
-            if (photo.Width < ResizeWidth && photo.Height < ResizeHeight)
+            var tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".jpg");
+            try
             {
-                scaleFactor = 1.0;
+                ResizeImageAndSaveThumb(files[rndIndex], tempFile);
+                using var fs = new FileStream(tempFile, FileMode.Open, FileAccess.Read);
+                await new DiscordMessageBuilder()
+                    .WithContent(content)
+                    .AddFile("xsichter.jpg", fs)
+                    .SendAsync(ctx.Channel)
+                    .ConfigureAwait(false);
             }
-            else
+            finally
             {
-                if (boxRatio > aspectRatio)
-                    scaleFactor = ResizeHeight / photo.Height;
-                else
-                    scaleFactor = ResizeWidth / photo.Width;
-            }
-
-            int newWidth = (int)(photo.Width * scaleFactor);
-            int newHeight = (int)(photo.Height * scaleFactor);
-
-            using Bitmap bmp = new(newWidth, newHeight);
-            using Graphics g = Graphics.FromImage(bmp);
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            g.CompositingQuality = CompositingQuality.HighQuality;
-            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-            g.DrawImage(photo, 0, 0, newWidth, newHeight);
-
-            if (ImageFormat.Png.Equals(OutputFormat))
-            {
-                bmp.Save("temp.png", OutputFormat);
-            }
-            else if (ImageFormat.Jpeg.Equals(OutputFormat))
-            {
-                ImageCodecInfo[] info = ImageCodecInfo.GetImageEncoders();
-                EncoderParameters encoderParameters;
-                using (encoderParameters = new EncoderParameters(1))
+                if (File.Exists(tempFile))
                 {
-                    encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, 100L);
-                    bmp.Save("temp.jpg", info[1], encoderParameters);
+                    File.Delete(tempFile);
                 }
             }
+        }
+
+        private static void ResizeImageAndSaveThumb(string inputPath, string outputPath)
+        {
+            using var input = File.OpenRead(inputPath);
+            using var original = SKBitmap.Decode(input);
+
+            var width = original.Width;
+            var height = original.Height;
+            if (width > MaxMemeWidth)
+            {
+                height = (int)(original.Height * ((double)MaxMemeWidth / width));
+                width = MaxMemeWidth;
+            }
+
+            using var resized = original.Resize(new SKImageInfo(width, height), new SKSamplingOptions(SKCubicResampler.Mitchell));
+            using var image = SKImage.FromBitmap(resized);
+            using var data = image.Encode(SKEncodedImageFormat.Jpeg, 100);
+            using var output = File.OpenWrite(outputPath);
+            data.SaveTo(output);
         }
     }
 }

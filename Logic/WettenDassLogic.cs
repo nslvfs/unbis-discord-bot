@@ -1,10 +1,10 @@
 ﻿using DSharpPlus.CommandsNext;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using unbis_discord_bot.Model;
 
@@ -105,7 +105,7 @@ namespace unbis_discord_bot.Logic
                 using (var fs = File.OpenRead(file))
                 using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                     json = sr.ReadToEnd();
-                DbData = JsonConvert.DeserializeObject<List<WettUser>>(json);
+                DbData = JsonSerializer.Deserialize<List<WettUser>>(json);
                 return;
             }
             DbData = [];
@@ -115,12 +115,12 @@ namespace unbis_discord_bot.Logic
         {
             ReadConfig();
             var file = Config.wettenDBFile;
-            var json = JsonConvert.SerializeObject(DbData.ToArray());
+            var json = JsonSerializer.Serialize(DbData.ToArray());
             File.WriteAllText(file, json);
         }
         private void ReadConfig()
         {
-            if (Config.wettenDBFile == null)
+            if (Config?.wettenDBFile == null)
             {
                 var json = string.Empty;
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "config.json");
@@ -128,7 +128,7 @@ namespace unbis_discord_bot.Logic
                 using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                     json = sr.ReadToEnd();
 
-                Config = JsonConvert.DeserializeObject<ConfigJson>(json);
+                Config = JsonSerializer.Deserialize<ConfigJson>(json);
             }
         }
     }

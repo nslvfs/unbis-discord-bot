@@ -1,4 +1,4 @@
-using DSharpPlus.CommandsNext;
+ï»¿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System;
@@ -23,14 +23,14 @@ namespace unbis_discord_bot.Commands
 
             if (WettLogic.CurWette.wetteActive)
             {
-                await ctx.Channel.SendMessageAsync("Es läuft bereits eine Wette: \"" + WettLogic.CurWette.curWettTopic + "\"").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Es lÃ¤uft bereits eine Wette: \"" + WettLogic.CurWette.curWettTopic + "\"").ConfigureAwait(false);
                 return;
             }
 
             var wettTopic = string.Join(" ", args);
             if (Bot.CheckBadWords(WettLogic.CurWette.curWettTopic, true))
             {
-                await ctx.Channel.SendMessageAsync("Ungültige Wette.").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("UngÃ¼ltige Wette.").ConfigureAwait(false);
                 return;
             }
 
@@ -40,7 +40,7 @@ namespace unbis_discord_bot.Commands
                 UserIdStartedBet = ctx.Member.Id,
                 BetStarted = DateTime.Now
             };
-            await ctx.Channel.SendMessageAsync("Die Wette \"" + WettLogic.CurWette.curWettTopic + "\" wurde gestart. Nimm teil mit !bet <einsatz> <ergebnis ja/nein>. Zum Beispiel: !bet 100 Ja").ConfigureAwait(false);
+            await ctx.Channel.SendMessageAsync("Die Wette \"" + WettLogic.CurWette.curWettTopic + "\" wurde gestartet. Nimm teil mit !bet <einsatz> <ergebnis ja/nein>. Zum Beispiel: !bet 100 Ja").ConfigureAwait(false);
             WettLogic.CurWette.wetteActive = true;
         }
 
@@ -53,7 +53,7 @@ namespace unbis_discord_bot.Commands
 
             if (!WettLogic.CurWette.wetteActive)
             {
-                await ctx.Channel.SendMessageAsync("Es läuft derzeit keine Wette.").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Es lÃ¤uft derzeit keine Wette.").ConfigureAwait(false);
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace unbis_discord_bot.Commands
             result = result.ToLower();
             if (result != "ja" && result != "nein")
             {
-                await ctx.Channel.SendMessageAsync("Kein Gültiges Ergebnis. Ergebis kann nur Ja oder Nein sein").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Kein gÃ¼ltiges Ergebnis. Ergebnis kann nur Ja oder Nein sein").ConfigureAwait(false);
                 return;
             }
             string outTxt = string.Empty;
@@ -76,7 +76,7 @@ namespace unbis_discord_bot.Commands
             var gewinners = WettLogic.CurWette.WettEinsaetze.Where(x => x.Vote == result).ToList();
             var userBonus = WettLogic.DbData.SingleOrDefault(x => x.id == WettLogic.CurWette.UserIdStartedBet);
             userBonus.tokenBalance += WettLogic.CurWette.DealerCut;
-            outTxt += "Der Wettstarter erhält eine Sonderzahlung von " + WettLogic.CurWette.DealerCut + " Token\n";
+            outTxt += "Der Wettstarter erhÃ¤lt eine Sonderzahlung von " + WettLogic.CurWette.DealerCut + " Token\n";
 
             foreach (var gewinner in gewinners)
             {
@@ -104,18 +104,18 @@ namespace unbis_discord_bot.Commands
 
             if (!WettLogic.CurWette.wetteActive)
             {
-                await ctx.Channel.SendMessageAsync("Es läuft derzeit keine Wette.").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Es lÃ¤uft derzeit keine Wette.").ConfigureAwait(false);
                 return;
             }
             if (WettLogic.CurWette.UserIdStartedBet == ctx.Member.Id)
             {
-                await ctx.Channel.SendMessageAsync("Als Eröffner der Wette darfst du nicht teilnehmen.").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Als ErÃ¶ffner der Wette darfst du nicht teilnehmen.").ConfigureAwait(false);
                 return;
             }
 
             if (janein != "ja" && janein != "nein")
             {
-                await ctx.Channel.SendMessageAsync("Ungültige Wette. Bitte benutze \"ja\" oder \"nein\"").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("UngÃ¼ltige Wette. Bitte benutze \"ja\" oder \"nein\"").ConfigureAwait(false);
                 return;
             }
 
@@ -124,7 +124,7 @@ namespace unbis_discord_bot.Commands
             var diff = (DateTime.Now - WettLogic.CurWette.BetStarted).Minutes;
             if (diff >= 5 && bothPots)
             {
-                await ctx.Channel.SendMessageAsync("Die Zeit um Wetten zu platzieren ist vorrüber.").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Die Zeit um Wetten zu platzieren ist vorrÃ¼ber.").ConfigureAwait(false);
                 return;
             }
             string outTxt = string.Empty;
@@ -135,7 +135,7 @@ namespace unbis_discord_bot.Commands
             {
                 if (WettLogic.CurWette.YesPot > 0 && WettLogic.CurWette.NoPot > 0)
                 {
-                    await ctx.Channel.SendMessageAsync("In beide Töpfe wurde gesetzt - die Wettannahme schließt in 5 Minuten").ConfigureAwait(false);
+                    await ctx.Channel.SendMessageAsync("In beide TÃ¶pfe wurde gesetzt - die Wettannahme schlieÃŸt in 5 Minuten").ConfigureAwait(false);
                     WettLogic.CurWette.BetStarted = DateTime.Now;
                 }
             }
@@ -161,7 +161,7 @@ namespace unbis_discord_bot.Commands
 
             if (!WettLogic.CurWette.wetteActive)
             {
-                await ctx.Channel.SendMessageAsync("Es läuft derzeit keine Wette.").ConfigureAwait(false);
+                await ctx.Channel.SendMessageAsync("Es lÃ¤uft derzeit keine Wette.").ConfigureAwait(false);
                 return;
             }
             string outTxt = string.Empty;
@@ -178,7 +178,7 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("token")]
-        [Description("Zeigt die verfügbaren Token eines Nutzers an")]
+        [Description("Zeigt die verfÃ¼gbaren Token eines Nutzers an")]
         public async Task Tokens(CommandContext ctx, DiscordUser target)
         {
             WettLogic ??= new WettenDassLogic();
@@ -188,7 +188,7 @@ namespace unbis_discord_bot.Commands
         }
 
         [Command("token")]
-        [Description("Zeigt deine aktuell verfügbaren Token an")]
+        [Description("Zeigt deine aktuell verfÃ¼gbaren Token an")]
         public async Task Tokens(CommandContext ctx)
         {
             WettLogic ??= new WettenDassLogic();

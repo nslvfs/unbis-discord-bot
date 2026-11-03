@@ -1,11 +1,9 @@
-﻿namespace unbis_discord_bot
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Bot bot = new Bot();
-            bot.TaskAsync().GetAwaiter().GetResult();
-        }
-    }
-}
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using unbis_discord_bot.Logic;
+
+var builder = Host.CreateApplicationBuilder(args);
+builder.Services.AddHostedService<BotHostedService>();
+builder.Services.AddHostedService<MessageCacheCleanupService>();
+
+await builder.Build().RunAsync();

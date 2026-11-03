@@ -6,11 +6,11 @@ using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,30 +20,22 @@ namespace unbis_discord_bot
 {
     public class Bot
     {
-        public const long guildIdUnbi = 791393115097137171;
-        public const long guildIdRatte = 442300530996543489;
-        public const long channelIdRotz = 816990123568660510;
-        public const long userIdvfs = 134719067016658945;
-        public const long botIdSelf = 807641560006000670;
-        public const long botIdSantos = 816383436201656341;
-        public const long roleIdMuted = 807921762570469386;
         public static bool DoCheckBadWords { get; set; }
 
         public static DateTime BotStart { get; set; }
         public static DiscordClient Client { get; private set; }
         public CommandsNextExtension Commands { get; private set; }
         public static ConfigJson ConfigJson { get; set; }
-        public static List<Model.Message> ArchivMessages { get; set; }
+        public static List<Model.Message> ArchivMessages { get; set; } = [];
         public readonly EventId BotEventId = new(42, "exekutivfs");
-        public async Task TaskAsync()
+        public async Task RunAsync(CancellationToken cancellationToken)
         {
             var json = string.Empty;
-            ArchivMessages = [];
             using (var fs = File.OpenRead("config.json"))
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = sr.ReadToEnd();
 
-            ConfigJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            ConfigJson = JsonSerializer.Deserialize<ConfigJson>(json);
             BotStart = DateTime.Now;
 
             //assigns year, month, day, hour, min, seconds
@@ -61,7 +53,8 @@ namespace unbis_discord_bot
                     DiscordIntents.GuildWebhooks |
                     DiscordIntents.GuildPresences |
                     DiscordIntents.Guilds |
-                    DiscordIntents.GuildMessageReactions,
+                    DiscordIntents.GuildMessageReactions |
+                    DiscordIntents.MessageContents,
                 AutoReconnect = true,
                 MinimumLogLevel = LogLevel.Information,
                 LogTimestampFormat = "dd MMM yyyy - HH:mm:ss tt",
@@ -111,11 +104,16 @@ namespace unbis_discord_bot
             Commands.RegisterCommands<XSichter>();
             Commands.RegisterCommands<WettCommands>();
 
-            var _messageCache = Task.Factory.StartNew(() => ClearMessageCache());
-
             await Client.ConnectAsync();
 
-            await Task.Delay(-1);
+            try
+            {
+                await Task.Delay(Timeout.Infinite, cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                await Client.DisconnectAsync();
+            }
         }
 
         public static Task RemoveUserfromMessageArchiv(ulong userId)
@@ -126,19 +124,19 @@ namespace unbis_discord_bot
 
         public static async Task Mute(DiscordMember target, DiscordGuild g, int durationMin = 10)
         {
-            if (target.Id == Bot.botIdSelf || g.Id != Bot.guildIdUnbi)
+            if (target.Id == ConfigJson.BotIdSelf || g.Id != ConfigJson.GuildIdUnbi)
             {
                 return;
             }
             try
             {
-                var roleMuted = g.GetRole(Bot.roleIdMuted);
+                var roleMuted = g.GetRole(ConfigJson.RoleIdMuted);
                 _ = target.GrantRoleAsync(roleMuted);
                 _ = Bot.RemoveUserfromMessageArchiv(target.Id);
 
-                var outChannel = g.GetChannel(Bot.channelIdRotz);
+                var outChannel = g.GetChannel(ConfigJson.ChannelIdRotz);
                 await outChannel.SendMessageAsync(target.Mention + " jetzt für " + durationMin + " Minute(n) still").ConfigureAwait(false);
-                Thread.Sleep(1000 * 60 * durationMin);
+                await Task.Delay(TimeSpan.FromMinutes(durationMin)).ConfigureAwait(false);
                 await target.RevokeRoleAsync(roleMuted);
                 await outChannel.SendMessageAsync(target.Mention + " jetzt nicht mehr still").ConfigureAwait(false);
             }
@@ -207,7 +205,7 @@ namespace unbis_discord_bot
                 Message.Timestamp = e.Emoji.CreationTimestamp;
                 ArchivMessages.Add(Message);
             }
-            if (e.User.Id == Bot.botIdSantos)
+            if (e.User.Id == ConfigJson.BotIdSantos)
             {
                 await e.Message.DeleteAllReactionsAsync().ConfigureAwait(false);
             }
@@ -270,7 +268,7 @@ namespace unbis_discord_bot
                     ArchivMessages.Add(Message);
                 }
 
-                if (g.Id == Bot.guildIdUnbi)
+                if (g.Id == ConfigJson.GuildIdUnbi)
                 {
                     if (CheckBadWords(e.Content))
                     {
@@ -295,7 +293,7 @@ namespace unbis_discord_bot
 
         private async Task Client_GuildMemberUpdated(DiscordClient sender, GuildMemberUpdateEventArgs e)
         {
-            if (e.Guild.Id == Bot.guildIdUnbi)
+            if (e.Guild.Id == ConfigJson.GuildIdUnbi)
             {
                 if (CheckBadWords(e.NicknameAfter))
                 {
@@ -312,16 +310,6 @@ namespace unbis_discord_bot
                         Console.WriteLine(ex.Message);
                     }
                 }
-            }
-        }
-
-        private static void ClearMessageCache()
-        {
-            var sender = Client;
-            while (true)
-            {
-                ArchivMessages.RemoveAll(item => item.Timestamp.AddMinutes(10) < DateTimeOffset.Now);
-                Thread.Sleep(1000 * 60 * 5);
             }
         }
 

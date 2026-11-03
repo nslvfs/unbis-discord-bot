@@ -1,15 +1,15 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace unbis_discord_bot.Model
 {
     public class WettUser
     {
-        [JsonProperty(nameof(id))]
+        [JsonPropertyName(nameof(id))]
         public ulong id { get; set; }
-        [JsonProperty(nameof(tokenBalance))]
+        [JsonPropertyName(nameof(tokenBalance))]
         public ulong tokenBalance { get; set; }
-        [JsonProperty(nameof(lastReceived))]
+        [JsonPropertyName(nameof(lastReceived))]
         public DateTime lastReceived { get; set; }
     }
 }

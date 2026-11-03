@@ -79,7 +79,7 @@ namespace unbis_discord_bot.Commands
         [Description("Badword-Filter an aus")]
         public async Task Badwordmode(CommandContext ctx, [RemainingText] string qry)
         {
-            if (ctx.Guild.Id != Bot.guildIdUnbi)
+            if (ctx.Guild.Id != Bot.ConfigJson.GuildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;

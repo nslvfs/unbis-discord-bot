@@ -16,11 +16,7 @@ namespace unbis_discord_bot
     {
         public static int GenerateRandomNumber(int min, int max)
         {
-            Random rand = new();
-            byte[] randomNumber = new byte[4];
-            rand.NextBytes(randomNumber);
-            int result = Math.Abs(BitConverter.ToInt32(randomNumber, 0));
-            return result % (max - min + 1) + min;
+            return Random.Shared.Next(min, max + 1);
         }
 
         public static List<DiscordUser> GetActiveUsers(CommandContext ctx)
@@ -55,18 +51,12 @@ namespace unbis_discord_bot
             return userList;
         }
 
-        public static string GetRedirect(string url)
+        private static readonly HttpClient _httpClient = new(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip });
+
+        public static async Task<string> GetRedirect(string url)
         {
-            using var client = new HttpClient(new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip });
-            var request = new HttpRequestMessage()
-            {
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Get
-            };
-
-            HttpResponseMessage response = client.SendAsync(request).Result;
+            var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
             return response.RequestMessage.RequestUri.ToString();
-
         }
 
         public static async Task<List<ISyndicationItem>> GetNewsFeed(string feedUri)

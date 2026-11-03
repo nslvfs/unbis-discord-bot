@@ -1,9 +1,9 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using Newtonsoft.Json;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace unbis_discord_bot.Commands
@@ -46,12 +46,12 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task Mute(CommandContext ctx, DiscordMember target)
         {
-            if (ctx.Guild.Id != Bot.guildIdUnbi)
+            if (ctx.Guild.Id != Bot.ConfigJson.GuildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
             }
-            await Bot.Mute(ctx.Channel, target, ctx.Guild).ConfigureAwait(false);
+            await Bot.Mute(target, ctx.Guild).ConfigureAwait(false);
         }
 
         [Command("kick")]
@@ -59,7 +59,7 @@ namespace unbis_discord_bot.Commands
         [RequireOwner]
         public async Task Kick(CommandContext ctx, DiscordMember target)
         {
-            if (ctx.Guild.Id != Bot.guildIdUnbi)
+            if (ctx.Guild.Id != Bot.ConfigJson.GuildIdUnbi)
             {
                 await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": Befehl auf diesen Server unzulässig").ConfigureAwait(false);
                 return;
@@ -78,7 +78,7 @@ namespace unbis_discord_bot.Commands
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = sr.ReadToEnd();
 
-            Bot.ConfigJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            Bot.ConfigJson = JsonSerializer.Deserialize<ConfigJson>(json);
             await ctx.Channel.SendMessageAsync(Bot.ConfigJson.positivAnswer).ConfigureAwait(false);
         }
 

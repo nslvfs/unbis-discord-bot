@@ -10,7 +10,7 @@ namespace unbis_discord_bot.Commands
         [Description("Zufälliges Rezept von chefkoch")]
         public async Task GetRandomRezept(CommandContext ctx)
         {
-            var newUrl = Shared.GetRedirect("https://www.chefkoch.de/rezepte/zufallsrezept/");
+            var newUrl = await Shared.GetRedirect("https://www.chefkoch.de/rezepte/zufallsrezept/").ConfigureAwait(false);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + newUrl).ConfigureAwait(false);
         }
 
@@ -18,7 +18,7 @@ namespace unbis_discord_bot.Commands
         [Description("Zufälliges Video von motherless")]
         public async Task GetRandomPornVideo(CommandContext ctx)
         {
-            var newUrl = Shared.GetRedirect("https://motherless.com/random/video");
+            var newUrl = await Shared.GetRedirect("https://motherless.com/random/video").ConfigureAwait(false);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + newUrl).ConfigureAwait(false);
         }
 
@@ -26,7 +26,7 @@ namespace unbis_discord_bot.Commands
         [Description("Zufälliges Bild von motherless")]
         public async Task GetRandomPornPic(CommandContext ctx)
         {
-            var newUrl = Shared.GetRedirect("https://motherless.com/random/image");
+            var newUrl = await Shared.GetRedirect("https://motherless.com/random/image").ConfigureAwait(false);
             await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": " + newUrl).ConfigureAwait(false);
         }
     }

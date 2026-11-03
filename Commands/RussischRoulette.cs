@@ -71,9 +71,9 @@ namespace unbis_discord_bot.Commands
                     rouletteData[index].revKammer = -1;
                     await ctx.Channel.SendMessageAsync(ctx.Member.Mention + ": ** BOOM **").ConfigureAwait(false);
                     _semaphoregate.Release();
-                    if (ctx.Guild.Id == Bot.guildIdUnbi)
+                    if (ctx.Guild.Id == Bot.ConfigJson.GuildIdUnbi)
                     {
-                        await Bot.Mute(ctx.Channel, ctx.Member, ctx.Guild).ConfigureAwait(false);
+                        await Bot.Mute(ctx.Member, ctx.Guild).ConfigureAwait(false);
                     }
                 }
             }

@@ -1,39 +1,59 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace unbis_discord_bot
 {
-    public struct ConfigJson
+    public class ConfigJson
     {
-        [JsonProperty("token")]
-        public string Token { get; private set; }
+        [JsonPropertyName("token")]
+        public string Token { get; set; }
 
-        [JsonProperty("prefix")]
-        public string Prefix { get; private set; }
+        [JsonPropertyName("prefix")]
+        public string Prefix { get; set; }
 
-        [JsonProperty("quotePath")]
-        public string quotePath { get; private set; }
+        [JsonPropertyName("quotePath")]
+        public string quotePath { get; set; }
 
-        [JsonProperty("xSichterPath")]
-        public string xSichterPath { get; private set; }
+        [JsonPropertyName("xSichterPath")]
+        public string xSichterPath { get; set; }
 
-        [JsonProperty("gurgleApi")]
-        public string gurgleApi { get; private set; }
+        [JsonPropertyName("gurgleApi")]
+        public string gurgleApi { get; set; }
 
-        [JsonProperty("gurgleSeachEngineId")]
-        public string gurgleSeachEngineId { get; private set; }
+        [JsonPropertyName("gurgleSeachEngineId")]
+        public string gurgleSeachEngineId { get; set; }
 
-        [JsonProperty("badwords")]
-        public string badwords { get; private set; }
+        [JsonPropertyName("badwords")]
+        public string badwords { get; set; }
 
-        [JsonProperty("negativAnswer")]
+        [JsonPropertyName("negativAnswer")]
         public string negativAnswer { get; set; }
 
-        [JsonProperty("positivAnswer")]
+        [JsonPropertyName("positivAnswer")]
         public string positivAnswer { get; set; }
 
-        [JsonProperty("wettenDBFile")]
+        [JsonPropertyName("wettenDBFile")]
         public string wettenDBFile { get; set; }
 
+        [JsonPropertyName("guildIdUnbi")]
+        public ulong GuildIdUnbi { get; set; } = 791393115097137171;
+
+        [JsonPropertyName("guildIdRatte")]
+        public ulong GuildIdRatte { get; set; } = 442300530996543489;
+
+        [JsonPropertyName("channelIdRotz")]
+        public ulong ChannelIdRotz { get; set; } = 816990123568660510;
+
+        [JsonPropertyName("userIdvfs")]
+        public ulong UserIdVfs { get; set; } = 134719067016658945;
+
+        [JsonPropertyName("botIdSelf")]
+        public ulong BotIdSelf { get; set; } = 807641560006000670;
+
+        [JsonPropertyName("botIdSantos")]
+        public ulong BotIdSantos { get; set; } = 816383436201656341;
+
+        [JsonPropertyName("roleIdMuted")]
+        public ulong RoleIdMuted { get; set; } = 807921762570469386;
     }
 }
 
