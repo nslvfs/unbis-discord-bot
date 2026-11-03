@@ -1,0 +1,19 @@
+[Unit]
+Description=unbis-discord-bot (exekutivfs)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+# Adjust user and paths to your server
+User=vfs
+WorkingDirectory=/home/vfs/discordbot
+ExecStart=/home/vfs/discordbot/unbis-discord-bot
+Restart=on-failure
+RestartSec=10
+# Graceful stop: SIGTERM -> host shutdown -> Discord disconnect
+TimeoutStopSec=30
+SyslogIdentifier=unbis-discord-bot
+
+[Install]
+WantedBy=multi-user.target
